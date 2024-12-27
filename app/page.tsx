@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import { useState } from 'react';
 import { ChatWindow } from './components/ChatWindow';
 import { CodeEditor } from './components/CodeEditor';
+import { sendMessage } from './services/chat';
 
 interface Message {
   role: 'user' | 'ai';
@@ -21,23 +22,9 @@ export default function Home() {
     setInput('');
 
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: input }),
-      });
-
-      if (!response.ok) {
-        console.error("Response:", response);
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-      setConversation(prev => [...prev, { role: 'ai', text: data.text }]);
+      const response = await sendMessage(input);
+      setConversation(prev => [...prev, { role: 'ai', text: response }]);
     } catch (error) {
-      console.error('Error:', error);
       setConversation(prev => [...prev, { 
         role: 'ai', 
         text: 'Sorry, there was an error processing your request. Please try again later.' 

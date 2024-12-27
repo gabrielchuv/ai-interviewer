@@ -1,3 +1,4 @@
+import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
@@ -5,26 +6,27 @@ const openai = new OpenAI({
 });
 
 export async function POST(request: Request) {
-  console.log("Request received:", request);
-  
   try {
     const { prompt } = await request.json();
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
       messages: [
-        { role: "system", content: "You are a helpful assistant." },
-        { role: 'user', content: prompt }
+        { 
+          role: "system", 
+          content: "You are an AI technical interviewer. Your goal is to assess the candidate's programming knowledge through thoughtful questions and discussions. Provide constructive feedback and follow-up questions based on their responses."
+        },
+        { role: "user", content: prompt }
       ],
+      model: "gpt-3.5-turbo",
     });
 
-    return Response.json({
-      text: completion.choices[0].message.content,
-    });
+    const response = completion.choices[0].message.content;
+
+    return NextResponse.json({ text: response });
   } catch (error) {
     console.error('OpenAI API error:', error);
-    return Response.json(
-      { text: 'Error communicating with OpenAI' },
+    return NextResponse.json(
+      { error: 'Failed to process the request' },
       { status: 500 }
     );
   }
