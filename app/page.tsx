@@ -1,46 +1,36 @@
 'use client';
 
-import { Box } from '@mui/material';
-import { useState } from 'react';
-import { ChatWindow } from './components/ChatWindow';
-import { CodeEditor } from './components/CodeEditor';
-import { sendMessage } from './services/chat';
-
-interface Message {
-  role: 'user' | 'ai';
-  text: string;
-}
+import { Box, Button, Typography } from '@mui/material';
+import Link from 'next/link';
 
 export default function Home() {
-  const [conversation, setConversation] = useState<Message[]>([]);
-  const [input, setInput] = useState<string>('');
-
-  const handleSubmit = async () => {
-    if (!input) return;
-
-    setConversation(prev => [...prev, { role: 'user', text: input }]);
-    setInput('');
-
-    try {
-      const response = await sendMessage(input);
-      setConversation(prev => [...prev, { role: 'ai', text: response }]);
-    } catch (error) {
-      setConversation(prev => [...prev, { 
-        role: 'ai', 
-        text: 'Sorry, there was an error processing your request. Please try again later.' 
-      }]);
-    }
-  };
-
   return (
-    <Box display="flex" sx={{ height: '100vh' }}>
-      <ChatWindow
-        conversation={conversation}
-        input={input}
-        setInput={setInput}
-        handleSubmit={handleSubmit}
-      />
-      <CodeEditor />
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      sx={{ height: '100vh', gap: 3 }}
+    >
+      <Link href="/interview" style={{ textDecoration: 'none' }}>
+        <Button 
+          variant="contained" 
+          size="large"
+          sx={{ 
+            fontSize: '1.2rem',
+            padding: '12px 40px',
+          }}
+        >
+          Start Interview
+        </Button>
+      </Link>
+      <Typography 
+        variant="body1" 
+        color="text.secondary"
+        sx={{ mt: 2 }}
+      >
+        When pressed, the interview will begin, starting a timer of 20 minutes.
+      </Typography>
     </Box>
   );
 }
