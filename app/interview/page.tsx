@@ -12,8 +12,13 @@ interface Message {
   text: string;
 }
 
+const initialMessage: Message = {
+  role: 'ai',
+  text: 'Welcome to this AI technical interview. Please consider the question that I\'m presenting to you in the code editor. Good luck!'
+};
+
 export default function Interview() {
-  const [conversation, setConversation] = useState<Message[]>([]);
+  const [conversation, setConversation] = useState<Message[]>([initialMessage]);
   const [input, setInput] = useState<string>('');
 
   const handleSubmit = async () => {
