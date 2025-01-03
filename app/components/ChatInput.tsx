@@ -9,7 +9,12 @@ interface ChatInputProps {
 
 export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', marginTop: 2 }}>
+    <Box sx={{ 
+      display: 'flex', 
+      alignItems: 'center',
+      height: '56px', // Standard height for TextField
+      minHeight: '56px' // Ensure consistent height
+    }}>
       <TextField
         variant="outlined"
         fullWidth

@@ -16,11 +16,23 @@ interface ChatWindowProps {
 
 export function ChatWindow({ conversation, input, setInput, handleSubmit }: ChatWindowProps) {
   return (
-    <Box sx={{ flex: 1, borderRight: '1px solid #ddd', padding: 2 }}>
+    <Box sx={{ 
+      flex: 1, 
+      borderRight: '1px solid #ddd', 
+      padding: 2,
+      height: '100vh',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
       <Typography variant="h6" gutterBottom>
         AI Interviewer
       </Typography>
-      <Paper sx={{ maxHeight: '80vh', overflowY: 'auto', padding: 2 }}>
+      <Paper sx={{ 
+        flex: 1,
+        overflowY: 'auto',
+        padding: 2,
+        marginBottom: 2
+      }}>
         <Box sx={{ display: 'flex', flexDirection: 'column' }}>
           {conversation.map((message, index) => (
             <ChatMessage key={index} role={message.role} text={message.text} />
