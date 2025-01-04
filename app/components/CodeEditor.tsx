@@ -14,7 +14,7 @@ export function CodeEditor() {
   return (
     <Box 
       sx={{ 
-        width: '70%',
+        flex: 1,
         padding: 2,
         display: 'flex',
         flexDirection: 'column',

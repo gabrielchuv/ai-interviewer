@@ -62,7 +62,11 @@ export default function Interview() {
           setInput={setInput}
           handleSubmit={handleSubmit}
         />
-        <Box sx={{ display: 'flex', flexDirection: 'column', width: '70%' }}>
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          flex: 1
+        }}>
           <CodeEditor />
           <CompleteInterviewButton 
             isEnabled={isTimeUp} 
