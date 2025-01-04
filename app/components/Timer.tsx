@@ -9,10 +9,20 @@ const formatTime = (seconds: number): string => {
   return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
 };
 
-export const Timer = () => {
+interface TimerProps {
+  onTimeUp: () => void;
+}
+
+export const Timer = ({ onTimeUp }: TimerProps) => {
   const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 minutes in seconds
 
   useEffect(() => {
+    console.log('timeLeft', timeLeft);
+    if (timeLeft === 0) {
+      onTimeUp();
+      return;
+    }
+
     const timer = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime <= 0) {
@@ -24,7 +34,7 @@ export const Timer = () => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, []);
+  }, [timeLeft]);
 
   return (
     <Box

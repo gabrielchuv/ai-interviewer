@@ -1,10 +1,11 @@
 'use client';
 
 import { Box } from '@mui/material';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { ChatWindow } from '../components/ChatWindow';
 import { CodeEditor } from '../components/CodeEditor';
 import { Timer } from '../components/Timer';
+import { SubmitButton } from '../components/CompleteInterviewButton';
 import { sendMessage } from '../services/chat';
 
 interface Message {
@@ -20,6 +21,7 @@ const initialMessage: Message = {
 export default function Interview() {
   const [conversation, setConversation] = useState<Message[]>([initialMessage]);
   const [input, setInput] = useState<string>('');
+  const [isTimeUp, setIsTimeUp] = useState(false);
 
   const handleSubmit = async () => {
     if (!input) return;
@@ -38,9 +40,19 @@ export default function Interview() {
     }
   };
 
+  const handleTimeUp = useCallback(() => {
+    console.log('Time up');
+    setIsTimeUp(true);
+  }, []);
+
+  const handleInterviewComplete = () => {
+    // Implement interview completion logic here
+    console.log('Interview completed');
+  };
+
   return (
     <Box position="relative" sx={{ height: '100vh' }}>
-      <Timer />
+      <Timer onTimeUp={handleTimeUp} />
       <Box display="flex" sx={{ height: '100%' }}>
         <ChatWindow
           conversation={conversation}
@@ -48,7 +60,13 @@ export default function Interview() {
           setInput={setInput}
           handleSubmit={handleSubmit}
         />
-        <CodeEditor />
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: '70%' }}>
+          <CodeEditor />
+          <SubmitButton 
+            isEnabled={isTimeUp} 
+            onSubmit={handleInterviewComplete} 
+          />
+        </Box>
       </Box>
     </Box>
   );

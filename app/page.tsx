@@ -14,7 +14,8 @@ Regarding the AI interviewer, please interact with it in the same way you would 
 
 The more interactions you have with the AI interviewer, the more data points it will have to provide you with a better evaluation.
 
-Regarding the code editor, please select your language of choice and write code as you would in any other editor. Once done, you can submit it.
+Regarding the code editor, please code as you would in any other editor. Once done coding, please let the AI know by typing "I have completed my solution" to proceed with the interview.
+Once the timer reaches 0 or when the AI interviewer has finished asking questions, you will be able to click on the "Complet Interview" button to finish the interview.
 `;
 
 export default function Home() {
