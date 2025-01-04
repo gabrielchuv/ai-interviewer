@@ -1,4 +1,4 @@
-import { Box, Typography, Paper } from '@mui/material';
+import { Box, Typography, Paper, Button } from '@mui/material';
 import { ChatMessage } from './ChatMessage';
 import { ChatInput } from './ChatInput';
 
@@ -39,6 +39,24 @@ export function ChatWindow({ conversation, input, setInput, handleSubmit }: Chat
           ))}
         </Box>
       </Paper>
+      <Button
+        variant="outlined"
+        onClick={() => setInput("I have completed my solution")}
+        sx={{
+          mb: 2,
+          textTransform: 'none',
+          justifyContent: 'flex-start',
+          color: 'text.secondary',
+          borderRadius: '20px',
+          borderColor: 'primary.light',
+          '&:hover': {
+            borderColor: 'primary.main',
+            backgroundColor: 'rgba(25, 118, 210, 0.04)'
+          }
+        }}
+      >
+        I have completed my solution
+      </Button>
       <ChatInput input={input} setInput={setInput} handleSubmit={handleSubmit} />
     </Box>
   );
