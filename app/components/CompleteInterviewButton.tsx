@@ -5,7 +5,7 @@ interface SubmitButtonProps {
   onSubmit: () => void;
 }
 
-export function SubmitButton({ isEnabled, onSubmit }: SubmitButtonProps) {
+export function CompleteInterviewButton({ isEnabled, onSubmit }: SubmitButtonProps) {
   return (
     <Box 
       sx={{ 

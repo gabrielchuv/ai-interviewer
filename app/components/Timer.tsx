@@ -17,7 +17,6 @@ export const Timer = ({ onTimeUp }: TimerProps) => {
   const [timeLeft, setTimeLeft] = useState(20 * 60); // 20 minutes in seconds
 
   useEffect(() => {
-    console.log('timeLeft', timeLeft);
     if (timeLeft === 0) {
       onTimeUp();
       return;

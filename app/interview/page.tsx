@@ -5,7 +5,7 @@ import { useState, useCallback } from 'react';
 import { ChatWindow } from '../components/ChatWindow';
 import { CodeEditor } from '../components/CodeEditor';
 import { Timer } from '../components/Timer';
-import { SubmitButton } from '../components/CompleteInterviewButton';
+import { CompleteInterviewButton } from '../components/CompleteInterviewButton';
 import { sendMessage } from '../services/chat';
 
 interface Message {
@@ -41,7 +41,6 @@ export default function Interview() {
   };
 
   const handleTimeUp = useCallback(() => {
-    console.log('Time up');
     setIsTimeUp(true);
   }, []);
 
@@ -62,7 +61,7 @@ export default function Interview() {
         />
         <Box sx={{ display: 'flex', flexDirection: 'column', width: '70%' }}>
           <CodeEditor />
-          <SubmitButton 
+          <CompleteInterviewButton 
             isEnabled={isTimeUp} 
             onSubmit={handleInterviewComplete} 
           />
