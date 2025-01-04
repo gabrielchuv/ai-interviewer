@@ -16,7 +16,9 @@ interface Message {
 
 const initialMessage: Message = {
   role: 'ai',
-  text: 'Welcome to this AI technical interview. Please consider the question in the code editor. Once you have completed coding your solution, let me know by typing "I have completed my solution" as shown below. Good luck!'
+  text: `Welcome! I'll be your AI interviewer today. While you consider the question in the code editor to the right, you are expected to interact with me
+  before starting to code. Once you are ready to start coding let me know by clicking on the "Start coding" button below and submitting the message.
+  Once you have completed coding your solution, let me know by clicking on the "Finish coding" button below and submitting the message. Good luck!`
 };
 
 export default function Interview() {

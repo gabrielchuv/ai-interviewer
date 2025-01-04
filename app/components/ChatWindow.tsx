@@ -39,24 +39,34 @@ export function ChatWindow({ conversation, input, setInput, handleSubmit }: Chat
           ))}
         </Box>
       </Paper>
-      <Button
-        variant="outlined"
-        onClick={() => setInput("I have completed my solution")}
-        sx={{
-          mb: 2,
-          textTransform: 'none',
-          justifyContent: 'flex-start',
-          color: 'text.secondary',
-          borderRadius: '20px',
-          borderColor: 'primary.light',
-          '&:hover': {
-            borderColor: 'primary.main',
-            backgroundColor: 'rgba(25, 118, 210, 0.04)'
-          }
-        }}
-      >
-        I have completed my solution
-      </Button>
+      <Box sx={{ 
+        display: 'flex', 
+        gap: 2,
+        mb: 2
+      }}>
+        <Button
+          variant="outlined"
+          onClick={() => setInput("I would like to start coding now")}
+          sx={{
+            flex: 1,
+            textTransform: 'none',
+            fontWeight: 'bold'
+          }}
+        >
+          Start coding
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => setInput("I have completed my solution")}
+          sx={{
+            flex: 1,
+            textTransform: 'none',
+            fontWeight: 'bold'
+          }}
+        >
+          Finish coding
+        </Button>
+      </Box>
       <ChatInput input={input} setInput={setInput} handleSubmit={handleSubmit} />
     </Box>
   );
