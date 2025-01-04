@@ -17,7 +17,7 @@ interface ChatWindowProps {
 export function ChatWindow({ conversation, input, setInput, handleSubmit }: ChatWindowProps) {
   return (
     <Box sx={{ 
-      flex: 1, 
+      width: '30%',
       borderRight: '1px solid #ddd', 
       padding: 2,
       height: '100vh',

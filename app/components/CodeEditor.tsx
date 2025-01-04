@@ -20,7 +20,7 @@ export function CodeEditor() {
   return (
     <Box 
       sx={{ 
-        flex: 2, 
+        width: '70%',
         padding: 2,
         display: 'flex',
         flexDirection: 'column',
