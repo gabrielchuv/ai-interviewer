@@ -7,6 +7,7 @@ import { CodeEditor } from '../components/CodeEditor';
 import { Timer } from '../components/Timer';
 import { CompleteInterviewButton } from '../components/CompleteInterviewButton';
 import { sendMessage } from '../services/chat';
+import { useRouter } from 'next/navigation';
 
 interface Message {
   role: 'user' | 'ai';
@@ -19,6 +20,7 @@ const initialMessage: Message = {
 };
 
 export default function Interview() {
+  const router = useRouter();
   const [conversation, setConversation] = useState<Message[]>([initialMessage]);
   const [input, setInput] = useState<string>('');
   const [isTimeUp, setIsTimeUp] = useState(false);
@@ -45,8 +47,7 @@ export default function Interview() {
   }, []);
 
   const handleInterviewComplete = () => {
-    // Implement interview completion logic here
-    console.log('Interview completed');
+    router.push('/feedback');
   };
 
   return (
