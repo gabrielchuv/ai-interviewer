@@ -1,18 +1,18 @@
 import { Button, Box } from '@mui/material';
 
-interface SubmitButtonProps {
+interface CompleteInterviewButtonProps {
   isEnabled: boolean;
   onSubmit: () => void;
 }
 
-export function CompleteInterviewButton({ isEnabled, onSubmit }: SubmitButtonProps) {
+export function CompleteInterviewButton({ isEnabled, onSubmit }: CompleteInterviewButtonProps) {
   return (
     <Box 
       sx={{ 
         display: 'flex',
         justifyContent: 'flex-end',
-        mt: 2,
-        height: '40px'
+        px: 2,
+        pb: 2,
       }}
     >
       <Button 
@@ -20,7 +20,11 @@ export function CompleteInterviewButton({ isEnabled, onSubmit }: SubmitButtonPro
         color="primary"
         onClick={onSubmit}
         disabled={!isEnabled}
-        sx={{ width: '160px' }}
+        sx={{ 
+          width: '180px',
+          textTransform: 'none',
+          fontWeight: 'bold'
+        }}
       >
         Complete Interview
       </Button>
