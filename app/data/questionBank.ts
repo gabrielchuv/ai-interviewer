@@ -1,4 +1,10 @@
-export const questionBank = [
+export interface Question {
+    id: number;
+    title: string;
+    description: string;
+}
+
+export const questionBank: Question[] = [
     {
         id: 1,
         title: "Reverse a Linked List",

@@ -3,16 +3,13 @@
 import { Box, Typography } from '@mui/material';
 import CodeMirror from '@uiw/react-codemirror';
 import { javascript } from '@codemirror/lang-javascript';
-import { questionBank } from '../data/questionBank';
-import { useState } from 'react';
+import { Question } from '../data/questionBank';
 
-export function CodeEditor({ onQuestionChange }: { onQuestionChange: (question: string) => void }) {
-  const [question] = useState(() => {
-    const selectedQuestion = questionBank[Math.floor(Math.random() * 10)];
-    onQuestionChange(selectedQuestion.description);
-    return selectedQuestion;
-  });
+interface CodeEditorProps {
+  question: Question;
+}
 
+export function CodeEditor({ question }: CodeEditorProps) {
   return (
     <Box 
       sx={{ 

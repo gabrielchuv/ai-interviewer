@@ -8,6 +8,7 @@ import { Timer } from '../components/Timer';
 import { CompleteInterviewButton } from '../components/CompleteInterviewButton';
 import { sendMessage } from '../services/chat';
 import { useRouter } from 'next/navigation';
+import { questionBank } from '../data/questionBank';
 
 interface Message {
   role: 'user' | 'ai';
@@ -26,7 +27,10 @@ export default function Interview() {
   const [conversation, setConversation] = useState<Message[]>([initialMessage]);
   const [input, setInput] = useState<string>('');
   const [isTimeUp, setIsTimeUp] = useState(false);
-  const [currentQuestion, setCurrentQuestion] = useState<string>('');
+  
+  const [question] = useState(() => {
+    return questionBank[Math.floor(Math.random() * 10)];
+  });
 
   const startCodingPrompt = `The candidate now wants to start coding.Consider the candidate's previous answers shown below.
   As an interviewer, if you feel that the candidate has disambiguated the question enough, respond by telling them they are free to start coding.
@@ -34,7 +38,7 @@ export default function Interview() {
   `
 
   const finishCodingPrompt = `The candidate has completed coding their solution.`
- 
+
   const handleSubmit = async () => {
     if (!input) return;
 
@@ -56,7 +60,7 @@ export default function Interview() {
         messageToSend = finishCodingPrompt;
       }
       else {
-        messageToSend = `For context, this is the question the candidate is considering: ${currentQuestion}\n\n${input}`;
+        messageToSend = `For context, this is the question the candidate is considering: ${question.description}\n\n${input}`;
       }
 
       console.log("Sending message to AI: ", messageToSend);
@@ -94,7 +98,7 @@ export default function Interview() {
           flexDirection: 'column', 
           flex: 1
         }}>
-          <CodeEditor onQuestionChange={setCurrentQuestion} />
+          <CodeEditor question={question} />
           <CompleteInterviewButton 
             isEnabled={isTimeUp} 
             onSubmit={handleInterviewComplete} 
