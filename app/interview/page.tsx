@@ -27,6 +27,11 @@ export default function Interview() {
   const [input, setInput] = useState<string>('');
   const [isTimeUp, setIsTimeUp] = useState(false);
 
+  const startCodingPrompt = `The candidate now wants to start coding.Consider the candidate's previous answers shown below.
+  As an interviewer, if you feel that the candidate has disambiguated the question enough, respond by telling them they are free to start coding.
+  In contrast, if you feel that the candidate has not disambiguated the question enough, respond by telling them to continue considering the question.
+  `
+
   const handleSubmit = async () => {
     if (!input) return;
 
@@ -34,7 +39,20 @@ export default function Interview() {
     setInput('');
 
     try {
-      const response = await sendMessage(input);
+      let messageToSend = input;
+      if (input === "I am ready to start coding") {
+        console.log("Starting coding");
+        const userMessages = conversation
+          .filter(msg => msg.role === 'user')
+          .map(msg => msg.text)
+          .join('\n');
+        
+        messageToSend = `${startCodingPrompt}\n\n${userMessages ? `Candidate's previous answers:\n\n${userMessages}` : `Candidate's previous answers are empty`}`
+      }
+
+      console.log("Sending message to AI: ", messageToSend);
+
+      const response = await sendMessage(messageToSend);
       setConversation(prev => [...prev, { role: 'ai', text: response }]);
     } catch (error) {
       setConversation(prev => [...prev, { 

@@ -46,7 +46,7 @@ export function ChatWindow({ conversation, input, setInput, handleSubmit }: Chat
       }}>
         <Button
           variant="outlined"
-          onClick={() => setInput("I would like to start coding now")}
+          onClick={() => setInput("I am ready to start coding")}
           sx={{
             flex: 1,
             textTransform: 'none',
