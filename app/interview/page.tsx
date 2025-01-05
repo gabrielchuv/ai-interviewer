@@ -65,7 +65,7 @@ export default function Interview() {
 
       console.log("Sending message to AI: ", messageToSend);
 
-      const response = await sendMessage(messageToSend);
+      const response = await sendMessage(messageToSend, question.description);
       setConversation(prev => [...prev, { role: 'ai', text: response }]);
     } catch (error) {
       setConversation(prev => [...prev, { 

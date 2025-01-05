@@ -3,32 +3,18 @@ interface ChatResponse {
   error?: string;
 }
 
-export async function sendMessage(prompt: string): Promise<string> {
-  try {
-    const response = await fetch('/api/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ prompt }),
-    });
+export async function sendMessage(message: string, question: string) {
+  const response = await fetch('/api/chat', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ message, question }),
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || 'Network response was not ok');
-    }
-
-    const data: ChatResponse = await response.json();
-    
-    if (data.error) {
-      throw new Error(data.error);
-    }
-
-    return data.text;
-  } catch (error) {
-    // Could add retry logic here
-    // Could add error logging here
-    // Could add analytics here
-    throw error;
+  if (!response.ok) {
+    throw new Error('Failed to send message');
   }
+
+  return response.text();
 }
