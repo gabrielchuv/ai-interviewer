@@ -52,7 +52,7 @@ export default function Interview() {
         const userMessages = conversation
           .filter(msg => msg.role === 'user')
           .map(msg => msg.text)
-          .join('\n');
+          .join('\n\n');
         
         messageToSend = `${startCodingPrompt}\n\n${userMessages ? `Candidate's previous answers:\n\n${userMessages}` : `Candidate's previous answers are empty`}`
       }

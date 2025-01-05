@@ -12,12 +12,13 @@ export async function POST(request: Request) {
     const completion = await openai.chat.completions.create({
       messages: [
         { 
-          role: "system", 
-          content: "You are an AI technical interviewer. Your goal is to assess the candidate's programming knowledge through thoughtful questions and discussions. Provide constructive feedback and follow-up questions based on their responses."
+          role: "developer", 
+          content: `You are an AI technical interviewer. You will have a conversation with the candidate about a question.
+          `
         },
         { role: "user", content: prompt }
       ],
-      model: "gpt-3.5-turbo",
+      model: "gpt-4o",
     });
 
     const response = completion.choices[0].message.content;
