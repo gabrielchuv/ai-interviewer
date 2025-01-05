@@ -6,9 +6,11 @@ import { javascript } from '@codemirror/lang-javascript';
 import { questionBank } from '../data/questionBank';
 import { useState } from 'react';
 
-export function CodeEditor() {
+export function CodeEditor({ onQuestionChange }: { onQuestionChange: (question: string) => void }) {
   const [question] = useState(() => {
-    return questionBank[Math.floor(Math.random() * 10)];
+    const selectedQuestion = questionBank[Math.floor(Math.random() * 10)];
+    onQuestionChange(selectedQuestion.description);
+    return selectedQuestion;
   });
 
   return (

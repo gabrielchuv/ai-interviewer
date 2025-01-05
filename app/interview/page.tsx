@@ -26,12 +26,15 @@ export default function Interview() {
   const [conversation, setConversation] = useState<Message[]>([initialMessage]);
   const [input, setInput] = useState<string>('');
   const [isTimeUp, setIsTimeUp] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState<string>('');
 
   const startCodingPrompt = `The candidate now wants to start coding.Consider the candidate's previous answers shown below.
   As an interviewer, if you feel that the candidate has disambiguated the question enough, respond by telling them they are free to start coding.
   In contrast, if you feel that the candidate has not disambiguated the question enough, respond by telling them to continue considering the question.
   `
 
+  const finishCodingPrompt = `The candidate has completed coding their solution.`
+ 
   const handleSubmit = async () => {
     if (!input) return;
 
@@ -48,6 +51,12 @@ export default function Interview() {
           .join('\n');
         
         messageToSend = `${startCodingPrompt}\n\n${userMessages ? `Candidate's previous answers:\n\n${userMessages}` : `Candidate's previous answers are empty`}`
+      }
+      else if (input === "I have completed my solution") {
+        messageToSend = finishCodingPrompt;
+      }
+      else {
+        messageToSend = `For context, this is the question the candidate is considering: ${currentQuestion}\n\n${input}`;
       }
 
       console.log("Sending message to AI: ", messageToSend);
@@ -85,7 +94,7 @@ export default function Interview() {
           flexDirection: 'column', 
           flex: 1
         }}>
-          <CodeEditor />
+          <CodeEditor onQuestionChange={setCurrentQuestion} />
           <CompleteInterviewButton 
             isEnabled={isTimeUp} 
             onSubmit={handleInterviewComplete} 
