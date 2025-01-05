@@ -7,9 +7,10 @@ import { Question } from '../data/questionBank';
 
 interface CodeEditorProps {
   question: Question;
+  onCodeChange: (code: string) => void;
 }
 
-export function CodeEditor({ question }: CodeEditorProps) {
+export function CodeEditor({ question, onCodeChange }: CodeEditorProps) {
   return (
     <Box 
       sx={{ 
@@ -28,6 +29,7 @@ export function CodeEditor({ question }: CodeEditorProps) {
         height="calc(100vh - 140px)"
         extensions={[javascript()]}
         theme="dark"
+        onChange={onCodeChange}
       />
     </Box>
   );

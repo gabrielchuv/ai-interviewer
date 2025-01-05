@@ -27,6 +27,7 @@ export default function Interview() {
   const [conversation, setConversation] = useState<Message[]>([initialMessage]);
   const [input, setInput] = useState<string>('');
   const [isTimeUp, setIsTimeUp] = useState(false);
+  const [currentCode, setCurrentCode] = useState('');
   
   const [question] = useState(() => {
     return questionBank[Math.floor(Math.random() * 10)];
@@ -37,7 +38,9 @@ export default function Interview() {
   In contrast, if you feel that the candidate has not disambiguated the question enough, respond by telling them to continue considering the question.
   `
 
-  const finishCodingPrompt = `The candidate has completed coding their solution.`
+  const finishCodingPrompt = `The candidate has completed coding their solution. Please anaylze the solution. If it is correct let the candidate know that they can conclude the interview.
+  If it is incorrect, let the candidate know that they need to continue coding and provide a hint on how to fix it. Do not provide the solution.
+  `
 
   const handleSubmit = async () => {
     if (!input) return;
@@ -57,7 +60,7 @@ export default function Interview() {
         messageToSend = `${startCodingPrompt}\n\n${userMessages ? `Candidate's previous answers:\n\n${userMessages}` : `Candidate's previous answers are empty`}`
       }
       else if (input === "I have completed my solution") {
-        messageToSend = finishCodingPrompt;
+        messageToSend = `${finishCodingPrompt}\n\nHere is the candidate's solution:\n\n${currentCode}`;
       }
       else {
         messageToSend = `For context, this is the question the candidate is considering: ${question.description}\n\n${input}`;
@@ -98,7 +101,10 @@ export default function Interview() {
           flexDirection: 'column', 
           flex: 1
         }}>
-          <CodeEditor question={question} />
+          <CodeEditor 
+            question={question} 
+            onCodeChange={setCurrentCode}
+          />
           <CompleteInterviewButton 
             isEnabled={isTimeUp} 
             onSubmit={handleInterviewComplete} 
