@@ -1,9 +1,10 @@
-'use client';
+"use client";
 
-import { Box, Typography } from '@mui/material';
-import CodeMirror from '@uiw/react-codemirror';
-import { javascript } from '@codemirror/lang-javascript';
-import { Question } from '../data/questionBank';
+import { Box, Typography } from "@mui/material";
+import CodeMirror from "@uiw/react-codemirror";
+import { javascript } from "@codemirror/lang-javascript";
+import { useState, useEffect } from "react";
+import { Question } from "../data/questionBank";
 
 interface CodeEditorProps {
   question: Question;
@@ -11,14 +12,28 @@ interface CodeEditorProps {
 }
 
 export function CodeEditor({ question, onCodeChange }: CodeEditorProps) {
+  const [containerWidth, setContainerWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setContainerWidth(window.innerWidth);
+    };
+
+    // Attach resize event listener
+    window.addEventListener("resize", handleResize);
+
+    // Clean up on component unmount
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <Box 
-      sx={{ 
+    <Box
+      sx={{
         flex: 1,
         padding: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100vh'
+        display: "flex",
+        flexDirection: "column",
+        height: "100vh",
       }}
     >
       <Typography variant="h6" gutterBottom>
@@ -29,8 +44,9 @@ export function CodeEditor({ question, onCodeChange }: CodeEditorProps) {
         height="calc(100vh - 140px)"
         extensions={[javascript()]}
         theme="dark"
+        width={`${containerWidth * 0.6}px`}
         onChange={onCodeChange}
       />
     </Box>
   );
-} 
+}
