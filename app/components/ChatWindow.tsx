@@ -49,36 +49,6 @@ export function ChatWindow({
           ))}
         </Box>
       </Paper>
-      <Box
-        sx={{
-          display: "flex",
-          gap: 2,
-          mb: 2,
-        }}
-      >
-        <Button
-          variant="outlined"
-          onClick={() => setInput("I am ready to start coding")}
-          sx={{
-            flex: 1,
-            textTransform: "none",
-            fontWeight: "bold",
-          }}
-        >
-          Start coding
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={() => setInput("I have completed my solution")}
-          sx={{
-            flex: 1,
-            textTransform: "none",
-            fontWeight: "bold",
-          }}
-        >
-          Finish coding
-        </Button>
-      </Box>
       <ChatInput
         input={input}
         setInput={setInput}
