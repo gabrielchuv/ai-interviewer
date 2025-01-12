@@ -6,7 +6,7 @@ import { ChatWindow } from '../components/ChatWindow';
 import { CodeEditor } from '../components/CodeEditor';
 import { Timer } from '../components/Timer';
 import { CompleteInterviewButton } from '../components/CompleteInterviewButton';
-import { sendMessage } from '../services/chat';
+import { sendMessage, deduceCustomerIntent } from '../services/chat';
 import { useRouter } from 'next/navigation';
 import { questionBank } from '../data/questionBank';
 
@@ -22,6 +22,24 @@ const initialMessage: Message = {
   Once you have completed coding your solution, let me know by clicking on the "Finish coding" button below and submitting the message. Good luck!`
 };
 
+export type MessageCategory = 
+  | 'Clarification question'
+  | 'Outlining approach'
+  | 'Intent to start coding'
+  | 'Intent to finish coding'
+  | 'Other';
+
+const customerIntentPromptMap: Record<MessageCategory, string> = {
+  'Clarification question': 'The candidate is seeking clarification about the problem requirements. Provide clear and concise answers without revealing the solution.',
+  'Outlining approach': 'The candidate is outlining their approach to solve the problem. Listen carefully and provide feedback on their strategy without giving away implementation details. If the approach is correct, respond by telling them they are free to start coding.',
+  'Intent to start coding': `The candidate wants to begin implementing their solution. respond by telling them they are free to start coding only if 2 conditions are met:
+  1. The candidate has clarified the question enough in previous interactions.
+  2. The candidate has outlined their approach to solve the problem.
+  Otherwise, respond by telling them to continue considering the question.`,
+  'Intent to finish coding': 'The candidate believes they have completed their solution. Review their code carefully. If the solution is correct, respond by telling them they can conclude the interview. If the solution is incorrect, provide a hint on how to fix it.',
+  'Other': 'The candidate is engaging in general discussion about the problem.'
+};
+
 export default function Interview() {
   const router = useRouter();
   const [conversation, setConversation] = useState<Message[]>([initialMessage]);
@@ -30,17 +48,8 @@ export default function Interview() {
   const [currentCode, setCurrentCode] = useState('');
   
   const [question] = useState(() => {
-    return questionBank[Math.floor(Math.random() * 10)];
+    return questionBank[0];
   });
-
-  const startCodingPrompt = `The candidate now wants to start coding.Consider the candidate's previous answers shown below.
-  As an interviewer, if you feel that the candidate has disambiguated the question enough, respond by telling them they are free to start coding.
-  In contrast, if you feel that the candidate has not disambiguated the question enough, respond by telling them to continue considering the question.
-  `
-
-  const finishCodingPrompt = `The candidate has completed coding their solution. Please anaylze the solution. If it is correct let the candidate know that they can conclude the interview.
-  If it is incorrect, let the candidate know that they need to continue coding and provide a hint on how to fix it. Do not provide the solution.
-  `
 
   const handleSubmit = async () => {
     if (!input) return;
@@ -49,26 +58,25 @@ export default function Interview() {
     setInput('');
 
     try {
-      let messageToSend = input;
-      if (input === "I am ready to start coding") {
-        console.log("Starting coding");
+      let userPrompt = input;
+      
+      const customerIntent = await deduceCustomerIntent(userPrompt);
+      
+      const customerIntentPrompt = customerIntentPromptMap[customerIntent]
+      if (customerIntent === 'Intent to start coding') {
         const userMessages = conversation
           .filter(msg => msg.role === 'user')
           .map(msg => msg.text)
           .join('\n\n');
-        
-        messageToSend = `${startCodingPrompt}\n\n${userMessages ? `Candidate's previous answers:\n\n${userMessages}` : `Candidate's previous answers are empty`}`
-      }
-      else if (input === "I have completed my solution") {
-        messageToSend = `${finishCodingPrompt}\n\nHere is the candidate's solution:\n\n${currentCode}`;
-      }
-      else {
-        messageToSend = `For context, this is the question the candidate is considering: ${question.description}\n\n${input}`;
-      }
 
-      console.log("Sending message to AI: ", messageToSend);
-
-      const response = await sendMessage(messageToSend, question.description);
+        const response = await sendMessage(userPrompt, question.description, customerIntentPrompt, userMessages);
+        setConversation(prev => [...prev, { role: 'ai', text: response }]);
+        return
+      }
+      else if (customerIntent === "Intent to finish coding") {
+        userPrompt = `Here is the candidate's solution:\n\n${currentCode}`;
+      }
+      const response = await sendMessage(userPrompt, question.description, customerIntentPrompt);
       setConversation(prev => [...prev, { role: 'ai', text: response }]);
     } catch (error) {
       setConversation(prev => [...prev, { 

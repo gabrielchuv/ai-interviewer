@@ -7,23 +7,27 @@ const openai = new OpenAI({
 
 export async function POST(request: Request) {
   try {
-    const { message, question } = await request.json();
+    const { userPrompt, question, customerIntent, previousInteractions } = await request.json();
 
     if (!question) {
       return NextResponse.json({ error: 'Question is required' }, { status: 400 });
     }
 
-    const developerContext = `You are a technical interviewer conducting a coding interview. Follow the following principles:
-    - Consider whether the candidate is trying to clarify the question's requirements. If so, answer directly and succinctly. Don't give away more information than asked and don't give away the solution to the question. 
-    
+    const developerPrompt = `You are a technical interviewer conducting a coding interview. 
+    ${`${customerIntent}`}
+    Follow the following principles:
+    - Never give away the solution to the question.
+
     The question you are asking the candidate is:\n\n${question}
-    
+
+    The candidate's previous interactions are
+    ${previousInteractions ? `\n\n${previousInteractions}` : ''}
     `;
 
     const completion = await openai.chat.completions.create({
       messages: [
-        { role: 'developer', content: developerContext },
-        { role: 'user', content: message }
+        { role: 'developer', content: developerPrompt },
+        { role: 'user', content: userPrompt }
       ],
       model: 'gpt-4o',
     });
