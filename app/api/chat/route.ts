@@ -7,7 +7,8 @@ const openai = new OpenAI({
 
 export async function POST(request: Request) {
   try {
-    const { userPrompt, question, customerIntent, previousInteractions } = await request.json();
+    const { userPrompt, context } = await request.json();
+    const { question, customerIntent, previousInteractions } = context;
 
     if (!question) {
       return NextResponse.json({ error: 'Question is required' }, { status: 400 });

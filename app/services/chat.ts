@@ -5,6 +5,12 @@ interface ChatResponse {
   error?: string;
 }
 
+interface ChatContext {
+  question: string;
+  customerIntent: string;
+  previousInteractions?: string;
+}
+
 export async function deduceCustomerIntent(message: string): Promise<MessageCategory> {
   const response = await fetch('/api/categorize', {
     method: 'POST',
@@ -22,13 +28,13 @@ export async function deduceCustomerIntent(message: string): Promise<MessageCate
   return data.category;
 }
 
-export async function sendMessage(userPrompt: string, question: string, customerIntent: string, previousInteractions?: string) {
+export async function sendMessage(userPrompt: string, context: ChatContext) {
   const response = await fetch('/api/chat', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ userPrompt, question, customerIntent, previousInteractions }),
+    body: JSON.stringify({ userPrompt, context }),
   });
 
   if (!response.ok) {

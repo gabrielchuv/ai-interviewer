@@ -36,7 +36,7 @@ const customerIntentPromptMap: Record<MessageCategory, string> = {
   1. The candidate has clarified the question enough in previous interactions.
   2. The candidate has outlined their approach to solve the problem.
   Otherwise, respond by telling them to continue considering the question.`,
-  'Intent to finish coding': 'The candidate believes they have completed their solution. Review their code carefully. If the solution is correct, respond by telling them they can conclude the interview. If the solution is incorrect, provide a hint on how to fix it.',
+  'Intent to finish coding': 'The candidate believes they have completed their solution. Review their code carefully. If the solution is correct, respond by saying "Feel free to conclude the interview." If the solution is incorrect, provide a hint on how to fix it.',
   'Other': 'The candidate is engaging in general discussion about the problem.'
 };
 
@@ -46,6 +46,7 @@ export default function Interview() {
   const [input, setInput] = useState<string>('');
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [currentCode, setCurrentCode] = useState('');
+  const [isInterviewComplete, setIsInterviewComplete] = useState(false);
   
   const [question] = useState(() => {
     return questionBank[0];
@@ -69,14 +70,34 @@ export default function Interview() {
           .map(msg => msg.text)
           .join('\n\n');
 
-        const response = await sendMessage(userPrompt, question.description, customerIntentPrompt, userMessages);
+        const response = await sendMessage(userPrompt, {
+          question: question.description,
+          customerIntent: customerIntentPrompt,
+          previousInteractions: userMessages
+        });
         setConversation(prev => [...prev, { role: 'ai', text: response }]);
         return
       }
       else if (customerIntent === "Intent to finish coding") {
         userPrompt = `Here is the candidate's solution:\n\n${currentCode}`;
+
+        const response = await sendMessage(userPrompt, {
+          question: question.description,
+          customerIntent: customerIntentPrompt
+        });
+
+        if (response === "Feel free to conclude the interview.") {
+          setIsInterviewComplete(true);
+        }
+
+        setConversation(prev => [...prev, { role: 'ai', text: response }]);
+
+        return
       }
-      const response = await sendMessage(userPrompt, question.description, customerIntentPrompt);
+      const response = await sendMessage(userPrompt, {
+        question: question.description,
+        customerIntent: customerIntentPrompt
+      });
       setConversation(prev => [...prev, { role: 'ai', text: response }]);
     } catch (error) {
       setConversation(prev => [...prev, { 
@@ -114,7 +135,7 @@ export default function Interview() {
             onCodeChange={setCurrentCode}
           />
           <CompleteInterviewButton 
-            isEnabled={isTimeUp} 
+            isEnabled={isTimeUp || isInterviewComplete} 
             onSubmit={handleInterviewComplete} 
           />
         </Box>
