@@ -3,19 +3,21 @@ import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
 
 const welcomeText = `
-When starting the interview, you will be presented with **2 panes**:
-- The AI interviewer (a chatbot)
-- A code editor
+When starting the interview, you will be presented with 2 panes: The AI interviewer and a code editor.
 
-Regarding the AI interviewer, please interact with it in the same way you would with a human interviewer but via text only (for now). Feel free to:
+**The AI Interviewer**
+
+This is a chatbot that will simulate a human interviewer. Please interact with it in the same way you would with a human interviewer but via text only (for now). Feel free to:
 - Ask clarifying questions
 - Demonstrate your approach
-- Explain your decisions
+- Let the AI know when you are ready to start coding
+- Let the AI know when you have completed your solution
 
-The more interactions you have with the AI interviewer, the more data points it will have to provide you with a better evaluation.
+When the AI interviewer is satisfied with your solution, you will be able to click on the "Complete Interview" button to finish the interview.
 
-Regarding the code editor, please code as you would in any other editor. Once done coding, please let the AI know by typing "I have completed my solution" to proceed with the interview.
-Once the timer reaches 0 or when the AI interviewer has finished asking questions, you will be able to click on the "Complet Interview" button to finish the interview.
+**The Code Editor**
+- Please code as you would in any other editor. We only support JavaScript for now.
+- It contains a timer of 30 minutes. When the timer reaches 0, the interview will be automatically completed.
 `;
 
 export default function Home() {
@@ -64,7 +66,7 @@ export default function Home() {
           </Button>
         </Link>
         <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
-          When pressed, the interview will begin, starting a timer of 20
+          When pressed, the interview will begin, starting a timer of 30
           minutes.
         </Typography>
       </Box>
