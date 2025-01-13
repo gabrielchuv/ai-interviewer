@@ -31,12 +31,16 @@ export type MessageCategory =
 
 const customerIntentPromptMap: Record<MessageCategory, string> = {
   'Clarification question': 'The candidate is seeking clarification about the problem requirements. Provide clear and concise answers without revealing the solution.',
-  'Outlining approach': 'The candidate is outlining their approach to solve the problem. Listen carefully and provide feedback on their strategy without giving away implementation details. If the approach is correct, respond by telling them they are free to start coding.',
+  'Outlining approach': `
+  You are a technical interviewer conducting a coding interview. The candidate is outlining their approach to solve the problem. Evaluate the correctness of their approach 
+- If the approach is correct, respond by telling them they are free to start coding. 
+- If the approach is incorrect, ask them to continue considering the question and provide a subtle hint on how to improve their approach.
+`,
   'Intent to start coding': `The candidate wants to begin implementing their solution. respond by telling them they are free to start coding only if 2 conditions are met:
   1. The candidate has clarified the question enough in previous interactions.
   2. The candidate has outlined their approach to solve the problem.
   Otherwise, respond by telling them to continue considering the question.`,
-  'Intent to finish coding': 'The candidate believes they have completed their solution. Review their code carefully. If the solution is correct, respond by saying "Feel free to conclude the interview." If the solution is incorrect, provide a hint on how to fix it.',
+  'Intent to finish coding': 'The candidate believes they have completed their solution. Review their code carefully. If the solution is correct, respond by saying "Feel free to conclude the interview." If the solution is incorrect, provide a hint on how to fix it but do not specify what is the issue.',
   'Other': 'The candidate is engaging in general discussion about the problem.'
 };
 
