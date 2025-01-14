@@ -7,10 +7,10 @@ import { CodeEditor } from '../components/CodeEditor';
 import { Timer } from '../components/Timer';
 import { CompleteInterviewButton } from '../components/CompleteInterviewButton';
 import { sendMessage, deduceCustomerIntent } from '../services/chat';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { questionBank } from '../data/questionBank';
 
-interface Message {
+export interface Message {
   role: 'user' | 'ai';
   text: string;
 }
@@ -116,6 +116,8 @@ export default function Interview() {
   }, []);
 
   const handleInterviewComplete = () => {
+    localStorage.setItem('interview_conversation', JSON.stringify(conversation));
+    localStorage.setItem('interview_code', currentCode);
     router.push('/feedback');
   };
 
