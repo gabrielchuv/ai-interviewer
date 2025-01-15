@@ -8,12 +8,13 @@ const openai = new OpenAI({
 export async function POST(request: Request) {
   const { conversation } = await request.json();
 
-  const response = await openai.chat.completions.create({
+  // Get rating
+  const ratingResponse = await openai.chat.completions.create({
     model: "gpt-4o",
     messages: [
       {
         role: "developer",
-        content: "Based on the candidate's interactions, rate how well they analyzed the problem complexity on a scale of 1-5. Provide brief feedback explaining the rating."
+        content: "You are a technical interviewer. Evaluate how well the candidate analyzed the problem complexity on a scale of 1-5. Respond with only the number."
       },
       {
         role: "user",
@@ -22,9 +23,23 @@ export async function POST(request: Request) {
     ]
   });
 
-  const result = response.choices[0].message.content;
-  // Parse the result to extract rating and feedback
-  // You might want to structure the prompt to get a more structured response
+  // Get feedback
+  const feedbackResponse = await openai.chat.completions.create({
+    model: "gpt-4o",
+    messages: [
+      {
+        role: "developer",
+        content: "You are a technical interviewer. Evaluate how well the candidate analyzed the problem complexity. Provide brief feedback."
+      },
+      {
+        role: "user",
+        content: JSON.stringify(conversation)
+      }
+    ]
+  });
 
-  return NextResponse.json({ rating: 4, feedback: result });
+  const rating = parseInt(ratingResponse.choices[0].message.content || "3");
+  const feedback = feedbackResponse.choices[0].message.content;
+
+  return NextResponse.json({ rating, feedback });
 } 

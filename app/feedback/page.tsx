@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography, Grid, Paper, CircularProgress } from '@mui/material';
 import { getFeedback } from '../services/feedback';
-import { Message } from '../interview/page';
 
 interface FeedbackSection {
   rating: number;
