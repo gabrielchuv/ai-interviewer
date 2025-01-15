@@ -11,8 +11,8 @@ interface ChatInputProps {
 export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
   const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key === "Enter") {
+      event.preventDefault();
       if (event.shiftKey) {
-        event.preventDefault();
         setInput((prev) => prev + "\n");
       } else {
         handleSubmit();
