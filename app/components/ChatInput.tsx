@@ -23,23 +23,36 @@ export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
     <Box
       sx={{
         display: "flex",
-        alignItems: "center",
-        height: "56px", // Standard height for TextField
-        minHeight: "56px", // Ensure consistent height
+        alignItems: "flex-end",
+        minHeight: "56px",
+        maxHeight: "30vh",
+        position: "relative",
       }}
     >
       <TextField
         variant="outlined"
-        multiline={true}
+        multiline
         fullWidth
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="Type your message..."
-        rows={2}
-        style={{ overflowY: "auto" }}
+        minRows={1}
+        maxRows={12}
+        sx={{
+          '& .MuiInputBase-root': {
+            maxHeight: '30vh',
+            overflowY: 'auto',
+          }
+        }}
         onKeyDown={handleKeyDown}
       />
-      <IconButton onClick={handleSubmit} sx={{ marginLeft: 1 }}>
+      <IconButton 
+        onClick={handleSubmit} 
+        sx={{ 
+          marginLeft: 1,
+          marginBottom: '8px' // Align with the text input bottom
+        }}
+      >
         <MdSend />
       </IconButton>
     </Box>
