@@ -103,7 +103,7 @@ export default function Interview() {
         customerIntent: customerIntentPrompt
       });
       setConversation(prev => [...prev, { role: 'ai', text: response }]);
-    } catch (_) {
+    } catch {
       setConversation(prev => [...prev, { 
         role: 'ai', 
         text: 'Sorry, there was an error processing your request. Please try again later.' 

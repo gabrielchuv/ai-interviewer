@@ -12,9 +12,12 @@ interface CodeEditorProps {
 }
 
 export function CodeEditor({ question, onCodeChange }: CodeEditorProps) {
-  const [containerWidth, setContainerWidth] = useState(window.innerWidth);
+  const [containerWidth, setContainerWidth] = useState(0);
 
   useEffect(() => {
+    // Set initial width
+    setContainerWidth(window.innerWidth);
+
     const handleResize = () => {
       setContainerWidth(window.innerWidth);
     };
@@ -44,7 +47,7 @@ export function CodeEditor({ question, onCodeChange }: CodeEditorProps) {
         height="calc(100vh - 140px)"
         extensions={[javascript()]}
         theme="dark"
-        width={`${containerWidth * 0.6}px`}
+        width={containerWidth ? `${containerWidth * 0.6}px` : "100%"}
         onChange={onCodeChange}
       />
     </Box>
