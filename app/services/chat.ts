@@ -1,10 +1,5 @@
 import { MessageCategory } from "../interview/page";
 
-interface ChatResponse {
-  text: string;
-  error?: string;
-}
-
 interface ChatContext {
   question: string;
   customerIntent: string;
