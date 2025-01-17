@@ -78,7 +78,7 @@ export default function LandingPage() {
               <div className="flex flex-col space-y-2 lg:space-y-3">
                 <h3 className="text-xl lg:text-2xl font-bold">Personalized Learning Path</h3>
                 <p className="text-zinc-500 dark:text-zinc-400 lg:text-lg">
-                  Adaptive difficulty ensures you're always challenged at the right level.
+                  Adaptive difficulty ensures you&apos;re always challenged at the right level.
                 </p>
               </div>
               <div className="flex flex-col space-y-2 lg:space-y-3">
