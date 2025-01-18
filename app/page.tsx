@@ -25,9 +25,12 @@ export default function LandingPage() {
                   Practice algorithms and data structures interviews with our AI-powered platform. Get immediate feedback and improve your skills.
                 </p>
               </div>
-              <div className="pt-4 lg:pt-8">
+              <div className="pt-4 lg:pt-8 flex gap-4">
                 <Button size="lg" asChild>
                   <Link href="/signup" className="text-base lg:text-lg">Start Free Trial</Link>
+                </Button>
+                <Button size="lg" variant="outline" asChild>
+                  <Link href="/signin" className="text-base lg:text-lg">Sign In</Link>
                 </Button>
               </div>
             </div>
@@ -101,12 +104,15 @@ export default function LandingPage() {
                   Start practicing with our AI interviewer and improve your chances of landing your dream job.
                 </p>
               </div>
-              <div className="pt-4 lg:pt-8">
+              <div className="pt-4 lg:pt-8 flex gap-4">
                 <Button size="lg" variant="secondary" asChild>
                   <Link href="/signup" className="text-base lg:text-lg flex items-center">
                     Start Your Free Trial
                     <ArrowRight className="ml-2 h-4 w-4 lg:h-5 lg:w-5" />
                   </Link>
+                </Button>
+                <Button size="lg" variant="outline" className="bg-transparent border-white hover:bg-white/10" asChild>
+                  <Link href="/signin" className="text-base lg:text-lg">Sign In</Link>
                 </Button>
               </div>
             </div>
