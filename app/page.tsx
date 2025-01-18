@@ -27,7 +27,7 @@ export default function LandingPage() {
               </div>
               <div className="pt-4 lg:pt-8">
                 <Button size="lg" asChild>
-                  <Link href="/instructions" className="text-base lg:text-lg">Start Practicing</Link>
+                  <Link href="/signup" className="text-base lg:text-lg">Start Free Trial</Link>
                 </Button>
               </div>
             </div>
@@ -103,8 +103,8 @@ export default function LandingPage() {
               </div>
               <div className="pt-4 lg:pt-8">
                 <Button size="lg" variant="secondary" asChild>
-                  <Link href="/instructions" className="text-base lg:text-lg flex items-center">
-                    Begin Your Journey
+                  <Link href="/signup" className="text-base lg:text-lg flex items-center">
+                    Start Your Free Trial
                     <ArrowRight className="ml-2 h-4 w-4 lg:h-5 lg:w-5" />
                   </Link>
                 </Button>
