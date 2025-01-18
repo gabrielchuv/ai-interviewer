@@ -47,7 +47,7 @@ export function CodeEditor({ question, onCodeChange }: CodeEditorProps) {
         height="calc(100vh - 140px)"
         extensions={[javascript()]}
         theme="dark"
-        width={containerWidth ? `${containerWidth * 0.6}px` : "100%"}
+        width={containerWidth ? `${containerWidth * 0.7}px` : "100%"}
         onChange={onCodeChange}
       />
     </Box>
