@@ -71,7 +71,7 @@ export default function SignUpPage() {
                 </Link>
               </p> */}
               <p>
-                After your 30-day free trial ends, you'll receive an email to set up your full account. 
+                After your 30-day free trial ends, you&aposll receive an email to set up your full account. 
                 Continue using AI Interviewer for just £10/month.
               </p>
             </div>

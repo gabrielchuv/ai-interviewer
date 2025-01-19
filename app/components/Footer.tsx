@@ -1,4 +1,4 @@
-import { Button, Box } from "@mui/material";
+import { Button, Box, Tooltip } from "@mui/material";
 
 interface FooterProps {
   isSubmitEnabled: boolean;
@@ -16,19 +16,21 @@ export function Footer({ isSubmitEnabled, onSubmit, onRestart }: FooterProps) {
         pb: 2,
       }}
     >
-      <Button
-        variant="contained"
-        color="inherit"
-        sx={{
-          width: "180px",
-          textTransform: "none",
-          fontWeight: "bold",
-          marginRight: "8px",
-        }}
-        onClick={onRestart}
-      >
-        Restart
-      </Button>
+      <Tooltip title="Restart the interview with a new question">
+        <Button
+          variant="contained"
+          color="inherit"
+          sx={{
+            width: "180px",
+            textTransform: "none",
+            fontWeight: "bold",
+            marginRight: "8px",
+          }}
+          onClick={onRestart}
+        >
+          Restart Interview
+        </Button>
+      </Tooltip>
       <Button
         variant="contained"
         color="primary"

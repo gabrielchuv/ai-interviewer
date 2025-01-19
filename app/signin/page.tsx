@@ -14,11 +14,11 @@ export default function SignInPage() {
     e.preventDefault()
     setError(null)
     
-    const formData = new FormData(e.currentTarget)
-    const email = formData.get('email') as string
+    // const formData = new FormData(e.currentTarget)
+    // const email = formData.get('email') as string
 
     // TODO: Replace this with actual database check
-    const isExistingUser = false // Simulate no users in database for now
+    const isExistingUser = true // Simulate no users in database for now
     
     if (isExistingUser) {
       router.push('/instructions')
@@ -80,7 +80,7 @@ export default function SignInPage() {
             )}
 
             <div className="text-sm text-center text-zinc-500 dark:text-zinc-400">
-              Don't have an account?{" "}
+              Don&apost have an account?{" "}
               <Link 
                 href="/signup"
                 className="text-primary hover:text-primary/80 font-medium"
