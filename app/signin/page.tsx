@@ -5,6 +5,8 @@ import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
+import { collection, query, where, getDocs } from 'firebase/firestore'
+import { db } from '../../firebaseConfig'
 
 export default function SignInPage() {
   const router = useRouter()
@@ -14,16 +16,27 @@ export default function SignInPage() {
     e.preventDefault()
     setError(null)
     
-    // const formData = new FormData(e.currentTarget)
-    // const email = formData.get('email') as string
+    const formData = new FormData(e.currentTarget)
+    const email = formData.get('email') as string
 
-    // TODO: Replace this with actual database check
-    const isExistingUser = true // Simulate no users in database for now
-    
-    if (isExistingUser) {
-      router.push('/instructions')
-    } else {
-      setError("We couldn't find your account. Please start a free trial to continue.")
+    try {
+      // Query the userEmails collection for the submitted email
+      const q = query(
+        collection(db, 'userEmails'),
+        where('email', '==', email.toLowerCase())
+      )
+      
+      const querySnapshot = await getDocs(q)
+      const isExistingUser = !querySnapshot.empty
+      
+      if (isExistingUser) {
+        router.push('/instructions')
+      } else {
+        setError("We couldn't find your account. Please start a free trial to continue.")
+      }
+    } catch (err) {
+      console.error('Error checking email:', err)
+      setError('An error occurred. Please try again.')
     }
   }
 
@@ -80,7 +93,7 @@ export default function SignInPage() {
             )}
 
             <div className="text-sm text-center text-zinc-500 dark:text-zinc-400">
-              Don&apost have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link 
                 href="/signup"
                 className="text-primary hover:text-primary/80 font-medium"
