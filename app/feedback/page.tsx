@@ -50,47 +50,77 @@ export default function Feedback() {
   }
 
   return (
-    <Box sx={{ p: 4 }}>
+    <Box sx={{ p: 4, height: '100vh', overflow: 'auto' }}>
       <Typography variant="h4" sx={{ mb: 4 }}>
         Interview Feedback
       </Typography>
       <Grid container spacing={3}>
-        <Grid item xs={6}>
-          <Paper sx={{ p: 3 }}>
+        <Grid item xs={12} md={6}>
+          <Paper sx={{ 
+            p: 3, 
+            height: '300px',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'auto'
+          }}>
             <Typography variant="h6">Problem Clarification</Typography>
-            <Typography variant="h3" sx={{ my: 2 }}>
+            <Typography variant="h4" sx={{ my: 2 }}>
               {feedback?.clarification.rating}/5
             </Typography>
-            <Typography>{feedback?.clarification.feedback}</Typography>
+            <Typography sx={{ flex: 1, overflow: 'auto' }}>
+              {feedback?.clarification.feedback}
+            </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={6}>
-          <Paper sx={{ p: 3 }}>
+        <Grid item xs={12} md={6}>
+          <Paper sx={{ 
+            p: 3, 
+            height: '300px',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'auto'
+          }}>
             <Typography variant="h6">Approach & Planning</Typography>
-            <Typography variant="h3" sx={{ my: 2 }}>
+            <Typography variant="h4" sx={{ my: 2 }}>
               {feedback?.approach.rating}/5
             </Typography>
-            <Typography>{feedback?.approach.feedback}</Typography>
+            <Typography sx={{ flex: 1, overflow: 'auto' }}>
+              {feedback?.approach.feedback}
+            </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={6}>
-          <Paper sx={{ p: 3 }}>
+        <Grid item xs={12} md={6}>
+          <Paper sx={{ 
+            p: 3, 
+            height: '300px',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'auto'
+          }}>
             <Typography variant="h6">Implementation & Code Quality</Typography>
-            <Typography variant="h3" sx={{ my: 2 }}>
+            <Typography variant="h4" sx={{ my: 2 }}>
               {feedback?.codeQuality.rating}/5
             </Typography>
-            <Typography>
-            <Typography>{feedback?.codeQuality.feedback}</Typography>
+            <Typography sx={{ flex: 1, overflow: 'auto' }}>
+              {feedback?.codeQuality.feedback}
             </Typography>
           </Paper>
         </Grid>
-        <Grid item xs={6}>
-          <Paper sx={{ p: 3 }}>
+        <Grid item xs={12} md={6}>
+          <Paper sx={{ 
+            p: 3, 
+            height: '300px',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'auto'
+          }}>
             <Typography variant="h6">Complexity Analysis</Typography>
-            <Typography variant="h3" sx={{ my: 2 }}>
+            <Typography variant="h4" sx={{ my: 2 }}>
               {feedback?.complexity.rating}/5
             </Typography>
-            <Typography>{feedback?.complexity.feedback}</Typography>
+            <Typography sx={{ flex: 1, overflow: 'auto' }}>
+              {feedback?.complexity.feedback}
+            </Typography>
           </Paper>
         </Grid>
       </Grid>
