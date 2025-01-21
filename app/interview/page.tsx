@@ -42,7 +42,11 @@ const customerIntentPromptMap: Record<MessageCategory, string> = {
   2. The candidate has outlined their approach to solve the problem.
   Otherwise, respond by telling them to continue considering the question.`,
   "Intent to finish coding":
-    'The candidate believes they have completed their solution. Review their code carefully. If the solution is correct, respond by saying "Feel free to conclude the interview." If the solution is incorrect, provide a hint on how to fix it but do not specify what is the issue.',
+    `The candidate has completed coding their solution. Review their code carefully. 
+    If the solution is correct, respond by saying "Feel free to conclude the interview." 
+    If the solution is incorrect, guide them by asking tageted open-ended questions to help them identify the issue. For instance: “How does your approach handle [a particular edge case]?” or “Can you walk me through what happens in this step?”
+    Do not focus on trivialities like perfect syntax, naming of standard library methods, semicolons etc. If you think that a compiler would catch and fix the issue easily, then do not focus on it.
+    `,
   Other: "The candidate is engaging in general discussion about the problem.",
 };
 
