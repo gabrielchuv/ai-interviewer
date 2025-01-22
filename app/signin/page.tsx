@@ -5,8 +5,8 @@ import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
-import { collection, query, where, getDocs } from 'firebase/firestore'
-import { db } from '../../firebaseConfig'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../../firebaseConfig'
 
 export default function SignInPage() {
   const router = useRouter()
@@ -18,25 +18,18 @@ export default function SignInPage() {
     
     const formData = new FormData(e.currentTarget)
     const email = formData.get('email') as string
+    const password = formData.get('password') as string
 
     try {
-      // Query the userEmails collection for the submitted email
-      const q = query(
-        collection(db, 'userEmails'),
-        where('email', '==', email.toLowerCase())
-      )
-      
-      const querySnapshot = await getDocs(q)
-      const isExistingUser = !querySnapshot.empty
-      
-      if (isExistingUser) {
-        router.push('/instructions')
+      await signInWithEmailAndPassword(auth, email, password)
+      router.push('/instructions')
+    } catch (err: any) {
+      console.error('Error signing in:', err)
+      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        setError("Invalid email or password. Please try again.")
       } else {
-        setError("We couldn't find your account. Please start a free trial to continue.")
+        setError('An error occurred. Please try again.')
       }
-    } catch (err) {
-      console.error('Error checking email:', err)
-      setError('An error occurred. Please try again.')
     }
   }
 
@@ -75,6 +68,22 @@ export default function SignInPage() {
                   name="email"
                   type="email"
                   placeholder="Enter your email"
+                  className="flex h-10 w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-400 dark:focus:ring-primary"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label 
+                  htmlFor="password" 
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Password
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Enter your password"
                   className="flex h-10 w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-400 dark:focus:ring-primary"
                   required
                 />

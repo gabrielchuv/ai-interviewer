@@ -6,7 +6,8 @@ import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
 import { collection, query, where, getDocs, addDoc } from 'firebase/firestore'
-import { db } from '../../firebaseConfig'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { db, auth } from '../../firebaseConfig'
 
 export default function SignUpPage() {
   const router = useRouter()
@@ -18,32 +19,28 @@ export default function SignUpPage() {
     
     const formData = new FormData(e.currentTarget)
     const email = formData.get('email') as string
+    const password = formData.get('password') as string
 
     try {
-      // Check if email already exists
-      const q = query(
-        collection(db, 'userEmails'),
-        where('email', '==', email.toLowerCase())
-      )
+      // Create user with Firebase Auth
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       
-      const querySnapshot = await getDocs(q)
-      
-      if (!querySnapshot.empty) {
-        setError("This email already has an account. Please sign in instead.")
-        return
-      }
-
-      // Add new email to database
+      // Add user email to database
       await addDoc(collection(db, 'userEmails'), {
         email: email.toLowerCase(),
         createdAt: new Date().toISOString(),
-        trialStartDate: new Date().toISOString()
+        trialStartDate: new Date().toISOString(),
+        uid: userCredential.user.uid
       })
 
       router.push('/instructions')
-    } catch (err) {
+    } catch (err: any) {
       console.error('Error processing signup:', err)
-      setError('An error occurred. Please try again.')
+      if (err.code === 'auth/email-already-in-use') {
+        setError("This email already has an account. Please sign in instead.")
+      } else {
+        setError('An error occurred. Please try again.')
+      }
     }
   }
 
@@ -64,7 +61,7 @@ export default function SignUpPage() {
               Start Your Free Trial
             </h1>
             <p className="text-zinc-500 dark:text-zinc-400">
-              Get 30 days of unlimited access to AI Interviewer
+              Get 7 days of unlimited access to AI Interviewer
             </p>
           </div>
 
@@ -84,6 +81,23 @@ export default function SignUpPage() {
                   placeholder="Enter your email"
                   className="flex h-10 w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-400 dark:focus:ring-primary"
                   required
+                />
+              </div>
+              <div className="space-y-2">
+                <label 
+                  htmlFor="password" 
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Password
+                </label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Create a password"
+                  className="flex h-10 w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-400 dark:focus:ring-primary"
+                  required
+                  minLength={6}
                 />
               </div>
               <Button type="submit" className="w-full">
@@ -116,8 +130,7 @@ export default function SignUpPage() {
                 </Link>
               </p> */}
               <p>
-                After your 30-day free trial ends, you&apos;ll receive an email to set up your full account. 
-                Continue using AI Interviewer for just £10/month.
+                After your 7-day free trial ends, continue using AI Interviewer for just £10/month.
               </p>
             </div>
           </div>
