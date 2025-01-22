@@ -9,6 +9,7 @@ import { Footer } from "../components/Footer";
 import { sendMessage, deduceCustomerIntent } from "../services/chat";
 import { useRouter } from "next/navigation";
 import { questionBank } from "../data/questionBank";
+import ProtectedRoute from '../components/ProtectedRoute'
 
 export interface Message {
   role: "user" | "ai";
@@ -44,13 +45,13 @@ const customerIntentPromptMap: Record<MessageCategory, string> = {
   "Intent to finish coding":
     `The candidate has completed coding their solution. Review their code carefully. 
     If the solution is correct, respond by saying "Feel free to conclude the interview." 
-    If the solution is incorrect, guide them by asking tageted open-ended questions to help them identify the issue. For instance: “How does your approach handle [a particular edge case]?” or “Can you walk me through what happens in this step?”
+    If the solution is incorrect, guide them by asking tageted open-ended questions to help them identify the issue. For instance: "How does your approach handle [a particular edge case]?” or "Can you walk me through what happens in this step?"
     Do not focus on trivialities like perfect syntax, naming of standard library methods, semicolons etc. If you think that a compiler would catch and fix the issue easily, then do not focus on it.
     `,
   Other: "The candidate is engaging in general discussion about the problem.",
 };
 
-export default function Interview() {
+export default function InterviewPage() {
   const router = useRouter();
   const [conversation, setConversation] = useState<Message[]>([initialMessage]);
   const [input, setInput] = useState<string>("");
@@ -137,30 +138,32 @@ export default function Interview() {
   };
 
   return (
-    <Box position="relative" sx={{ height: "100vh" }}>
-      <Timer onTimeUp={handleTimeUp} />
-      <Box display="flex" sx={{ height: "100%" }}>
-        <ChatWindow
-          conversation={conversation}
-          input={input}
-          setInput={setInput}
-          handleSubmit={handleSubmit}
-        />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            flex: 1,
-          }}
-        >
-          <CodeEditor question={question} onCodeChange={setCurrentCode} />
-          <Footer
-            onRestart={handleRestart}
-            onSubmit={handleInterviewComplete}
-            isSubmitEnabled={isTimeUp || isInterviewComplete}
+    <ProtectedRoute>
+      <Box position="relative" sx={{ height: "100vh" }}>
+        <Timer onTimeUp={handleTimeUp} />
+        <Box display="flex" sx={{ height: "100%" }}>
+          <ChatWindow
+            conversation={conversation}
+            input={input}
+            setInput={setInput}
+            handleSubmit={handleSubmit}
           />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              flex: 1,
+            }}
+          >
+            <CodeEditor question={question} onCodeChange={setCurrentCode} />
+            <Footer
+              onRestart={handleRestart}
+              onSubmit={handleInterviewComplete}
+              isSubmitEnabled={isTimeUp || isInterviewComplete}
+            />
+          </Box>
         </Box>
       </Box>
-    </Box>
+    </ProtectedRoute>
   );
 }
