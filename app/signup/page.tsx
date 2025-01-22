@@ -5,7 +5,7 @@ import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
-import { collection, query, where, getDocs, addDoc } from 'firebase/firestore'
+import { collection, addDoc } from 'firebase/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { db, auth } from '../../firebaseConfig'
 
@@ -34,7 +34,7 @@ export default function SignUpPage() {
       })
 
       router.push('/instructions')
-    } catch (err: any) {
+    } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error('Error processing signup:', err)
       if (err.code === 'auth/email-already-in-use') {
         setError("This email already has an account. Please sign in instead.")
