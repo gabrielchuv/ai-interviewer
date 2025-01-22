@@ -5,6 +5,7 @@ import { Box, Typography, Grid, Paper, CircularProgress } from '@mui/material';
 import { getFeedback } from '../services/feedback';
 import ReactMarkdown from 'react-markdown';
 import ProtectedRoute from '../components/ProtectedRoute'
+import Header from '../components/Header'
 
 interface FeedbackSection {
   rating: number;
@@ -53,80 +54,83 @@ export default function FeedbackPage() {
 
   return (
     <ProtectedRoute>
-      <Box sx={{ p: 4, height: '100vh', overflow: 'auto' }}>
-        <Typography variant="h4" sx={{ mb: 4 }}>
-          Interview Feedback
-        </Typography>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={6}>
-            <Paper sx={{ 
-              p: 3, 
-              height: '400px',
-              display: 'flex',
-              flexDirection: 'column',
-              overflow: 'auto'
-            }}>
-              <Typography variant="h6">Problem Clarification</Typography>
-              <Typography variant="h4" sx={{ my: 2 }}>
-                {feedback?.clarification.rating}/5
-              </Typography>
-              <Box sx={{ flex: 1, overflow: 'auto' }}>
-                <ReactMarkdown>{feedback?.clarification.feedback}</ReactMarkdown>
-              </Box>
-            </Paper>
+      <Box sx={{ minHeight: '100vh' }}>
+        <Header />
+        <Box sx={{ p: 4, pt: '88px' }}>
+          <Typography variant="h4" sx={{ mb: 4 }}>
+            Interview Feedback
+          </Typography>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <Paper sx={{ 
+                p: 3, 
+                height: '400px',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'auto'
+              }}>
+                <Typography variant="h6">Problem Clarification</Typography>
+                <Typography variant="h4" sx={{ my: 2 }}>
+                  {feedback?.clarification.rating}/5
+                </Typography>
+                <Box sx={{ flex: 1, overflow: 'auto' }}>
+                  <ReactMarkdown>{feedback?.clarification.feedback}</ReactMarkdown>
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Paper sx={{ 
+                p: 3, 
+                height: '400px',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'auto'
+              }}>
+                <Typography variant="h6">Approach & Planning</Typography>
+                <Typography variant="h4" sx={{ my: 2 }}>
+                  {feedback?.approach.rating}/5
+                </Typography>
+                <Box sx={{ flex: 1, overflow: 'auto' }}>
+                  <ReactMarkdown>{feedback?.approach.feedback}</ReactMarkdown>
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Paper sx={{ 
+                p: 3, 
+                height: '400px',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'auto'
+              }}>
+                <Typography variant="h6">Implementation & Code Quality</Typography>
+                <Typography variant="h4" sx={{ my: 2 }}>
+                  {feedback?.codeQuality.rating}/5
+                </Typography>
+                <Box sx={{ flex: 1, overflow: 'auto' }}>
+                  <ReactMarkdown>{feedback?.codeQuality.feedback}</ReactMarkdown>
+                </Box>
+              </Paper>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Paper sx={{ 
+                p: 3, 
+                height: '400px',
+                display: 'flex',
+                flexDirection: 'column',
+                overflow: 'auto'
+              }}>
+                <Typography variant="h6">Complexity Analysis</Typography>
+                <Typography variant="h4" sx={{ my: 2 }}>
+                  {feedback?.complexity.rating}/5
+                </Typography>
+                <Box sx={{ flex: 1, overflow: 'auto' }}>
+                  <ReactMarkdown>{feedback?.complexity.feedback}</ReactMarkdown>
+                </Box>
+              </Paper>
+            </Grid>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <Paper sx={{ 
-              p: 3, 
-              height: '400px',
-              display: 'flex',
-              flexDirection: 'column',
-              overflow: 'auto'
-            }}>
-              <Typography variant="h6">Approach & Planning</Typography>
-              <Typography variant="h4" sx={{ my: 2 }}>
-                {feedback?.approach.rating}/5
-              </Typography>
-              <Box sx={{ flex: 1, overflow: 'auto' }}>
-                <ReactMarkdown>{feedback?.approach.feedback}</ReactMarkdown>
-              </Box>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Paper sx={{ 
-              p: 3, 
-              height: '400px',
-              display: 'flex',
-              flexDirection: 'column',
-              overflow: 'auto'
-            }}>
-              <Typography variant="h6">Implementation & Code Quality</Typography>
-              <Typography variant="h4" sx={{ my: 2 }}>
-                {feedback?.codeQuality.rating}/5
-              </Typography>
-              <Box sx={{ flex: 1, overflow: 'auto' }}>
-                <ReactMarkdown>{feedback?.codeQuality.feedback}</ReactMarkdown>
-              </Box>
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <Paper sx={{ 
-              p: 3, 
-              height: '400px',
-              display: 'flex',
-              flexDirection: 'column',
-              overflow: 'auto'
-            }}>
-              <Typography variant="h6">Complexity Analysis</Typography>
-              <Typography variant="h4" sx={{ my: 2 }}>
-                {feedback?.complexity.rating}/5
-              </Typography>
-              <Box sx={{ flex: 1, overflow: 'auto' }}>
-                <ReactMarkdown>{feedback?.complexity.feedback}</ReactMarkdown>
-              </Box>
-            </Paper>
-          </Grid>
-        </Grid>
+        </Box>
       </Box>
     </ProtectedRoute>
   );

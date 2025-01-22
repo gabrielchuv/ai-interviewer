@@ -4,6 +4,7 @@ import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
 import ReactMarkdown from 'react-markdown';
 import ProtectedRoute from '../components/ProtectedRoute'
+import Header from '../components/Header'
 
 const welcomeText = `
 When starting the interview, you will be presented with 2 panes: The AI interviewer and a code editor.
@@ -26,19 +27,14 @@ When the AI interviewer is satisfied with your solution, you will be able to cli
 export default function InstructionsPage() {
   return (
     <ProtectedRoute>
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ height: "100vh", gap: 3 }}
-      >
+      <Box sx={{ minHeight: "100vh" }}>
+        <Header />
         <Box
           display="flex"
           flexDirection="column"
           alignItems="center"
           justifyContent="center"
-          sx={{ height: "100vh", gap: 3 }}
+          sx={{ minHeight: "100vh", pt: "64px" }}
         >
           <Typography variant="h1">AI Interviewer</Typography>
           <Box

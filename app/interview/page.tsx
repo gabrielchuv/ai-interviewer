@@ -10,6 +10,7 @@ import { sendMessage, deduceCustomerIntent } from "../services/chat";
 import { useRouter } from "next/navigation";
 import { questionBank } from "../data/questionBank";
 import ProtectedRoute from '../components/ProtectedRoute'
+import Header from '../components/Header'
 
 export interface Message {
   role: "user" | "ai";
@@ -139,28 +140,31 @@ export default function InterviewPage() {
 
   return (
     <ProtectedRoute>
-      <Box position="relative" sx={{ height: "100vh" }}>
-        <Timer onTimeUp={handleTimeUp} />
-        <Box display="flex" sx={{ height: "100%" }}>
-          <ChatWindow
-            conversation={conversation}
-            input={input}
-            setInput={setInput}
-            handleSubmit={handleSubmit}
-          />
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              flex: 1,
-            }}
-          >
-            <CodeEditor question={question} onCodeChange={setCurrentCode} />
-            <Footer
-              onRestart={handleRestart}
-              onSubmit={handleInterviewComplete}
-              isSubmitEnabled={isTimeUp || isInterviewComplete}
+      <Box sx={{ height: "100vh", display: 'flex', flexDirection: 'column' }}>
+        <Header />
+        <Box sx={{ flex: 1, position: "relative", mt: "64px" }}>
+          <Timer onTimeUp={handleTimeUp} />
+          <Box display="flex" sx={{ height: "100%" }}>
+            <ChatWindow
+              conversation={conversation}
+              input={input}
+              setInput={setInput}
+              handleSubmit={handleSubmit}
             />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                flex: 1,
+              }}
+            >
+              <CodeEditor question={question} onCodeChange={setCurrentCode} />
+              <Footer
+                onRestart={handleRestart}
+                onSubmit={handleInterviewComplete}
+                isSubmitEnabled={isTimeUp || isInterviewComplete}
+              />
+            </Box>
           </Box>
         </Box>
       </Box>
