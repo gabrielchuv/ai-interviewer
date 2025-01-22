@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react';
 import { Box, Typography, Grid, Paper, CircularProgress } from '@mui/material';
 import { getFeedback } from '../services/feedback';
+import ReactMarkdown from 'react-markdown';
 
 interface FeedbackSection {
   rating: number;
-  feedback: string[];
+  feedback: string;
 }
 
 interface FeedbackData {
@@ -58,7 +59,7 @@ export default function Feedback() {
         <Grid item xs={12} md={6}>
           <Paper sx={{ 
             p: 3, 
-            height: '300px',
+            height: '400px',
             display: 'flex',
             flexDirection: 'column',
             overflow: 'auto'
@@ -67,15 +68,15 @@ export default function Feedback() {
             <Typography variant="h4" sx={{ my: 2 }}>
               {feedback?.clarification.rating}/5
             </Typography>
-            <Typography sx={{ flex: 1, overflow: 'auto' }}>
-              {feedback?.clarification.feedback}
-            </Typography>
+            <Box sx={{ flex: 1, overflow: 'auto' }}>
+              <ReactMarkdown>{feedback?.clarification.feedback}</ReactMarkdown>
+            </Box>
           </Paper>
         </Grid>
         <Grid item xs={12} md={6}>
           <Paper sx={{ 
             p: 3, 
-            height: '300px',
+            height: '400px',
             display: 'flex',
             flexDirection: 'column',
             overflow: 'auto'
@@ -84,15 +85,15 @@ export default function Feedback() {
             <Typography variant="h4" sx={{ my: 2 }}>
               {feedback?.approach.rating}/5
             </Typography>
-            <Typography sx={{ flex: 1, overflow: 'auto' }}>
-              {feedback?.approach.feedback}
-            </Typography>
+            <Box sx={{ flex: 1, overflow: 'auto' }}>
+              <ReactMarkdown>{feedback?.approach.feedback}</ReactMarkdown>
+            </Box>
           </Paper>
         </Grid>
         <Grid item xs={12} md={6}>
           <Paper sx={{ 
             p: 3, 
-            height: '300px',
+            height: '400px',
             display: 'flex',
             flexDirection: 'column',
             overflow: 'auto'
@@ -101,15 +102,15 @@ export default function Feedback() {
             <Typography variant="h4" sx={{ my: 2 }}>
               {feedback?.codeQuality.rating}/5
             </Typography>
-            <Typography sx={{ flex: 1, overflow: 'auto' }}>
-              {feedback?.codeQuality.feedback}
-            </Typography>
+            <Box sx={{ flex: 1, overflow: 'auto' }}>
+              <ReactMarkdown>{feedback?.codeQuality.feedback}</ReactMarkdown>
+            </Box>
           </Paper>
         </Grid>
         <Grid item xs={12} md={6}>
           <Paper sx={{ 
             p: 3, 
-            height: '300px',
+            height: '400px',
             display: 'flex',
             flexDirection: 'column',
             overflow: 'auto'
@@ -118,9 +119,9 @@ export default function Feedback() {
             <Typography variant="h4" sx={{ my: 2 }}>
               {feedback?.complexity.rating}/5
             </Typography>
-            <Typography sx={{ flex: 1, overflow: 'auto' }}>
-              {feedback?.complexity.feedback}
-            </Typography>
+            <Box sx={{ flex: 1, overflow: 'auto' }}>
+              <ReactMarkdown>{feedback?.complexity.feedback}</ReactMarkdown>
+            </Box>
           </Paper>
         </Grid>
       </Grid>

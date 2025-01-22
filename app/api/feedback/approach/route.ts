@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     messages: [
       {
         role: "developer",
-        content: "You are a technical interviewer. Evaluate how well the candidate planned their approach to solving the problem and provide brief feedback."
+        content: "You are a technical interviewer. Evaluate how well the candidate planned their approach to solving the problem and provide brief feedback. Provide feedback in markdown format."
       },
       {
         role: "user",
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     ]
   });
 
-  const rating = parseInt(ratingResponse.choices[0].message.content || "3");
+  const rating = parseInt(ratingResponse.choices[0].message.content || "X");
   const feedback = feedbackResponse.choices[0].message.content;
 
   return NextResponse.json({ rating, feedback });
