@@ -19,10 +19,10 @@ export default function LandingPage() {
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2 max-w-3xl">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
-                  Master Technical Interviews with AI
+                  Master Technical Interviews with AlgoMentor
                 </h1>
                 <p className="mx-auto max-w-[700px] text-zinc-500 md:text-xl lg:text-2xl dark:text-zinc-400">
-                  Practice algorithms and data structures interviews with our AI-powered platform. Get immediate feedback and improve your skills.
+                Simulate real interview scenarios, tackle a wide range of problems, and gain immediate insights to boost your confidence and performance.
                 </p>
               </div>
               <div className="pt-4 lg:pt-8 flex gap-4">
@@ -44,23 +44,23 @@ export default function LandingPage() {
             <div className="grid gap-8 sm:gap-10 md:gap-12 sm:grid-cols-2 lg:grid-cols-3">
               <div className="flex flex-col items-center space-y-3 border border-zinc-200 dark:border-zinc-700 p-6 lg:p-8 rounded-lg">
                 <Zap className="h-12 w-12 lg:h-16 lg:w-16 mb-4 text-primary" />
-                <h3 className="text-xl lg:text-2xl font-bold">Immediate Feedback</h3>
+                <h3 className="text-xl lg:text-2xl font-bold">Interview-Focused Learning</h3>
                 <p className="text-center text-zinc-500 dark:text-zinc-400 lg:text-lg">
-                  Get instant insights on your performance after each mock interview.
+                Boost your confidence by tackling problems in a realistic interview environment, mirroring actual interview processes.
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-3 border border-zinc-200 dark:border-zinc-700 p-6 lg:p-8 rounded-lg">
                 <Code2 className="h-12 w-12 lg:h-16 lg:w-16 mb-4 text-primary" />
-                <h3 className="text-xl lg:text-2xl font-bold">Interview-Focused Learning</h3>
+                <h3 className="text-xl lg:text-2xl font-bold">Personalised Feedback</h3>
                 <p className="text-center text-zinc-500 dark:text-zinc-400 lg:text-lg">
-                  Learn how to approach technical interviews, not just solve problems.
+                Receive immediate, actionable feedback on key interview areas after every mock session. This includes soft skill areas like problem clarification and approach & planning.
                 </p>
               </div>
               <div className="flex flex-col items-center space-y-3 border border-zinc-200 dark:border-zinc-700 p-6 lg:p-8 rounded-lg">
                 <Users className="h-12 w-12 lg:h-16 lg:w-16 mb-4 text-primary" />
-                <h3 className="text-xl lg:text-2xl font-bold">No Human Dependency</h3>
+                <h3 className="text-xl lg:text-2xl font-bold">Always Available</h3>
                 <p className="text-center text-zinc-500 dark:text-zinc-400 lg:text-lg">
-                  Practice anytime without relying on friends or expensive interviewers.
+                Access practice sessions 24/7. More affordable than a professional interviewers. More reliable than your friends.
                 </p>
               </div>
             </div>
@@ -69,25 +69,25 @@ export default function LandingPage() {
         <section id="benefits" className="w-full py-12 md:py-24 lg:py-32">
           <div className="container mx-auto px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-center mb-8 lg:mb-12">
-              Why Choose AlgoMentor?
+                Why is AlgoMentor better?
             </h2>
             <div className="grid gap-6 lg:gap-8 md:grid-cols-2 lg:grid-cols-3">
               <div className="flex flex-col space-y-2 lg:space-y-3">
-                <h3 className="text-xl lg:text-2xl font-bold">Realistic Interview Experience</h3>
+                <h3 className="text-xl lg:text-2xl font-bold">Interleaved Practice</h3>
                 <p className="text-zinc-500 dark:text-zinc-400 lg:text-lg">
-                  Our AI simulates real interview conditions, helping you prepare for the actual experience.
+                Enhance your problem-solving versatility by tackling a diverse range of questions. You won&apos;t know the question you&apos;ll get in a real interview.
                 </p>
               </div>
               <div className="flex flex-col space-y-2 lg:space-y-3">
-                <h3 className="text-xl lg:text-2xl font-bold">Personalized Learning Path</h3>
+                <h3 className="text-xl lg:text-2xl font-bold">Immediate Feedback</h3>
                 <p className="text-zinc-500 dark:text-zinc-400 lg:text-lg">
-                  Adaptive difficulty ensures you&apos;re always challenged at the right level.
+                Benefit from a fast feedback loop by receiving actionable insights after each session to swiftly improve your strengths and address your weaknesses.
                 </p>
               </div>
               <div className="flex flex-col space-y-2 lg:space-y-3">
-                <h3 className="text-xl lg:text-2xl font-bold">Comprehensive Coverage</h3>
+                <h3 className="text-xl lg:text-2xl font-bold">Dynamic difficulty adjusting (coming up)</h3>
                 <p className="text-zinc-500 dark:text-zinc-400 lg:text-lg">
-                  Practice a wide range of algorithms and data structures commonly asked in tech interviews.
+                We believe learning should be designed to meet you where you&apos;re at and help you grow from there. We are working to create personalised experiences for interviewers at different levels of experience.
                 </p>
               </div>
             </div>
