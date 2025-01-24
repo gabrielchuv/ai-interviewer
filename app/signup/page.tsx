@@ -61,7 +61,7 @@ export default function SignUpPage() {
               Start Your Free Trial
             </h1>
             <p className="text-zinc-500 dark:text-zinc-400">
-              Get 7 days of unlimited access to AI Interviewer
+              Get 7 days of unlimited access to AlgoMentor
             </p>
           </div>
 
@@ -130,7 +130,7 @@ export default function SignUpPage() {
                 </Link>
               </p> */}
               <p>
-                After your 7-day free trial ends, continue using AI Interviewer for just £10/month.
+                After your 7-day free trial ends, continue using AlgoMentor for just £10/month.
               </p>
             </div>
           </div>

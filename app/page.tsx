@@ -9,7 +9,7 @@ export default function LandingPage() {
         <div className="container mx-auto flex justify-between items-center">
           <Link className="flex items-center justify-center" href="#">
             <Code2 className="h-6 w-6 mr-2 lg:h-8 lg:w-8 lg:mr-3" />
-            <span className="font-bold text-lg lg:text-xl">AI Interviewer</span>
+            <span className="font-bold text-lg lg:text-xl">AlgoMentor</span>
           </Link>
         </div>
       </header>
@@ -69,7 +69,7 @@ export default function LandingPage() {
         <section id="benefits" className="w-full py-12 md:py-24 lg:py-32">
           <div className="container mx-auto px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-center mb-8 lg:mb-12">
-              Why Choose AI Interviewer?
+              Why Choose AlgoMentor?
             </h2>
             <div className="grid gap-6 lg:gap-8 md:grid-cols-2 lg:grid-cols-3">
               <div className="flex flex-col space-y-2 lg:space-y-3">
@@ -122,7 +122,7 @@ export default function LandingPage() {
       <footer className="w-full py-6 lg:py-8 border-t">
         <div className="container mx-auto px-4 md:px-6 flex flex-col sm:flex-row justify-between items-center">
           <p className="text-xs lg:text-sm text-zinc-500 dark:text-zinc-400">
-            © 2023 AI Interviewer. All rights reserved.
+            © 2023 AlgoMentor. All rights reserved.
           </p>
           <nav className="flex gap-4 sm:gap-6 mt-4 sm:mt-0">
             <Link className="text-xs lg:text-sm hover:underline underline-offset-4" href="#">

@@ -33,7 +33,7 @@ export function ChatWindow({
       }}
     >
       <Typography variant="h6" gutterBottom>
-        AI Interviewer
+        AlgoMentor
       </Typography>
       <Paper
         sx={{

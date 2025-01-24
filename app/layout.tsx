@@ -5,7 +5,7 @@ import { AuthProvider } from './context/AuthContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'AI Interviewer',
+  title: 'AlgoMentor',
   description: 'Practice technical interviews with AI',
 }
 

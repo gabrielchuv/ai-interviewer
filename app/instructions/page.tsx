@@ -9,7 +9,7 @@ import Header from '../components/Header'
 const welcomeText = `
 When starting the interview, you will be presented with 2 panes: The AI interviewer and a code editor.
 
-**The AI Interviewer**
+**The AlgoMentor**
 
 This is a chatbot that will simulate a human interviewer. Please interact with it in the same way you would with a human interviewer but via text only (for now). Feel free to:
 - Ask clarifying questions
@@ -36,7 +36,7 @@ export default function InstructionsPage() {
           justifyContent="center"
           sx={{ minHeight: "100vh", pt: "64px" }}
         >
-          <Typography variant="h1">AI Interviewer</Typography>
+          <Typography variant="h1">AlgoMentor</Typography>
           <Box
             sx={{
               padding: "25px 15%",
