@@ -9,8 +9,8 @@ import { Footer } from "../components/Footer";
 import { sendMessage, deduceCustomerIntent } from "../services/chat";
 import { useRouter } from "next/navigation";
 import { questionBank } from "../data/questionBank";
-import ProtectedRoute from '../components/ProtectedRoute'
-import Header from '../components/Header'
+import ProtectedRoute from "../components/ProtectedRoute";
+import Header from "../components/Header";
 
 export interface Message {
   role: "user" | "ai";
@@ -43,8 +43,7 @@ const customerIntentPromptMap: Record<MessageCategory, string> = {
   1. The candidate has clarified the question enough in previous interactions.
   2. The candidate has outlined their approach to solve the problem.
   Otherwise, respond by telling them to continue considering the question.`,
-  "Intent to finish coding":
-    `The candidate has completed coding their solution. Review their code carefully. 
+  "Intent to finish coding": `The candidate has completed coding their solution. Review their code carefully. 
     If the solution is correct, respond by saying "Feel free to conclude the interview." 
     If the solution is incorrect, guide them by asking tageted open-ended questions to help them identify the issue. For instance: "How does your approach handle [a particular edge case]?” or "Can you walk me through what happens in this step?"
     Do not focus on trivialities like perfect syntax, naming of standard library methods, semicolons etc. If you think that a compiler would catch and fix the issue easily, then do not focus on it.
@@ -63,10 +62,6 @@ export default function InterviewPage() {
   const [question] = useState(() => {
     return questionBank[Math.floor(Math.random() * questionBank.length) + 1];
   });
-
-  const handleRestart = () => {
-    window.location.reload();
-  };
 
   const handleSubmit = async () => {
     if (!input) return;
@@ -140,7 +135,7 @@ export default function InterviewPage() {
 
   return (
     <ProtectedRoute>
-      <Box sx={{ height: "100vh", display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
         <Header />
         <Box sx={{ flex: 1, position: "relative", mt: "64px" }}>
           <Timer onTimeUp={handleTimeUp} />
@@ -160,7 +155,6 @@ export default function InterviewPage() {
             >
               <CodeEditor question={question} onCodeChange={setCurrentCode} />
               <Footer
-                onRestart={handleRestart}
                 onSubmit={handleInterviewComplete}
                 isSubmitEnabled={isTimeUp || isInterviewComplete}
               />
