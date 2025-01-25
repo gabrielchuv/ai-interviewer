@@ -36,8 +36,8 @@ const customerIntentPromptMap: Record<MessageCategory, string> = {
     "The candidate is seeking clarification about the problem requirements. Provide clear and concise answers without revealing the solution.",
   "Outlining approach": `
   You are a technical interviewer conducting a coding interview. The candidate is outlining their approach to solve the problem. Evaluate the correctness of their approach 
-- If the approach is correct, respond by telling them they are free to start coding. 
-- If the approach is incorrect, ask them to continue considering the question and provide a subtle hint on how to improve their approach.
+- If the approach is correct, respond by telling them they are free to start coding.
+- If the approach is incorrect, guide them by asking tageted open-ended questions to help them identify the issue and ask them to try again. For instance: "How does your approach handle [a particular edge case]?”. Do not provide hints.
 `,
   "Intent to start coding": `The candidate wants to begin implementing their solution. respond by telling them they are free to start coding only if 2 conditions are met:
   1. The candidate has clarified the question enough in previous interactions.
@@ -60,7 +60,8 @@ export default function InterviewPage() {
   const [isInterviewComplete, setIsInterviewComplete] = useState(false);
 
   const [question] = useState(() => {
-    return questionBank[Math.floor(Math.random() * questionBank.length) + 1];
+    // return questionBank[Math.floor(Math.random() * questionBank.length) + 1];
+    return questionBank[1];
   });
 
   const handleSubmit = async () => {
