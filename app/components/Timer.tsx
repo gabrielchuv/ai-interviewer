@@ -1,12 +1,14 @@
-'use client';
+"use client";
 
-import { Box, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const formatTime = (seconds: number): string => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
-  return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
+    .toString()
+    .padStart(2, "0")}`;
 };
 
 interface TimerProps {
@@ -36,22 +38,17 @@ export const Timer = ({ onTimeUp }: TimerProps) => {
   }, [timeLeft]);
 
   return (
-    <Box
-      position="absolute"
-      top={16}
-      right={16}
-      zIndex={1000}
-    >
+    <Box position="absolute" top={0} right={16} zIndex={1000}>
       <Typography
         variant="h4"
         sx={{
-          fontFamily: 'monospace',
-          fontWeight: 'bold',
-          color: 'text.primary'
+          fontFamily: "monospace",
+          fontWeight: "bold",
+          color: "text.primary",
         }}
       >
         {formatTime(timeLeft)}
       </Typography>
     </Box>
   );
-}; 
+};

@@ -33,16 +33,19 @@ export function CodeEditor({ question, onCodeChange }: CodeEditorProps) {
     <Box
       sx={{
         flex: 1,
-        padding: 2,
+        paddingBottom: 0.5,
+        paddingLeft: 2,
+        paddingRight: 2,
         display: "flex",
         flexDirection: "column",
         height: "100vh",
       }}
     >
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom style={{ marginBottom: 0 }}>
         Code
       </Typography>
       <CodeMirror
+        style={{ padding: 0 }}
         value={question.description}
         height="calc(100vh - 140px)"
         extensions={[javascript()]}

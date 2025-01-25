@@ -27,7 +27,7 @@ export function ChatWindow({
         width: "30%",
         borderRight: "1px solid #ddd",
         padding: 2,
-        height: "100vh",
+        height: "calc(100vh - 60px)",
         display: "flex",
         flexDirection: "column",
       }}

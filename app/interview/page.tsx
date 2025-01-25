@@ -135,11 +135,17 @@ export default function InterviewPage() {
 
   return (
     <ProtectedRoute>
-      <Box sx={{ height: "100vh", display: "flex", flexDirection: "column" }}>
+      <Box
+        sx={{
+          height: "calc(100% - 120px)",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
         <Header />
-        <Box sx={{ flex: 1, position: "relative", mt: "64px" }}>
+        <Box sx={{ flex: 1, position: "relative", mt: "48px" }}>
           <Timer onTimeUp={handleTimeUp} />
-          <Box display="flex" sx={{ height: "100%" }}>
+          <Box display="flex" sx={{ height: "calc(100% - 120px)" }}>
             <ChatWindow
               conversation={conversation}
               input={input}
