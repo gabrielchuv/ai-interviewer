@@ -31,26 +31,6 @@ export type MessageCategory =
   | "Intent to finish coding"
   | "Other";
 
-const customerIntentPromptMap: Record<MessageCategory, string> = {
-  "Clarification question":
-    "The candidate is seeking clarification about the problem requirements. Provide clear and concise answers without revealing the solution.",
-  "Outlining approach": `
-  You are a technical interviewer conducting a coding interview. The candidate is outlining their approach to solve the problem. Evaluate the correctness of their approach 
-- If the approach is correct, respond by telling them they are free to start coding.
-- If the approach is incorrect, guide them by asking tageted open-ended questions to help them identify the issue and ask them to try again. For instance: "How does your approach handle [a particular edge case]?”. Do not provide hints.
-`,
-  "Intent to start coding": `The candidate wants to begin implementing their solution. respond by telling them they are free to start coding only if 2 conditions are met:
-  1. The candidate has clarified the question enough in previous interactions.
-  2. The candidate has outlined their approach to solve the problem.
-  Otherwise, respond by telling them to continue considering the question.`,
-  "Intent to finish coding": `The candidate has completed coding their solution. Review their code carefully. 
-    If the solution is correct, respond by saying "Feel free to conclude the interview." 
-    If the solution is incorrect, guide them by asking tageted open-ended questions to help them identify the issue. For instance: "How does your approach handle [a particular edge case]?” or "Can you walk me through what happens in this step?"
-    Do not focus on trivialities like perfect syntax, naming of standard library methods, semicolons etc. If you think that a compiler would catch and fix the issue easily, then do not focus on it.
-    `,
-  Other: "The candidate is engaging in general discussion about the problem.",
-};
-
 export default function InterviewPage() {
   const router = useRouter();
   const [conversation, setConversation] = useState<Message[]>([initialMessage]);
@@ -75,39 +55,21 @@ export default function InterviewPage() {
 
       const customerIntent = await deduceCustomerIntent(userPrompt);
 
-      const customerIntentPrompt = customerIntentPromptMap[customerIntent];
-      if (customerIntent === "Intent to start coding") {
-        const userMessages = conversation
-          .filter((msg) => msg.role === "user")
-          .map((msg) => msg.text)
-          .join("\n\n");
-
+      if (customerIntent === "Intent to finish coding") {
+        userPrompt = `I have completed coding my solution. Here it is:\n\n${currentCode}`;
         const response = await sendMessage(userPrompt, {
-          question: question.description,
-          customerIntent: customerIntentPrompt,
-          previousInteractions: userMessages,
+          questionTitle: question.title,
+          questionDescription: question.description,
+          conversation: conversation,
         });
         setConversation((prev) => [...prev, { role: "ai", text: response }]);
-        return;
-      } else if (customerIntent === "Intent to finish coding") {
-        userPrompt = `Here is the candidate's solution:\n\n${currentCode}`;
-
-        const response = await sendMessage(userPrompt, {
-          question: question.description,
-          customerIntent: customerIntentPrompt,
-        });
-
-        if (response === "Feel free to conclude the interview.") {
-          setIsInterviewComplete(true);
-        }
-
-        setConversation((prev) => [...prev, { role: "ai", text: response }]);
-
         return;
       }
+
       const response = await sendMessage(userPrompt, {
-        question: question.description,
-        customerIntent: customerIntentPrompt,
+        questionTitle: question.title,
+        questionDescription: question.description,
+        conversation: conversation,
       });
       setConversation((prev) => [...prev, { role: "ai", text: response }]);
     } catch {

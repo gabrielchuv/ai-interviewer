@@ -8,21 +8,22 @@ const openai = new OpenAI({
 export async function POST(request: Request) {
   try {
     const { userPrompt, context } = await request.json();
-    const { question, customerIntent, previousInteractions } = context;
+    const { questionTitle, questionDescription, conversation } = context;
 
-    if (!question) {
+    if (!questionTitle || !questionDescription) {
       return NextResponse.json({ error: 'Question is required' }, { status: 400 });
     }
 
-    const developerPrompt = `You are a technical interviewer conducting a coding interview. 
-    ${`${customerIntent}`}
-    Follow the following principles:
-    - Never give away the solution to the question.
+    const developerPrompt = `Pretend you are a technical interviewer asking the ${questionTitle} question: ${questionDescription}
+    - Expect clarification questions from me before allowing me to code the solution. Your answers to these should be very concise. 
+    - Expect an approach from me before allowing me to code the solution. If it is incorrect feel free to guide me by asking targeted open-ended questions to help me identify the issue. 
+    For instance: "How does your approach handle [a particular edge case]?”. Do not provide hints and do not focus on trivialities or small mistakes.
+    - After coding the solution, you should terminate the interview if it is correct without further feedback. Do not focus on trivialities like perfect syntax, 
+    naming of standard library methods, semicolons etc. If not correct guide me by asking targeted open ended questions to help me identify the issue. 
+    For instance: "How does your approach handle [a particular edge case]?” or "Can you walk me through what happens in this step? 
 
-    The question you are asking the candidate is:\n\n${question}
-
-    The candidate's previous interactions are
-    ${previousInteractions ? `\n\n${previousInteractions}` : ''}
+    Here is the conversation history:
+    ${conversation.map((msg: { role: string; text: string }) => `${msg.role.toUpperCase()}: ${msg.text}`).join('\n\n')}
     `;
 
     const completion = await openai.chat.completions.create({

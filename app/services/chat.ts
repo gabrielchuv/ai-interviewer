@@ -1,9 +1,9 @@
 import { MessageCategory } from "../interview/page";
 
 interface ChatContext {
-  question: string;
-  customerIntent: string;
-  previousInteractions?: string;
+  questionTitle: string;
+  questionDescription: string;
+  conversation: { role: "user" | "ai"; text: string; }[];
 }
 
 export async function deduceCustomerIntent(message: string): Promise<MessageCategory> {
