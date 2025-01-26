@@ -19,9 +19,9 @@ export interface Message {
 
 const initialMessage: Message = {
   role: "ai",
-  text: `Welcome! I'll be your AI interviewer today. While you consider the question in the code editor to the right, you are expected to interact with me
-  before starting to code. Once you are ready to start coding let me know by clicking on the "Start coding" button below and submitting the message.
-  Once you have completed coding your solution, let me know by clicking on the "Finish coding" button below and submitting the message. Good luck!`,
+  text: `Welcome! I'll be your interviewer today. Please consider the question in the code editor to the right, and interact with me in the same way you would in a real interview. The only difference is
+  that you are expected to interact via text (for now).
+  Good luck!`
 };
 
 export type MessageCategory =
