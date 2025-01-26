@@ -125,7 +125,6 @@ export default function InterviewPage() {
               <CodeEditor question={question} onCodeChange={setCurrentCode} />
               <Footer
                 onSubmit={handleInterviewComplete}
-                isSubmitEnabled={isTimeUp || isInterviewComplete}
               />
             </Box>
           </Box>
