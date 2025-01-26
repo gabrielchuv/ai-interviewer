@@ -35,13 +35,12 @@ export default function InterviewPage() {
   const router = useRouter();
   const [conversation, setConversation] = useState<Message[]>([initialMessage]);
   const [input, setInput] = useState<string>("");
-  const [isTimeUp, setIsTimeUp] = useState(false);
+  /* eslint-disable @typescript-eslint/no-unused-vars */
+  const [isTimeUp, setIsTimeUp] = useState(false); 
   const [currentCode, setCurrentCode] = useState("");
-  const [isInterviewComplete, setIsInterviewComplete] = useState(false);
 
   const [question] = useState(() => {
-    // return questionBank[Math.floor(Math.random() * questionBank.length) + 1];
-    return questionBank[1];
+    return questionBank[Math.floor(Math.random() * questionBank.length) + 1];
   });
 
   const handleSubmit = async () => {

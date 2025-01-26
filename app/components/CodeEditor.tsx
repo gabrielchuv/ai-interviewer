@@ -6,6 +6,8 @@ import { javascript } from "@codemirror/lang-javascript";
 import { useState, useEffect } from "react";
 import { Question } from "../data/questionBank";
 
+const INSTRUCTION = 'Write your solution below:';
+
 interface CodeEditorProps {
   question: Question;
   onCodeChange: (code: string) => void;
@@ -13,6 +15,16 @@ interface CodeEditorProps {
 
 export function CodeEditor({ question, onCodeChange }: CodeEditorProps) {
   const [containerWidth, setContainerWidth] = useState(0);
+
+  const getFormattedValue = () => {
+    return `/*
+${question.description}
+
+${question.examples}
+
+${INSTRUCTION}
+*/`;
+  };
 
   useEffect(() => {
     // Set initial width
@@ -46,7 +58,7 @@ export function CodeEditor({ question, onCodeChange }: CodeEditorProps) {
       </Typography>
       <CodeMirror
         style={{ padding: 0 }}
-        value={question.description}
+        value={getFormattedValue()}
         height="calc(100vh - 140px)"
         extensions={[javascript()]}
         theme="dark"
