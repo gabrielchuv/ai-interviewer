@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Box, Typography, Grid, Paper, CircularProgress } from "@mui/material";
 import { getFeedback } from "../services/feedback";
+import { storeFeedback } from "../services/firebase";
 import ReactMarkdown from "react-markdown";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Header from "../components/Header";
@@ -23,6 +24,7 @@ interface FeedbackData {
 export default function FeedbackPage() {
   const [feedback, setFeedback] = useState<FeedbackData | null>(null);
   const [loading, setLoading] = useState(true);
+  const feedbackStoredRef = useRef(false);
 
   useEffect(() => {
     const fetchFeedback = async () => {
@@ -34,6 +36,16 @@ export default function FeedbackPage() {
 
         const feedbackData = await getFeedback(conversation, code);
         setFeedback(feedbackData);
+
+        // Store feedback in Firebase only if not already stored. This is to prevent duplicate feedback from being stored due to react strict mode
+        if (!feedbackStoredRef.current) {
+          try {
+            await storeFeedback(feedbackData);
+            feedbackStoredRef.current = true;
+          } catch (error) {
+            console.error("Error storing feedback in Firebase:", error);
+          }
+        }
 
         localStorage.removeItem("interview_conversation");
         localStorage.removeItem("interview_code");
