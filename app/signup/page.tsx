@@ -33,7 +33,7 @@ export default function SignUpPage() {
         uid: userCredential.user.uid
       })
 
-      router.push('/instructions')
+      router.push('/home')
     } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error('Error processing signup:', err)
       if (err.code === 'auth/email-already-in-use') {

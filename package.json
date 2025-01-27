@@ -12,6 +12,7 @@
     "@codemirror/lang-javascript": "^6.2.2",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.1",
     "@mui/material": "^6.2.0",
     "@radix-ui/react-slot": "^1.1.1",
     "@uiw/react-codemirror": "^4.23.7",

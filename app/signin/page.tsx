@@ -22,11 +22,11 @@ export default function SignInPage() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password)
-      router.push('/instructions')
+      router.push('/home')
     } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error('Error signing in:', err)
-      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-        setError("Invalid email or password. Please try again.")
+      if (err.code === 'auth/invalid-credential') {
+        setError('Invalid email or password')
       } else {
         setError('An error occurred. Please try again.')
       }
