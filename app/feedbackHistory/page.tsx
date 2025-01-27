@@ -101,7 +101,6 @@ export default function FeedbackHistoryPage() {
             </Typography>
           )}
         </Box>
-        <Footer />
       </Box>
     </ProtectedRoute>
   );
