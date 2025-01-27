@@ -27,7 +27,7 @@ export default function LandingPage() {
               </div>
               <div className="pt-4 lg:pt-8 flex gap-4">
                 <Button size="lg" asChild>
-                  <Link href="/signup" className="text-base lg:text-lg">Start Free Trial</Link>
+                  <Link href="/signup" className="text-base lg:text-lg">Try for Free</Link>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
                   <Link href="/signin" className="text-base lg:text-lg">Sign In</Link>
@@ -107,7 +107,7 @@ export default function LandingPage() {
               <div className="pt-4 lg:pt-8 flex gap-4">
                 <Button size="lg" variant="secondary" asChild>
                   <Link href="/signup" className="text-base lg:text-lg flex items-center">
-                    Start Your Free Trial
+                    Try for Free
                     <ArrowRight className="ml-2 h-4 w-4 lg:h-5 lg:w-5" />
                   </Link>
                 </Button>

@@ -58,10 +58,10 @@ export default function SignUpPage() {
         <div className="max-w-md mx-auto space-y-8">
           <div className="space-y-2 text-center">
             <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-              Start Your Free Trial
+              Try AlgoMentor
             </h1>
             <p className="text-zinc-500 dark:text-zinc-400">
-              Get 7 days of unlimited access to AlgoMentor
+              Get access to AlgoMentor for free
             </p>
           </div>
 
@@ -101,7 +101,7 @@ export default function SignUpPage() {
                 />
               </div>
               <Button type="submit" className="w-full">
-                Start Free Trial
+                Sign Up
               </Button>
             </form>
 
@@ -129,9 +129,9 @@ export default function SignUpPage() {
                   Privacy Policy
                 </Link>
               </p> */}
-              <p>
+              {/* <p>
                 After your 7-day free trial ends, continue using AlgoMentor for just £10/month.
-              </p>
+              </p> */}
             </div>
           </div>
         </div>

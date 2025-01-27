@@ -107,7 +107,7 @@ export default function SignInPage() {
                 href="/signup"
                 className="text-primary hover:text-primary/80 font-medium"
               >
-                Start Free Trial
+                Try for Free
               </Link>
             </div>
           </div>
