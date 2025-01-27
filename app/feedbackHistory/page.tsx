@@ -6,6 +6,7 @@ import { getUserFeedback } from "../services/firebase";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Header from "../components/Header";
 import { Footer } from "../feedback/Footer";
+import { useRouter } from "next/navigation";
 
 interface FeedbackHistoryEntry {
   id: string;
@@ -17,6 +18,7 @@ interface FeedbackHistoryEntry {
 }
 
 export default function FeedbackHistoryPage() {
+  const router = useRouter();
   const [feedbackHistory, setFeedbackHistory] = useState<FeedbackHistoryEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -37,6 +39,10 @@ export default function FeedbackHistoryPage() {
 
     fetchFeedbackHistory();
   }, []);
+
+  const handleViewDetails = (id: string) => {
+    router.push(`/feedbackHistory/${id}`);
+  };
 
   if (loading) {
     return (
@@ -89,6 +95,7 @@ export default function FeedbackHistoryPage() {
                 variant="contained"
                 color="primary"
                 sx={{ flex: 0 }}
+                onClick={() => handleViewDetails(entry.id)}
               >
                 View Details
               </Button>
@@ -101,6 +108,7 @@ export default function FeedbackHistoryPage() {
             </Typography>
           )}
         </Box>
+        <Footer />
       </Box>
     </ProtectedRoute>
   );
