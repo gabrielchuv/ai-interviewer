@@ -67,9 +67,21 @@ export default function FeedbackPage() {
       <Box sx={{ minHeight: "100vh" }}>
         <Header />
         <Box sx={{ p: 4, pt: "44px" }}>
-          <Typography variant="h4" sx={{ mb: 4 }}>
+          <Typography variant="h4" sx={{ mb: 4, textAlign: "center" }}>
             Interview Feedback
           </Typography>
+          <Paper sx={{ p: 3, mb: 4, textAlign: "center" }}>
+            <Typography variant="h6">Overall Score</Typography>
+            <Typography variant="h3" sx={{ my: 2 }}>
+              {feedback ? Math.round(
+                (feedback.clarification.rating +
+                  feedback.approach.rating +
+                  feedback.codeQuality.rating +
+                  feedback.complexity.rating) /
+                4
+              ) : "0"}/5
+            </Typography>
+          </Paper>
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <Paper
