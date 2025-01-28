@@ -34,11 +34,11 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
       <div className="flex-1 container mx-auto px-4 py-8 md:py-12 lg:py-16">
         <Link 
           href="/" 
-          className="inline-flex items-center text-sm text-zinc-500 hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-300 mb-8"
+          className="inline-flex items-center text-sm text-gray-400 hover:text-blue-400 mb-8"
         >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Home
@@ -46,10 +46,10 @@ export default function SignInPage() {
         
         <div className="max-w-md mx-auto space-y-8">
           <div className="space-y-2 text-center">
-            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
               Welcome Back
             </h1>
-            <p className="text-zinc-500 dark:text-zinc-400">
+            <p className="text-gray-400">
               Sign in to continue your practice
             </p>
           </div>
@@ -59,7 +59,7 @@ export default function SignInPage() {
               <div className="space-y-2">
                 <label 
                   htmlFor="email" 
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm font-medium leading-none text-gray-300"
                 >
                   Email
                 </label>
@@ -68,14 +68,14 @@ export default function SignInPage() {
                   name="email"
                   type="email"
                   placeholder="Enter your email"
-                  className="flex h-10 w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-400 dark:focus:ring-primary"
+                  className="flex h-10 w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   required
                 />
               </div>
               <div className="space-y-2">
                 <label 
                   htmlFor="password" 
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  className="text-sm font-medium leading-none text-gray-300"
                 >
                   Password
                 </label>
@@ -84,28 +84,28 @@ export default function SignInPage() {
                   name="password"
                   type="password"
                   placeholder="Enter your password"
-                  className="flex h-10 w-full rounded-md border border-zinc-200 bg-white px-3 py-2 text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent disabled:cursor-not-allowed disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-50 dark:placeholder:text-zinc-400 dark:focus:ring-primary"
+                  className="flex h-10 w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-100 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                   required
                 />
               </div>
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                 Sign In
               </Button>
             </form>
 
             {error && (
               <div className="space-y-4">
-                <p className="text-sm text-red-500 dark:text-red-400">
+                <p className="text-sm text-red-500">
                   {error}
                 </p>
               </div>
             )}
 
-            <div className="text-sm text-center text-zinc-500 dark:text-zinc-400">
+            <div className="text-sm text-center text-gray-400">
               Don&apos;t have an account?{" "}
               <Link 
                 href="/signup"
-                className="text-primary hover:text-primary/80 font-medium"
+                className="text-blue-400 hover:text-blue-300 font-medium"
               >
                 Try for Free
               </Link>
