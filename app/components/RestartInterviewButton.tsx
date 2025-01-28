@@ -1,6 +1,7 @@
-import { Button, Tooltip } from "@mui/material";
+import { Tooltip } from "@mui/material";
 import { useRouter } from "next/navigation";
 import * as React from "react";
+import { Button } from "../uiLibrary";
 
 export const RestartInterviewButton: React.FunctionComponent = () => {
   const router = useRouter();
@@ -11,9 +12,8 @@ export const RestartInterviewButton: React.FunctionComponent = () => {
   return (
     <Tooltip title="Restart interview, go back to instructions">
       <Button
-        variant="contained"
-        color="inherit"
-        sx={{
+        variant="secondary"
+        style={{
           width: "180px",
           textTransform: "none",
           fontWeight: "bold",

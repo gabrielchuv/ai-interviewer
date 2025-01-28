@@ -35,7 +35,7 @@ export const Timer = ({ onTimeUp }: TimerProps) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft]);
+  }, [onTimeUp, timeLeft]);
 
   return (
     <Box position="absolute" top={0} right={16} zIndex={1000}>
@@ -44,7 +44,12 @@ export const Timer = ({ onTimeUp }: TimerProps) => {
         sx={{
           fontFamily: "monospace",
           fontWeight: "bold",
-          color: "text.primary",
+          background: "linear-gradient(to right, #60A5FA, #A78BFA)", // blue-400 to purple-400
+          backgroundClip: "text",
+          WebkitBackgroundClip: "text",
+          color: "transparent",
+          fontSize: "1.5rem",
+          lineHeight: "2rem",
         }}
       >
         {formatTime(timeLeft)}

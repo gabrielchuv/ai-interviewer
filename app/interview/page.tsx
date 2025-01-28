@@ -21,7 +21,7 @@ const initialMessage: Message = {
   role: "ai",
   text: `Welcome! I'll be your interviewer today. Please consider the question in the code editor to the right, and interact with me in the same way you would in a real interview. The only difference is
   that you are expected to interact via text (for now).
-  Good luck!`
+  Good luck!`,
 };
 
 export type MessageCategory =
@@ -36,7 +36,7 @@ export default function InterviewPage() {
   const [conversation, setConversation] = useState<Message[]>([initialMessage]);
   const [input, setInput] = useState<string>("");
   /* eslint-disable @typescript-eslint/no-unused-vars */
-  const [isTimeUp, setIsTimeUp] = useState(false); 
+  const [isTimeUp, setIsTimeUp] = useState(false);
   const [currentCode, setCurrentCode] = useState("");
 
   const [question] = useState(() => {
@@ -105,7 +105,7 @@ export default function InterviewPage() {
         }}
       >
         <Header />
-        <Box sx={{ flex: 1, position: "relative", mt: "48px" }}>
+        <Box sx={{ flex: 1, position: "relative" }}>
           <Timer onTimeUp={handleTimeUp} />
           <Box display="flex" sx={{ height: "calc(100% - 120px)" }}>
             <ChatWindow
@@ -122,9 +122,7 @@ export default function InterviewPage() {
               }}
             >
               <CodeEditor question={question} onCodeChange={setCurrentCode} />
-              <Footer
-                onSubmit={handleInterviewComplete}
-              />
+              <Footer onSubmit={handleInterviewComplete} />
             </Box>
           </Box>
         </Box>

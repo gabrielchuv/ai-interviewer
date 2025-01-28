@@ -1,6 +1,14 @@
-import { Button, Box, Dialog, DialogTitle, DialogActions, Tooltip, DialogContent } from "@mui/material";
+import {
+  Box,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Tooltip,
+  DialogContent,
+} from "@mui/material";
 import { RestartInterviewButton } from "./RestartInterviewButton";
 import { useState } from "react";
+import { Button } from "../uiLibrary";
 
 interface FooterProps {
   onSubmit: () => void;
@@ -28,33 +36,31 @@ export function Footer({ onSubmit }: FooterProps) {
         display: "flex",
         justifyContent: "flex-end",
         px: 2,
-        pb: 2,
+        pb: 1,
+        pt: 1,
       }}
     >
       <RestartInterviewButton />
       <Tooltip title="Complete the interview and view feedback">
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOpenDialog}
-          sx={{
-            width: "180px",
-            textTransform: "none",
-            fontWeight: "bold",
-          }}
-        >
+        <Button variant="primary" onClick={handleOpenDialog}>
           Complete Interview
         </Button>
       </Tooltip>
 
       <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
-        <DialogTitle>Are you sure you want to terminate the interview?</DialogTitle>
-        <DialogContent>Terminating the interview before you have completed it will lead to incomplete feedback. If you feel you have completed the interview, please proceed.</DialogContent>
+        <DialogTitle>
+          Are you sure you want to terminate the interview?
+        </DialogTitle>
+        <DialogContent>
+          Terminating the interview before you have completed it will lead to
+          incomplete feedback. If you feel you have completed the interview,
+          please proceed.
+        </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
+          <Button onClick={handleCloseDialog} variant="primary">
             No
           </Button>
-          <Button onClick={handleConfirm} color="primary" variant="contained">
+          <Button onClick={handleConfirm} variant="primary">
             Yes
           </Button>
         </DialogActions>

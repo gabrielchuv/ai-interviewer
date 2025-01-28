@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
-import ReactMarkdown from 'react-markdown';
-import ProtectedRoute from '../components/ProtectedRoute'
-import Header from '../components/Header'
+import ReactMarkdown from "react-markdown";
+import ProtectedRoute from "../components/ProtectedRoute";
+import Header from "../components/Header";
 
 const welcomeText = `
 When starting the interview, you will be presented with 2 panes: The AI interviewer and a code editor.
@@ -27,7 +27,7 @@ When the AI interviewer is satisfied with your solution, you will be able to cli
 export default function InstructionsPage() {
   return (
     <ProtectedRoute>
-      <Box sx={{ minHeight: "100vh" }}>
+      <Box sx={{ minHeight: "100vh", bgcolor: "rgb(17, 24, 39)" }}>
         <Header />
         <Box
           display="flex"
@@ -36,19 +36,32 @@ export default function InstructionsPage() {
           justifyContent="center"
           sx={{ minHeight: "100vh", pt: "64px" }}
         >
-          <Typography variant="h1">AlgoMentor</Typography>
+          <Typography
+            variant="h1"
+            sx={{
+              background: "linear-gradient(to right, #60A5FA, #A78BFA)",
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              color: "transparent",
+              fontWeight: "bold",
+              marginBottom: "1.5rem",
+            }}
+          >
+            AlgoMentor
+          </Typography>
           <Box
             sx={{
               padding: "25px 15%",
               textAlign: "left",
-              '& p': { 
-                marginBottom: '1em',
-                lineHeight: '1.6'
+              color: "rgb(243, 244, 246)",
+              "& p": {
+                marginBottom: "1em",
+                lineHeight: "1.6",
               },
-              '& ul': { 
-                marginBottom: '1em',
-                paddingLeft: '2em'
-              }
+              "& ul": {
+                marginBottom: "1em",
+                paddingLeft: "2em",
+              },
             }}
           >
             <ReactMarkdown>{welcomeText}</ReactMarkdown>
@@ -60,12 +73,22 @@ export default function InstructionsPage() {
               sx={{
                 fontSize: "1.2rem",
                 padding: "12px 40px",
+                background: "rgb(37, 99, 235)",
+                "&:hover": {
+                  background: "rgb(29, 78, 216)",
+                },
               }}
             >
               Start Interview
             </Button>
           </Link>
-          <Typography variant="body1" color="text.secondary" sx={{ mt: 2 }}>
+          <Typography
+            variant="body1"
+            sx={{
+              mt: 2,
+              color: "rgb(156, 163, 175)",
+            }}
+          >
             When pressed, the interview will begin, starting a timer of 30
             minutes.
           </Typography>
@@ -73,4 +96,4 @@ export default function InstructionsPage() {
       </Box>
     </ProtectedRoute>
   );
-} 
+}

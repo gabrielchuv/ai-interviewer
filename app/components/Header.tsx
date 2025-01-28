@@ -5,11 +5,12 @@ import Link from "next/link";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import { Code2 } from "lucide-react";
+import { Button } from "../uiLibrary";
 
 export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
-  const showHomeLink = pathname !== '/interview';
+  const showHomeLink = pathname !== "/interview";
 
   const handleLogout = async () => {
     try {
@@ -21,21 +22,66 @@ export default function Header() {
   };
 
   return (
-    <header className="px-4 lg:px-6 h-16 lg:h-20 flex items-center border-b border-gray-700 bg-gray-900">
-      <div className="container mx-auto flex justify-between items-center">
-        <div className="flex items-center">
-          <Link className="flex items-center justify-center" href={showHomeLink ? "/home" : "#"}>
-            <Code2 className="h-6 w-6 mr-2 lg:h-8 lg:w-8 lg:mr-3 text-blue-400" />
-            <span className="font-bold text-lg lg:text-xl text-blue-400">AlgoMentor</span>
+    <header
+      style={{
+        padding: "0 1rem",
+        height: "4rem",
+        display: "flex",
+        alignItems: "center",
+        borderBottom: "1px solid rgb(55, 65, 81)", // border-gray-700
+        backgroundColor: "rgb(17, 24, 39)", // bg-gray-900
+      }}
+    >
+      <div
+        style={{
+          container: "content",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <Link
+            href={showHomeLink ? "/home" : "#"}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Code2
+              style={{
+                height: "1.5rem",
+                width: "1.5rem",
+                marginRight: "0.5rem",
+                color: "rgb(96, 165, 250)", // text-blue-400
+              }}
+            />
+            <span
+              style={{
+                fontWeight: "bold",
+                fontSize: "1.125rem",
+                color: "rgb(96, 165, 250)", // text-blue-400
+              }}
+            >
+              AlgoMentor
+            </span>
           </Link>
         </div>
-        
-        <button
+
+        <Button
           onClick={handleLogout}
+          style={{ marginLeft: "auto" }}
           className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium transition-colors duration-200"
         >
           Log out
-        </button>
+        </Button>
       </div>
     </header>
   );

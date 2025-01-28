@@ -6,7 +6,7 @@ import { javascript } from "@codemirror/lang-javascript";
 import { useState, useEffect } from "react";
 import { Question } from "../data/questionBank";
 
-const INSTRUCTION = 'Write your solution below:';
+const INSTRUCTION = "Write your solution below:";
 
 interface CodeEditorProps {
   question: Question;
@@ -46,6 +46,7 @@ ${INSTRUCTION}
       sx={{
         flex: 1,
         paddingBottom: 0.5,
+        marginTop: 0,
         paddingLeft: 2,
         paddingRight: 2,
         display: "flex",
@@ -53,13 +54,21 @@ ${INSTRUCTION}
         height: "100vh",
       }}
     >
-      <Typography variant="h6" gutterBottom style={{ marginBottom: 0 }}>
+      <Typography
+        variant="h6"
+        gutterBottom
+        sx={{
+          color: "rgb(96, 165, 250)", // text-blue-400
+          fontWeight: "bold",
+          marginBottom: 0,
+        }}
+      >
         Code
       </Typography>
       <CodeMirror
-        style={{ padding: 0 }}
+        style={{ padding: 0, marginTop: 0 }}
         value={getFormattedValue()}
-        height="calc(100vh - 140px)"
+        height="calc(100vh - 170px)"
         extensions={[javascript()]}
         theme="dark"
         width={containerWidth ? `${containerWidth * 0.7}px` : "100%"}
