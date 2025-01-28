@@ -1,11 +1,10 @@
 "use client";
 
-import { Box, Button } from "@mui/material";
-import { signOut } from "firebase/auth";
-import { auth } from "../../firebaseConfig";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-import HomeIcon from '@mui/icons-material/Home';
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
+import { Code2 } from "lucide-react";
 
 export default function Header() {
   const router = useRouter();
@@ -22,40 +21,22 @@ export default function Header() {
   };
 
   return (
-    <Box
-      component="header"
-      sx={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        height: "40px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "0 16px",
-        backgroundColor: "background.paper",
-        borderBottom: "1px solid",
-        borderColor: "divider",
-        zIndex: 1100,
-      }}
-    >
-      {showHomeLink && (
-        <Link href="/home" style={{ textDecoration: 'none' }}>
-          <Button
-            startIcon={<HomeIcon />}
-            variant="text"
-            size="small"
-            sx={{ color: 'text.primary' }}
-          >
-            Home
-          </Button>
-        </Link>
-      )}
-      <Box sx={{ flex: 1 }} />
-      <Button onClick={handleLogout} variant="outlined" size="small">
-        Log out
-      </Button>
-    </Box>
+    <header className="px-4 lg:px-6 h-16 lg:h-20 flex items-center border-b border-gray-700 bg-gray-900">
+      <div className="container mx-auto flex justify-between items-center">
+        <div className="flex items-center">
+          <Link className="flex items-center justify-center" href={showHomeLink ? "/home" : "#"}>
+            <Code2 className="h-6 w-6 mr-2 lg:h-8 lg:w-8 lg:mr-3 text-blue-400" />
+            <span className="font-bold text-lg lg:text-xl text-blue-400">AlgoMentor</span>
+          </Link>
+        </div>
+        
+        <button
+          onClick={handleLogout}
+          className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium transition-colors duration-200"
+        >
+          Log out
+        </button>
+      </div>
+    </header>
   );
 }
