@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Code2, Brain, Zap, Users, ArrowRight, Rocket } from "lucide-react"
+import { Code2, Brain, ArrowRight, Rocket } from "lucide-react"
 import { Button } from "./ui/button"
 
 export default function LandingPage() {

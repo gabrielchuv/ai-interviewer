@@ -1,6 +1,5 @@
 "use client";
 
-import { Box, Typography, Paper, Button } from "@mui/material";
 import { useRouter } from "next/navigation";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Header from "../components/Header";
