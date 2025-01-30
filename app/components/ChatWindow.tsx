@@ -13,6 +13,8 @@ interface ChatWindowProps {
   input: string;
   setInput: Dispatch<SetStateAction<string>>;
   handleSubmit: () => void;
+  streamingMessage: string;
+  isStreaming: boolean;
 }
 
 export function ChatWindow({
@@ -20,6 +22,8 @@ export function ChatWindow({
   input,
   setInput,
   handleSubmit,
+  streamingMessage,
+  isStreaming,
 }: ChatWindowProps) {
   return (
     <Box
@@ -49,6 +53,9 @@ export function ChatWindow({
           {conversation.map((message, index) => (
             <ChatMessage key={index} role={message.role} text={message.text} />
           ))}
+          {isStreaming && streamingMessage && (
+            <ChatMessage role="ai" text={streamingMessage} />
+          )}
         </Box>
       </Paper>
       <ChatInput

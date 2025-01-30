@@ -38,6 +38,8 @@ export default function InterviewPage() {
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [currentCode, setCurrentCode] = useState("");
+  const [streamingMessage, setStreamingMessage] = useState<string>("");
+  const [isStreaming, setIsStreaming] = useState(false);
 
   const [question] = useState(() => {
     return questionBank[Math.floor(Math.random() * questionBank.length) + 1];
@@ -48,6 +50,8 @@ export default function InterviewPage() {
 
     setConversation((prev) => [...prev, { role: "user", text: input }]);
     setInput("");
+    setStreamingMessage("");
+    setIsStreaming(true);
 
     try {
       let userPrompt = input;
@@ -56,21 +60,35 @@ export default function InterviewPage() {
 
       if (customerIntent === "Intent to finish coding") {
         userPrompt = `I have completed coding my solution. Here it is:\n\n${currentCode}`;
-        const response = await sendMessage(userPrompt, {
-          questionTitle: question.title,
-          questionDescription: question.description,
-          conversation: conversation,
-        });
+        const response = await sendMessage(
+          userPrompt,
+          {
+            questionTitle: question.title,
+            questionDescription: question.description,
+            conversation: conversation,
+          },
+          (chunk) => {
+            setStreamingMessage((prev) => prev + chunk);
+          }
+        );
         setConversation((prev) => [...prev, { role: "ai", text: response }]);
+        setIsStreaming(false);
         return;
       }
 
-      const response = await sendMessage(userPrompt, {
-        questionTitle: question.title,
-        questionDescription: question.description,
-        conversation: conversation,
-      });
+      const response = await sendMessage(
+        userPrompt,
+        {
+          questionTitle: question.title,
+          questionDescription: question.description,
+          conversation: conversation,
+        },
+        (chunk) => {
+          setStreamingMessage((prev) => prev + chunk);
+        }
+      );
       setConversation((prev) => [...prev, { role: "ai", text: response }]);
+      setIsStreaming(false);
     } catch {
       setConversation((prev) => [
         ...prev,
@@ -79,6 +97,7 @@ export default function InterviewPage() {
           text: "Sorry, there was an error processing your request. Please try again later.",
         },
       ]);
+      setIsStreaming(false);
     }
   };
 
@@ -113,6 +132,8 @@ export default function InterviewPage() {
               input={input}
               setInput={setInput}
               handleSubmit={handleSubmit}
+              streamingMessage={streamingMessage}
+              isStreaming={isStreaming}
             />
             <Box
               sx={{
