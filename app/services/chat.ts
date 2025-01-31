@@ -1,4 +1,5 @@
 import { MessageCategory } from "../interview/page";
+import { tts } from "./tts";
 
 // Helper function to add delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -63,6 +64,9 @@ export async function sendMessage(
       const chunk = decoder.decode(value);
       fullText += chunk;
       onChunk(chunk);
+      
+      // Speak the chunk
+      await tts.speak(chunk, true);
       
       // Add a delay between chunks (30ms per character to simulate ~200 words per minute)
       await delay(chunk.length * 30);
