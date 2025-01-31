@@ -27,6 +27,14 @@ export async function deduceCustomerIntent(message: string): Promise<MessageCate
   return data.category;
 }
 
+// Helper function to stream text character by character
+async function streamText(text: string, onChunk: (chunk: string) => void) {
+  for (let i = 0; i < text.length; i++) {
+    onChunk(text[i]);
+    await delay(50); // 30ms delay per character
+  }
+}
+
 export async function sendMessage(
   userPrompt: string, 
   context: ChatContext,
@@ -51,6 +59,7 @@ export async function sendMessage(
   const reader = response.body?.getReader();
   const decoder = new TextDecoder();
   let fullText = '';
+  let bufferedText = '';
 
   if (!reader) {
     throw new Error('Failed to get response reader');
@@ -63,13 +72,22 @@ export async function sendMessage(
 
       const chunk = decoder.decode(value);
       fullText += chunk;
-      onChunk(chunk);
+      bufferedText += chunk;
       
-      // Speak the chunk
-      await tts.speak(chunk, true);
-      
-      // Add a delay between chunks (30ms per character to simulate ~200 words per minute)
-      await delay(chunk.length * 30);
+      // Check if we have a complete sentence
+      if (/[.!?]\s*$/.test(bufferedText)) {
+        // Start speaking the sentence
+        await tts.speak(bufferedText, true);
+        // Stream the text character by character
+        await streamText(bufferedText, onChunk);
+        bufferedText = '';
+      }
+    }
+    
+    // Handle any remaining buffered text
+    if (bufferedText) {
+      await tts.speak(bufferedText, true);
+      await streamText(bufferedText, onChunk);
     }
   } finally {
     reader.releaseLock();
