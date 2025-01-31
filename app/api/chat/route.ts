@@ -20,7 +20,8 @@ export async function POST(request: Request) {
     For instance: "How does your approach handle [a particular edge case]?". Do not provide hints and do not focus on trivialities or small mistakes.
     - After coding the solution, you should terminate the interview if it is correct without further feedback. Do not focus on trivialities like perfect syntax, 
     naming of standard library methods, semicolons etc. If not correct guide me by asking targeted open ended questions to help me identify the issue. 
-    For instance: "How does your approach handle [a particular edge case]?" or "Can you walk me through what happens in this step? 
+    For instance: "How does your approach handle [a particular edge case]?" or "Can you walk me through what happens in this step?
+    - Never provide the name of the question.
 
     Here is the conversation history:
     ${conversation.map((msg: { role: string; text: string }) => `${msg.role.toUpperCase()}: ${msg.text}`).join('\n\n')}
