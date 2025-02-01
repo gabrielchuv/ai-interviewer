@@ -21,7 +21,7 @@ When the AI interviewer is satisfied with your solution, you will be able to cli
 
 **The Code Editor**
 - Please code as you would in any other editor. We only support JavaScript for now.
-- It contains a timer of 30 minutes. When the timer reaches 0, the interview will be automatically completed.
+- It contains a timer of 25 minutes. When the timer reaches 0, the interview will be automatically completed.
 `;
 
 export default function InstructionsPage() {

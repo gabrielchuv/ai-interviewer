@@ -16,7 +16,7 @@ interface TimerProps {
 }
 
 export const Timer = ({ onTimeUp }: TimerProps) => {
-  const [timeLeft, setTimeLeft] = useState(30 * 60); // 20 minutes in seconds
+  const [timeLeft, setTimeLeft] = useState(25 * 60); // 25 minutes in seconds
 
   useEffect(() => {
     if (timeLeft === 0) {
