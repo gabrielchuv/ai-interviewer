@@ -17,22 +17,33 @@ export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
     setIsSTTSupported(stt.isSupported());
   }, []);
 
+  const stopRecording = () => {
+    const finalText = stt.stopListening();
+    setInput((prev) => prev + finalText);
+    setIsListening(false);
+  };
+
   const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
       if (event.shiftKey) {
         setInput((prev) => prev + "\n");
       } else {
-        handleSubmit();
+        handleMessageSubmit();
       }
     }
   };
 
+  const handleMessageSubmit = () => {
+    if (isListening) {
+      stopRecording();
+    }
+    handleSubmit();
+  };
+
   const toggleListening = () => {
     if (isListening) {
-      const finalText = stt.stopListening();
-      setInput((prev) => prev + finalText);
-      setIsListening(false);
+      stopRecording();
     } else {
       const started = stt.startListening((text) => {
         setInput(text);
@@ -102,7 +113,7 @@ export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
         </IconButton>
       )}
       <IconButton
-        onClick={handleSubmit}
+        onClick={handleMessageSubmit}
         sx={{
           marginBottom: "8px",
           color: "#60A5FA", // blue-400
