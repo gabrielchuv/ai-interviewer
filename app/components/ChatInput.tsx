@@ -1,6 +1,7 @@
 import { Box, TextField, IconButton } from "@mui/material";
-import { Dispatch, KeyboardEventHandler, SetStateAction } from "react";
-import { MdSend } from "react-icons/md";
+import { Dispatch, KeyboardEventHandler, SetStateAction, useState, useEffect } from "react";
+import { MdSend, MdMic, MdStop } from "react-icons/md";
+import { stt } from "../services/stt";
 
 interface ChatInputProps {
   input: string;
@@ -9,6 +10,13 @@ interface ChatInputProps {
 }
 
 export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
+  const [isListening, setIsListening] = useState(false);
+  const [isSTTSupported, setIsSTTSupported] = useState(false);
+
+  useEffect(() => {
+    setIsSTTSupported(stt.isSupported());
+  }, []);
+
   const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key === "Enter") {
       event.preventDefault();
@@ -19,6 +27,20 @@ export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
       }
     }
   };
+
+  const toggleListening = () => {
+    if (isListening) {
+      const finalText = stt.stopListening();
+      setInput((prev) => prev + finalText);
+      setIsListening(false);
+    } else {
+      const started = stt.startListening((text) => {
+        setInput(text);
+      });
+      setIsListening(started);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -63,6 +85,22 @@ export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
         }}
         onKeyDown={handleKeyDown}
       />
+      {isSTTSupported && (
+        <IconButton
+          onClick={toggleListening}
+          sx={{
+            marginBottom: "8px",
+            color: isListening ? "#EF4444" : "#60A5FA", // red-500 when recording, blue-400 when not
+            "&:hover": {
+              backgroundColor: isListening 
+                ? "rgba(239, 68, 68, 0.1)" 
+                : "rgba(96, 165, 250, 0.1)",
+            },
+          }}
+        >
+          {isListening ? <MdStop /> : <MdMic />}
+        </IconButton>
+      )}
       <IconButton
         onClick={handleSubmit}
         sx={{
