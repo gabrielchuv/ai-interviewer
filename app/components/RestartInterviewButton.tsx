@@ -3,10 +3,14 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 import { Button } from "../uiLibrary";
 
-export const RestartInterviewButton: React.FunctionComponent = () => {
+export const RestartInterviewButton: React.FunctionComponent<{
+  disabled?: boolean;
+}> = ({ disabled }) => {
   const router = useRouter();
 
-  const handleReturnToInstruction = () => {
+  const handleReturnToInstruction = async () => {
+    window.speechSynthesis.cancel();
+
     router.push("/instructions");
   };
   return (
@@ -20,6 +24,7 @@ export const RestartInterviewButton: React.FunctionComponent = () => {
           marginRight: "8px",
         }}
         onClick={handleReturnToInstruction}
+        disabled={disabled}
       >
         Restart
       </Button>

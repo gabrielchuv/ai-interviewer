@@ -12,9 +12,15 @@ import { Button } from "../uiLibrary";
 
 interface FooterProps {
   onSubmit: () => void;
+  disableRestart?: boolean;
+  disableComplete?: boolean;
 }
 
-export function Footer({ onSubmit }: FooterProps) {
+export function Footer({
+  onSubmit,
+  disableRestart,
+  disableComplete,
+}: FooterProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleOpenDialog = () => {
@@ -40,9 +46,13 @@ export function Footer({ onSubmit }: FooterProps) {
         pt: 1,
       }}
     >
-      <RestartInterviewButton />
+      <RestartInterviewButton disabled={disableRestart} />
       <Tooltip title="Complete the interview and view feedback">
-        <Button variant="primary" onClick={handleOpenDialog}>
+        <Button
+          variant="primary"
+          onClick={handleOpenDialog}
+          disabled={disableComplete}
+        >
           Complete Interview
         </Button>
       </Tooltip>

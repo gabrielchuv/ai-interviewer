@@ -1,7 +1,7 @@
 "use client";
 
 import { Box } from "@mui/material";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { ChatWindow } from "../components/ChatWindow";
 import { CodeEditor } from "../components/CodeEditor";
 import { Timer } from "../components/Timer";
@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import { questionBank } from "../data/questionBank";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Header from "../components/Header";
+import { useTextToSpeech } from "../services/useTextToSpeech";
 
 export interface Message {
   role: "user" | "ai";
@@ -33,17 +34,20 @@ export type MessageCategory =
 
 export default function InterviewPage() {
   const router = useRouter();
-  const [conversation, setConversation] = useState<Message[]>([initialMessage]);
+  const [conversation, setConversation] = useState<Message[]>([]);
   const [input, setInput] = useState<string>("");
   /* eslint-disable @typescript-eslint/no-unused-vars */
   const [isTimeUp, setIsTimeUp] = useState(false);
   const [currentCode, setCurrentCode] = useState("");
   const [streamingMessage, setStreamingMessage] = useState<string>("");
   const [isStreaming, setIsStreaming] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const [question] = useState(() => {
     return questionBank[Math.floor(Math.random() * questionBank.length) + 1];
   });
+
+  const { readAndStreamText, stop } = useTextToSpeech();
 
   const handleSubmit = async () => {
     if (!input) return;
@@ -101,6 +105,36 @@ export default function InterviewPage() {
     }
   };
 
+  const read = useCallback(() => {
+    return new Promise<void>(async (resolve) => {
+      setIsStreaming(true);
+      const streamedText = await readAndStreamText(
+        initialMessage.text,
+        (chunk) => {
+          setStreamingMessage((prev) => prev + chunk);
+        }
+      );
+      setIsStreaming(false);
+      setConversation((prev) => [...prev, { role: "ai", text: streamedText }]);
+      resolve();
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    // Second timeout to trigger the button
+    const buttonTimeoutId = setTimeout(() => {
+      buttonRef.current?.click();
+    }, 200);
+
+    return () => {
+      clearTimeout(buttonTimeoutId);
+      stop();
+      window.speechSynthesis.cancel();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const handleTimeUp = useCallback(() => {
     setIsTimeUp(true);
   }, []);
@@ -123,6 +157,12 @@ export default function InterviewPage() {
           flexDirection: "column",
         }}
       >
+        <button
+          ref={buttonRef}
+          onClick={read}
+          style={{ display: "none" }}
+          aria-hidden="true"
+        />
         <Header />
         <Box sx={{ flex: 1, position: "relative" }}>
           <Timer onTimeUp={handleTimeUp} />
@@ -143,7 +183,11 @@ export default function InterviewPage() {
               }}
             >
               <CodeEditor question={question} onCodeChange={setCurrentCode} />
-              <Footer onSubmit={handleInterviewComplete} />
+              <Footer
+                onSubmit={handleInterviewComplete}
+                disableComplete={isStreaming}
+                disableRestart={isStreaming}
+              />
             </Box>
           </Box>
         </Box>

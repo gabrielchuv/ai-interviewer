@@ -1,5 +1,11 @@
 import { Box, TextField, IconButton } from "@mui/material";
-import { Dispatch, KeyboardEventHandler, SetStateAction, useState, useEffect } from "react";
+import {
+  Dispatch,
+  KeyboardEventHandler,
+  SetStateAction,
+  useState,
+  useEffect,
+} from "react";
 import { MdSend, MdMic, MdStop } from "react-icons/md";
 import { stt } from "../services/stt";
 
@@ -7,9 +13,15 @@ interface ChatInputProps {
   input: string;
   setInput: Dispatch<SetStateAction<string>>;
   handleSubmit: () => void;
+  disabled?: boolean;
 }
 
-export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
+export function ChatInput({
+  input,
+  setInput,
+  handleSubmit,
+  disabled,
+}: ChatInputProps) {
   const [isListening, setIsListening] = useState(false);
   const [isSTTSupported, setIsSTTSupported] = useState(false);
 
@@ -72,6 +84,7 @@ export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
         placeholder="Type your message..."
         minRows={1}
         maxRows={12}
+        disabled={disabled}
         sx={{
           "& .MuiInputBase-root": {
             maxHeight: "30vh",
@@ -98,13 +111,14 @@ export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
       />
       {isSTTSupported && (
         <IconButton
+          disabled={disabled}
           onClick={toggleListening}
           sx={{
             marginBottom: "8px",
             color: isListening ? "#EF4444" : "#60A5FA", // red-500 when recording, blue-400 when not
             "&:hover": {
-              backgroundColor: isListening 
-                ? "rgba(239, 68, 68, 0.1)" 
+              backgroundColor: isListening
+                ? "rgba(239, 68, 68, 0.1)"
                 : "rgba(96, 165, 250, 0.1)",
             },
           }}
@@ -114,6 +128,7 @@ export function ChatInput({ input, setInput, handleSubmit }: ChatInputProps) {
       )}
       <IconButton
         onClick={handleMessageSubmit}
+        disabled={disabled}
         sx={{
           marginBottom: "8px",
           color: "#60A5FA", // blue-400

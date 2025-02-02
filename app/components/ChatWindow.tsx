@@ -62,6 +62,7 @@ export function ChatWindow({
         input={input}
         setInput={setInput}
         handleSubmit={handleSubmit}
+        disabled={isStreaming}
       />
     </Box>
   );
