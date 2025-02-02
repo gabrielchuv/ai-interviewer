@@ -11,7 +11,7 @@ When starting the interview, you will be presented with 2 panes: The AI intervie
 
 **The AlgoMentor**
 
-This is a chatbot that will simulate a human interviewer. Please interact with it in the same way you would with a human interviewer but via text only (for now). Feel free to:
+This is a chatbot that will simulate a human interviewer. Please interact with it in the same way you would with a human interviewer. Feel free to:
 - Ask clarifying questions
 - Demonstrate your approach
 - Let the AI know when you are ready to start coding

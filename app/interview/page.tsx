@@ -20,8 +20,7 @@ export interface Message {
 
 const initialMessage: Message = {
   role: "ai",
-  text: `Welcome! I'll be your interviewer today. Please consider the question in the code editor to the right, and interact with me in the same way you would in a real interview. The only difference is
-  that you are expected to interact via text (for now).
+  text: `Welcome! I'll be your interviewer today. Please consider the question in the code editor to the right, and interact with me in the same way you would in a real interview.
   Good luck!`,
 };
 
