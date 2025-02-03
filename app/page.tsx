@@ -16,28 +16,47 @@ export default function LandingPage() {
       <main className="flex-1">
         <section className="w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-r from-gray-900 via-blue-900 to-gray-900">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="space-y-2 max-w-3xl">
-                <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
-                  Master Technical Interviews with AlgoMentor
-                </h1>
-                <p className="mx-auto max-w-[700px] text-gray-300 md:text-xl lg:text-2xl">
-                  Simulate real interview scenarios, tackle a wide range of problems, and gain immediate insights to
-                  boost your confidence and performance.
-                </p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+              <div className="flex flex-col items-center lg:items-start text-center lg:text-left">
+                <div className="space-y-4">
+                  <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
+                    Master Technical Interviews with AlgoMentor
+                  </h1>
+                  <p className="text-gray-300 md:text-xl lg:text-2xl">
+                    Simulate real interview scenarios, tackle a wide range of problems, and gain immediate insights to
+                    boost your confidence and performance.
+                  </p>
+                  <div className="flex flex-col sm:flex-row w-full gap-4 pt-4 lg:pt-8 justify-center lg:justify-start">
+                    <Button 
+                      size="lg" 
+                      className="w-full sm:w-auto max-w-[200px] sm:max-w-none mx-auto lg:mx-0 bg-blue-600 hover:bg-blue-700 text-white text-base sm:text-lg" 
+                      asChild
+                    >
+                      <Link href="/signup">Try for Free</Link>
+                    </Button>
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="w-full sm:w-auto max-w-[200px] sm:max-w-none mx-auto lg:mx-0 text-blue-400 border-blue-400 hover:bg-blue-400/10 text-base sm:text-lg"
+                      asChild
+                    >
+                      <Link href="/signin">Sign In</Link>
+                    </Button>
+                  </div>
+                </div>
               </div>
-              <div className="pt-4 lg:pt-8 flex gap-4">
-                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
-                  <Link href="/signup">Try for Free</Link>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="text-blue-400 border-blue-400 hover:bg-blue-400/10"
-                  asChild
-                >
-                  <Link href="/signin">Sign In</Link>
-                </Button>
+              <div className="w-full max-w-2xl mx-auto lg:max-w-none">
+                <div style={{padding:'54.09% 0 0 0', position:'relative'}}>
+                  <iframe 
+                    src="https://player.vimeo.com/video/1052851935?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" 
+                    frameBorder="0" 
+                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
+                    style={{position:'absolute', top:0, left:0, width:'100%', height:'100%'}} 
+                    title="algoMentor_demo">
+                  </iframe>
+                </div>
+                {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+                <script src="https://player.vimeo.com/api/player.js"></script>
               </div>
             </div>
           </div>
