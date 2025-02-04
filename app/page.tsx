@@ -48,11 +48,11 @@ export default function LandingPage() {
               <div className="w-full max-w-2xl mx-auto lg:max-w-none">
                 <div style={{padding:'54.09% 0 0 0', position:'relative'}}>
                   <iframe 
-                    src="https://player.vimeo.com/video/1052851935?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" 
+                    src="https://player.vimeo.com/video/1053571809?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" 
                     frameBorder="0" 
                     allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media" 
                     style={{position:'absolute', top:0, left:0, width:'100%', height:'100%'}} 
-                    title="algoMentor_demo">
+                    title="algoMentor_demo_2">
                   </iframe>
                 </div>
                 {/* eslint-disable-next-line @next/next/no-sync-scripts */}
