@@ -1,31 +1,22 @@
 "use client";
 
 import React from 'react';
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, RadioGroup, FormControlLabel, Radio, FormControl, FormLabel, Paper } from "@mui/material";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Header from "../components/Header";
 
 const welcomeText = `
-When starting the interview, you will be presented with 2 panes: The AI interviewer and a code editor.
+- The interview features an AI interviewer. Please interact with it in the same you would with a human interviewer
 
-**The AlgoMentor**
-
-This is a chatbot that will simulate a human interviewer. Please interact with it in the same way you would with a human interviewer. Feel free to:
-- Ask clarifying questions
-- Demonstrate your approach
-- Let the AI know when you are ready to start coding
-- Let the AI know when you have completed your solution
-
-When the AI interviewer is satisfied with your solution, you will be able to click on the "Complete Interview" button to finish the interview.
-
-**The Code Editor**
-- Please code as you would in any other editor. We only support JavaScript for now.
-- It contains a timer of 25 minutes. When the timer reaches 0, the interview will be automatically completed.
+- We want to provide an experience as similar as possible to a real interview so we don't allow for choosing a question or topic. This will be available in our 'Training mode' in the future.
 `;
 
 export default function SetupPage() {
+  const [mode, setMode] = React.useState('interview');
+  const [level, setLevel] = React.useState('graduate');
+
   return (
     <ProtectedRoute>
       <Box sx={{ minHeight: "100vh", bgcolor: "rgb(17, 24, 39)" }}>
@@ -48,13 +39,15 @@ export default function SetupPage() {
               marginBottom: "1.5rem",
             }}
           >
-            AlgoMentor
+            Setup
           </Typography>
           <Box
             sx={{
-              padding: "25px 15%",
+              padding: "25px 0",
               textAlign: "left",
               color: "rgb(243, 244, 246)",
+              width: '100%',
+              maxWidth: '600px',
               "& p": {
                 marginBottom: "1em",
                 lineHeight: "1.6",
@@ -67,6 +60,62 @@ export default function SetupPage() {
           >
             <ReactMarkdown>{welcomeText}</ReactMarkdown>
           </Box>
+
+          <Paper 
+            elevation={0}
+            sx={{ 
+              p: 3, 
+              mb: 4, 
+              width: '100%', 
+              maxWidth: '600px',
+              bgcolor: 'rgba(31, 41, 55, 0.5)',
+              border: '1px solid rgba(75, 85, 99, 0.5)'
+            }}
+          >
+            <Box sx={{ mb: 4 }}>
+              <FormControl component="fieldset">
+                <FormLabel sx={{ color: 'rgb(156, 163, 175)', mb: 1 }}>Mode</FormLabel>
+                <RadioGroup
+                  value={mode}
+                  onChange={(e) => setMode(e.target.value)}
+                  row
+                >
+                  <FormControlLabel
+                    value="interview"
+                    control={<Radio sx={{ color: 'rgb(156, 163, 175)' }} />}
+                    label="Interview"
+                    sx={{ color: 'rgb(243, 244, 246)' }}
+                  />
+                  <FormControlLabel
+                    value="training"
+                    disabled
+                    control={<Radio sx={{ color: 'rgb(156, 163, 175)' }} />}
+                    label="Training (Coming Soon)"
+                    sx={{ color: 'rgb(156, 163, 175)' }}
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Box>
+
+            <Box>
+              <FormControl component="fieldset">
+                <FormLabel sx={{ color: 'rgb(156, 163, 175)', mb: 1 }}>Level</FormLabel>
+                <RadioGroup
+                  value={level}
+                  onChange={(e) => setLevel(e.target.value)}
+                  row
+                >
+                  <FormControlLabel
+                    value="graduate"
+                    control={<Radio sx={{ color: 'rgb(156, 163, 175)' }} />}
+                    label="Graduate SWE"
+                    sx={{ color: 'rgb(243, 244, 246)' }}
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Box>
+          </Paper>
+
           <Link href="/interview" style={{ textDecoration: "none" }}>
             <Button
               variant="contained"
@@ -83,16 +132,6 @@ export default function SetupPage() {
               Start Interview
             </Button>
           </Link>
-          <Typography
-            variant="body1"
-            sx={{
-              mt: 2,
-              color: "rgb(156, 163, 175)",
-            }}
-          >
-            When pressed, the interview will begin, starting a timer of 30
-            minutes.
-          </Typography>
         </Box>
       </Box>
     </ProtectedRoute>
