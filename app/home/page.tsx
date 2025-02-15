@@ -29,7 +29,7 @@ export default function HomePage() {
                   Practice your coding interview skills with our AI interviewer. Get real-time feedback and improve your performance.
                 </p>
                 <button
-                  onClick={() => router.push('/instructions')}
+                  onClick={() => router.push('/setup')}
                   className="px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium transition-colors duration-200"
                 >
                   Start Interview

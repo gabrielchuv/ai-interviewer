@@ -1,5 +1,6 @@
 "use client";
 
+import React from 'react';
 import { Box, Button, Typography } from "@mui/material";
 import Link from "next/link";
 import ReactMarkdown from "react-markdown";
@@ -24,7 +25,7 @@ When the AI interviewer is satisfied with your solution, you will be able to cli
 - It contains a timer of 25 minutes. When the timer reaches 0, the interview will be automatically completed.
 `;
 
-export default function InstructionsPage() {
+export default function SetupPage() {
   return (
     <ProtectedRoute>
       <Box sx={{ minHeight: "100vh", bgcolor: "rgb(17, 24, 39)" }}>
@@ -96,4 +97,4 @@ export default function InstructionsPage() {
       </Box>
     </ProtectedRoute>
   );
-}
+} 

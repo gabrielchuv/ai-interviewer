@@ -11,10 +11,10 @@ export const RestartInterviewButton: React.FunctionComponent<{
   const handleReturnToInstruction = async () => {
     window.speechSynthesis.cancel();
 
-    router.push("/instructions");
+    router.push("/setup");
   };
   return (
-    <Tooltip title="Restart interview, go back to instructions">
+    <Tooltip title="Restart interview, go back to setup">
       <Button
         variant="secondary"
         style={{
