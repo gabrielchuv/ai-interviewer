@@ -20,7 +20,7 @@ export interface Message {
 
 const initialMessage: Message = {
   role: "ai",
-  text: `Welcome! I'll be your interviewer today. Please consider the question in the code editor to the right, and interact with me in the same way you would in a real interview.
+  text: `Welcome! I'm AlgoMentor and I'll be your interviewer today. Please consider the question in the code editor to the right, and interact with me in the same way you would in a real interview. Feel free to to ask any clarifying questions and outline your approach before you start coding.
   Good luck!`,
 };
 
@@ -44,6 +44,7 @@ export default function InterviewPage() {
 
   const [question] = useState(() => {
     return questionBank[Math.floor(Math.random() * questionBank.length) + 1];
+    // return questionBank[1];
   });
 
   const { readAndStreamText, stop } = useTextToSpeech();
