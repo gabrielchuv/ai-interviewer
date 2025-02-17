@@ -135,17 +135,22 @@ export default function InterviewPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleTimeUp = useCallback(() => {
-    setIsTimeUp(true);
-  }, []);
-
-  const handleInterviewComplete = () => {
+  const saveInterviewAndRedirectToFeedback = useCallback(() => {
     localStorage.setItem(
       "interview_conversation",
       JSON.stringify(conversation)
     );
     localStorage.setItem("interview_code", currentCode);
     router.push("/feedback");
+  }, [conversation, currentCode, router]);
+
+  const handleTimeUp = useCallback(() => {
+    setIsTimeUp(true);
+    saveInterviewAndRedirectToFeedback();
+  }, [saveInterviewAndRedirectToFeedback]);
+
+  const handleInterviewComplete = () => {
+    saveInterviewAndRedirectToFeedback();
   };
 
   return (
