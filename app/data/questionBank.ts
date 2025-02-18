@@ -3,20 +3,80 @@ export interface Question {
     title: string;
     description: string;
     examples: string;
+    milestones?: {
+        id: number;
+        title: string;
+        description: string;
+    }[];
 }
 
 export const questionBank: Question[] = [
     {
         id: 1,
         title: "Two Sum",
-        description: "Find two numbers in an array that sum to a target value. Each input guarantees exactly one solution, and you cannot reuse the same array element.",
+        description: `In an e-commerce platform, customers often receive promotional discounts when they purchase two items 
+whose total price meets a certain threshold. Your task is to develop a feature that suggests two products from a given list 
+that add up to exactly the minimum required spend for a discount. 
+
+For example, if a customer has a $50 minimum spend to qualify 
+for free shipping and their cart has items priced at $10, $25, $30, and $40, the system should recommend the pair $25 and $30 
+to reach the target exactly.`,
         examples: `Examples:
 
 Input: nums = [2,7,11,15], target = 9
 Output: [0,1] (2 + 7 = 9)
 
 Input: nums = [3,2,4], target = 6
-Output: [1,2] (2 + 4 = 6)`
+Output: [1,2] (2 + 4 = 6)`,
+        milestones: [
+            {
+                id: 1,
+                title: "Identify Edge Cases Where No Valid Pair Exists",
+                description: `Recognizes that there is always exactly one valid pair based on the problem guarantee.
+Discusses what would happen if the guarantee didn’t exist (e.g., no valid pair scenario like [10, 20, 30] with a target of 100).
+Mentions possible variations, like handling multiple valid pairs or requiring the "best" pair.`,
+            },
+            {
+                id: 2,
+                title: "Identify Relevant Data Structures",
+                description: `Lists possible data structures:
+- Array/List (for storing item prices).
+- Hash Table/Set (for efficient lookups).
+Considers alternatives like sorting + two-pointer approach.`,
+            },
+            {
+                id: 3,
+                title: "Justify Choice of Data Structures with Complexity Analysis",
+                description: `Explains why a hash table (dict/set) enables O(n) time complexity for quick lookups.
+Compares with a brute-force O(n²) nested loop approach and explains why it’s inefficient.
+Discusses the trade-offs of sorting the list first (O(n log n) time) and using the two-pointer technique.`,
+            },
+            {
+                id: 4,
+                title: "Code the Solution",
+                description: `Implements the solution in an organized, readable manner.
+Uses meaningful variable names (prices, target, seen_prices).
+Ensures correct return format (either the price pair or indices).`,
+            },
+            {
+                id: 5,
+                title: "Walk Through the Code with an Example",
+                description: `Takes an input example and manually traces execution step by step.
+Shows how the hash table updates and when a match is found.
+Checks if the code handles all possible valid inputs.
+`,
+            },
+            {
+                id: 6,
+                title: "Address Edge Cases & Invalid Inputs",
+                description: `Handles cases like:
+- Minimum input size (e.g., only two numbers).
+- Duplicate numbers in the list (ensuring the same item isn’t reused).
+- Unsorted input order (verifying that approach works regardless).
+- If no valid pair existed (although this is ruled out by the problem guarantee).
+`,
+            },
+        ]
     },
     {
         id: 2,

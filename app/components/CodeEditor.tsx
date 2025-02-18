@@ -20,8 +20,6 @@ export function CodeEditor({ question, onCodeChange }: CodeEditorProps) {
     return `/*
 ${question.description}
 
-${question.examples}
-
 ${INSTRUCTION}
 */`;
   };
