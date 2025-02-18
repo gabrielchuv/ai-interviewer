@@ -43,8 +43,8 @@ export default function InterviewPage() {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const [question] = useState(() => {
-    return questionBank[Math.floor(Math.random() * questionBank.length) + 1];
-    // return questionBank[1];
+    // return questionBank[Math.floor(Math.random() * questionBank.length) + 1];
+    return questionBank[0];
   });
 
   const { readAndStreamText, stop } = useTextToSpeech();
