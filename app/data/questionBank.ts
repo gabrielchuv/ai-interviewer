@@ -14,13 +14,10 @@ export const questionBank: Question[] = [
     {
         id: 1,
         title: "Two Sum",
-        description: `In an e-commerce platform, customers often receive promotional discounts when they purchase two items 
-whose total price meets a certain threshold. Your task is to develop a feature that suggests two products from a given list 
-that add up to exactly the minimum required spend for a discount. 
-
-For example, if a customer has a $50 minimum spend to qualify 
-for free shipping and their cart has items priced at $10, $25, $30, and $40, the system should recommend the pair $25 and $30 
-to reach the target exactly.`,
+        description: `Imagine an e-commerce website where customers can use a special "bundle discount" offer. 
+For instance, a customer has a voucher that applies only if they purchase exactly two items whose prices 
+add up to a specific total—say, $100. Your task as a software engineer is to scan the product catalog and 
+identify two items that, when combined, equal the voucher amount.`,
         examples: `Examples:
 
 Input: nums = [2,7,11,15], target = 9
