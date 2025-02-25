@@ -15,7 +15,7 @@ export async function getFeedback(conversation: Message[], code: string) {
       body: JSON.stringify({ conversation }),
     }),
     // Code quality
-    fetch("/api/feedback/code", {
+    fetch("/api/feedback/codeQuality", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ code }),
