@@ -6,7 +6,7 @@ const openai = new OpenAI({
 });
 
 export async function POST(request: Request) {
-  const { code } = await request.json();
+  const { conversation } = await request.json();
 
   // Get both rating and feedback in a single call
   const response = await openai.chat.completions.create({
@@ -15,10 +15,11 @@ export async function POST(request: Request) {
       {
         role: "developer",
         content: `You are a technical interviewer. Evaluate the candidate based on the following criteria:
-- Creates simple code (e.g., leverages reuse, properly formatted, no improper coding constructs)
-- Creates maintainable code (e.g., quickly able to trace impact of changes, clear variable naming conventions)
-- Code is organized in a way that is easy to read and understand
-- Code is syntactically correct, or would be syntactically correct with minor improvements
+- Uses optimal data structures and algorithms to solve the problem
+- Identifies potential shortcomings and discusses tradeoffs with different data structures and algorithms
+- Justifies why the selected data structures and algorithm were used
+- Demonstrates solid grasp of runtime and space complexity tradeoffs even if not perfectly accurate in O(n) syntax
+- Provides justification for decisions with regard to technical requirements; shows an understanding of why a solution addresses the requirement
 
 Provide your evaluation in JSON format with the following structure:
 {
@@ -30,7 +31,7 @@ The feedback should be composed of sentences in the following format: assessment
       },
       {
         role: "user",
-        content: JSON.stringify(code)
+        content: JSON.stringify(conversation)
       }
     ],
     response_format: { type: "json_object" }

@@ -13,10 +13,9 @@ interface FeedbackSection {
 }
 
 interface FeedbackData {
-  clarification: FeedbackSection;
-  approach: FeedbackSection;
+  technicalDepth: FeedbackSection;
+  problemSolving: FeedbackSection;
   codeQuality: FeedbackSection;
-  complexity: FeedbackSection;
 }
 
 export default function FeedbackPage() {
@@ -57,6 +56,8 @@ export default function FeedbackPage() {
     fetchFeedback();
   }, []);
 
+const overallScore = feedback && Math.round((feedback.technicalDepth.rating + feedback.problemSolving.rating + feedback.codeQuality.rating) / 3)
+
   return (
     <ProtectedRoute>
       <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
@@ -75,53 +76,38 @@ export default function FeedbackPage() {
               <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 text-center">
                 <h2 className="text-xl font-medium text-gray-300 mb-2">Overall Score</h2>
                 <div className="text-4xl font-bold text-blue-400">
-                  {Math.round(
-                    (feedback.clarification.rating +
-                      feedback.approach.rating +
-                      feedback.codeQuality.rating +
-                      feedback.complexity.rating) / 4
-                  )}/4
+                  {overallScore}/4
                 </div>
               </div>
 
               <div className="grid gap-6 md:grid-cols-2">
                 <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 flex flex-col">
-                  <h2 className="text-xl font-medium text-gray-300 mb-2">Problem Clarification</h2>
+                  <h2 className="text-xl font-medium text-gray-300 mb-2">Technical Depth & Optimization</h2>
                   <div className="text-3xl font-bold text-blue-400 mb-4">
-                    {feedback.clarification.rating}/4
+                    {feedback.technicalDepth.rating}/4
                   </div>
                   <div className="prose prose-invert max-w-none flex-1 overflow-auto">
-                    <ReactMarkdown>{feedback.clarification.feedback}</ReactMarkdown>
+                    <ReactMarkdown>{feedback.technicalDepth.feedback}</ReactMarkdown>
                   </div>
                 </div>
 
                 <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 flex flex-col">
-                  <h2 className="text-xl font-medium text-gray-300 mb-2">Approach & Planning</h2>
+                  <h2 className="text-xl font-medium text-gray-300 mb-2">Problem Solving & Functional Correctness</h2>
                   <div className="text-3xl font-bold text-blue-400 mb-4">
-                    {feedback.approach.rating}/4
+                    {feedback.problemSolving.rating}/4
                   </div>
                   <div className="prose prose-invert max-w-none flex-1 overflow-auto">
-                    <ReactMarkdown>{feedback.approach.feedback}</ReactMarkdown>
+                    <ReactMarkdown>{feedback.problemSolving.feedback}</ReactMarkdown>
                   </div>
                 </div>
 
                 <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 flex flex-col">
-                  <h2 className="text-xl font-medium text-gray-300 mb-2">Implementation & Code Quality</h2>
+                  <h2 className="text-xl font-medium text-gray-300 mb-2">Code Quality & Readability</h2>
                   <div className="text-3xl font-bold text-blue-400 mb-4">
                     {feedback.codeQuality.rating}/4
                   </div>
                   <div className="prose prose-invert max-w-none flex-1 overflow-auto">
                     <ReactMarkdown>{feedback.codeQuality.feedback}</ReactMarkdown>
-                  </div>
-                </div>
-
-                <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 flex flex-col">
-                  <h2 className="text-xl font-medium text-gray-300 mb-2">Complexity Analysis</h2>
-                  <div className="text-3xl font-bold text-blue-400 mb-4">
-                    {feedback.complexity.rating}/4
-                  </div>
-                  <div className="prose prose-invert max-w-none flex-1 overflow-auto">
-                    <ReactMarkdown>{feedback.complexity.feedback}</ReactMarkdown>
                   </div>
                 </div>
               </div>

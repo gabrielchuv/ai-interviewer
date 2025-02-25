@@ -8,10 +8,9 @@ interface FeedbackSection {
 }
 
 interface FeedbackData {
-  clarification: FeedbackSection;
-  approach: FeedbackSection;
+  technicalDepth: FeedbackSection;
+  problemSolving: FeedbackSection;
   codeQuality: FeedbackSection;
-  complexity: FeedbackSection;
 }
 
 const getCurrentUser = (): Promise<User> => {
@@ -32,10 +31,9 @@ export const storeFeedback = async (feedbackData: FeedbackData) => {
   const user = await getCurrentUser();
   
   const overallScore = Math.round(
-    (feedbackData.clarification.rating +
-      feedbackData.approach.rating +
-      feedbackData.codeQuality.rating +
-      feedbackData.complexity.rating) / 4
+    (feedbackData.technicalDepth.rating +
+      feedbackData.problemSolving.rating +
+      feedbackData.codeQuality.rating) / 4
   );
 
   const currentDate = new Date();
@@ -50,10 +48,9 @@ export const storeFeedback = async (feedbackData: FeedbackData) => {
     date: formattedDate,
     timestamp: currentDate,
     overallScore,
-    clarification: feedbackData.clarification,
-    approach: feedbackData.approach,
+    clarification: feedbackData.technicalDepth,
+    approach: feedbackData.problemSolving,
     codeQuality: feedbackData.codeQuality,
-    complexity: feedbackData.complexity,
     userEmail: user.email,
   };
 

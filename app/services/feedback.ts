@@ -2,40 +2,33 @@ import { Message } from "../interview/page";
 
 export async function getFeedback(conversation: Message[], code: string) {
   const responses = await Promise.all([
-    // Problem clarification
-    fetch("/api/feedback/clarification", {
+    // Technical Depth & Optimization
+    fetch("/api/feedback/technicalDepth", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ conversation }),
     }),
-    // Approach & planning
-    fetch("/api/feedback/approach", {
+    // Problem Solving & Functional Correctness
+    fetch("/api/feedback/problemSolving", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ conversation }),
     }),
-    // Code quality
+    // Code Quality & Readability
     fetch("/api/feedback/codeQuality", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ code }),
     }),
-    // Complexity analysis
-    fetch("/api/feedback/complexity", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ conversation }),
-    }),
   ]);
 
-  const [clarification, approach, codeQuality, complexity] = await Promise.all(
+  const [technicalDepth, problemSolving, codeQuality] = await Promise.all(
     responses.map((r) => r.json())
   );
 
   return {
-    clarification,
-    approach,
+    technicalDepth,
+    problemSolving,
     codeQuality,
-    complexity,
   };
 }
