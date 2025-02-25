@@ -57,6 +57,7 @@ export default function FeedbackPage() {
   }, []);
 
 const overallScore = feedback && Math.round((feedback.technicalDepth.rating + feedback.problemSolving.rating + feedback.codeQuality.rating) / 3)
+const hireInclination = overallScore && overallScore >= 3 ? "Hire" : "No Hire"
 
   return (
     <ProtectedRoute>
@@ -68,19 +69,21 @@ const overallScore = feedback && Math.round((feedback.technicalDepth.rating + fe
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400"></div>
             </div>
           ) : feedback && (
-            <div className="max-w-4xl mx-auto space-y-6">
-              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-8 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
+            <div className="max-w-4xl mx-auto space-y-8">
+              <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
                 Interview Feedback
               </h1>
-
-              <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 text-center">
-                <h2 className="text-xl font-medium text-gray-300 mb-2">Overall Score</h2>
-                <div className="text-4xl font-bold text-blue-400">
-                  {overallScore}/4
+              
+              {/* Hire Inclination at the top outside of a Paper */}
+              <div className="text-center mb-6">
+                <h2 className="text-2xl font-medium text-gray-300 mb-2">Final Decision</h2>
+                <div className={`text-5xl font-bold ${hireInclination === "Hire" ? "text-green-400" : "text-red-400"}`}>
+                  {hireInclination}
                 </div>
               </div>
 
-              <div className="grid gap-6 md:grid-cols-2">
+              {/* Stacked feedback sections */}
+              <div className="space-y-8">
                 <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 flex flex-col">
                   <h2 className="text-xl font-medium text-gray-300 mb-2">Technical Depth & Optimization</h2>
                   <div className="text-3xl font-bold text-blue-400 mb-4">
