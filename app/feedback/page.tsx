@@ -80,7 +80,7 @@ export default function FeedbackPage() {
                       feedback.approach.rating +
                       feedback.codeQuality.rating +
                       feedback.complexity.rating) / 4
-                  )}/5
+                  )}/4
                 </div>
               </div>
 
@@ -88,7 +88,7 @@ export default function FeedbackPage() {
                 <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 flex flex-col">
                   <h2 className="text-xl font-medium text-gray-300 mb-2">Problem Clarification</h2>
                   <div className="text-3xl font-bold text-blue-400 mb-4">
-                    {feedback.clarification.rating}/5
+                    {feedback.clarification.rating}/4
                   </div>
                   <div className="prose prose-invert max-w-none flex-1 overflow-auto">
                     <ReactMarkdown>{feedback.clarification.feedback}</ReactMarkdown>
@@ -98,7 +98,7 @@ export default function FeedbackPage() {
                 <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 flex flex-col">
                   <h2 className="text-xl font-medium text-gray-300 mb-2">Approach & Planning</h2>
                   <div className="text-3xl font-bold text-blue-400 mb-4">
-                    {feedback.approach.rating}/5
+                    {feedback.approach.rating}/4
                   </div>
                   <div className="prose prose-invert max-w-none flex-1 overflow-auto">
                     <ReactMarkdown>{feedback.approach.feedback}</ReactMarkdown>
@@ -108,7 +108,7 @@ export default function FeedbackPage() {
                 <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 flex flex-col">
                   <h2 className="text-xl font-medium text-gray-300 mb-2">Implementation & Code Quality</h2>
                   <div className="text-3xl font-bold text-blue-400 mb-4">
-                    {feedback.codeQuality.rating}/5
+                    {feedback.codeQuality.rating}/4
                   </div>
                   <div className="prose prose-invert max-w-none flex-1 overflow-auto">
                     <ReactMarkdown>{feedback.codeQuality.feedback}</ReactMarkdown>
@@ -118,7 +118,7 @@ export default function FeedbackPage() {
                 <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 flex flex-col">
                   <h2 className="text-xl font-medium text-gray-300 mb-2">Complexity Analysis</h2>
                   <div className="text-3xl font-bold text-blue-400 mb-4">
-                    {feedback.complexity.rating}/5
+                    {feedback.complexity.rating}/4
                   </div>
                   <div className="prose prose-invert max-w-none flex-1 overflow-auto">
                     <ReactMarkdown>{feedback.complexity.feedback}</ReactMarkdown>

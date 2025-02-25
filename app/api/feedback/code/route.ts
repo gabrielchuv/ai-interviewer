@@ -14,7 +14,13 @@ export async function POST(request: Request) {
     messages: [
       {
         role: "developer",
-        content: "You are a technical interviewer. Evaluate the code quality of the candidate's solution on a scale of 1-5. Respond with only the number."
+        content: `You are a technical interviewer. Evaluate the candidate based on the following criteria:
+- Creates simple code (e.g., leverages reuse, properly formatted, no improper coding constructs)
+- Creates maintainable code (e.g., quickly able to trace impact of changes, clear variable naming conventions)
+- Code is organized in a way that is easy to read and understand
+- Code is syntactically correct, or would be syntactically correct with minor improvements
+
+Provide a score from 1 to 4 and nothing else.`
       },
       {
         role: "user",
@@ -29,7 +35,15 @@ export async function POST(request: Request) {
     messages: [
       {
         role: "developer",
-        content: "You are a technical interviewer. Evaluate the code quality of the candidate's solution. Provide brief feedback in markdown format."
+        content: `You are a technical interviewer. Evaluate the candidate based on the following criteria:
+- Creates simple code (e.g., leverages reuse, properly formatted, no improper coding constructs)
+- Creates maintainable code (e.g., quickly able to trace impact of changes, clear variable naming conventions)
+- Code is organized in a way that is easy to read and understand
+- Code is syntactically correct, or would be syntactically correct with minor improvements
+
+1. Provide feedback in less than 100 words.
+2. The feedback should be composed of sentences in the following format: assessment + evidence. For example: The candidate demonstrates
+a poor understanding of basic syntatctic nuance. For instance, they struggled to write proper indentation.`
       },
       {
         role: "user",
