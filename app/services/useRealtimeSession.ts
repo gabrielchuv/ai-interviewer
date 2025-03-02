@@ -6,7 +6,8 @@ interface UseRealtimeSessionResult {
   isConnecting: boolean;
   isConnected: boolean;
   error: Error | null;
-  messages: Array<{ role: 'user' | 'assistant'; content: string }>;
+  messages: Array<{ role: 'user' | 'assistant'; content: string; isComplete?: boolean }>;
+  transcriptions: Array<{ text: string; timestamp: number; source: 'user' | 'ai' }>;
   connect: () => Promise<void>;
   disconnect: () => void;
   sendMessage: (message: string) => void;
@@ -18,7 +19,8 @@ export function useRealtimeSession(): UseRealtimeSessionResult {
   const [isConnecting, setIsConnecting] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<Error | null>(null);
-  const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string }>>([]);
+  const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string; isComplete?: boolean }>>([]);
+  const [transcriptions, setTranscriptions] = useState<Array<{ text: string; timestamp: number; source: 'user' | 'ai' }>>([]);
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
   
   const realtimeSessionRef = useRef<RealtimeSession | null>(null);
@@ -64,6 +66,9 @@ export function useRealtimeSession(): UseRealtimeSessionResult {
         onMessage: (event) => {
           try {
             const data = JSON.parse(event.data);
+            console.log('Received event:', data);
+            
+            // Handle legacy message format (if any)
             if (data.type === 'message' && data.content) {
               setMessages(prev => [...prev, { role: 'assistant', content: data.content }]);
             } else if (data.type === 'error') {
@@ -74,6 +79,48 @@ export function useRealtimeSession(): UseRealtimeSessionResult {
             console.error('Error parsing message:', err, event.data);
           }
         },
+        
+        // Handle text responses from the API
+        onTextResponse: (text) => {
+          console.log('Received text response:', text);
+          setMessages(prev => {
+            // Check if we already have an incomplete assistant message
+            const lastMessage = prev[prev.length - 1];
+            if (lastMessage && lastMessage.role === 'assistant' && !lastMessage.isComplete) {
+              // Update the existing message
+              return [
+                ...prev.slice(0, prev.length - 1),
+                { ...lastMessage, content: text, isComplete: true }
+              ];
+            } else {
+              // Add a new complete message
+              return [...prev, { role: 'assistant', content: text, isComplete: true }];
+            }
+          });
+        },
+        
+        // Handle transcriptions from the API
+        onTranscription: (transcript) => {
+          console.log('Received transcription:', transcript);
+          
+          // Determine the source based on the event type
+          const eventType = realtimeSessionRef.current?.getLastEventType();
+          const source = eventType === 'response.audio_transcript.done' 
+              ? 'ai' 
+              : 'user'; // Default to user if unknown
+          
+          console.log(`Transcription source (${eventType}):`, source);
+          
+          setTranscriptions(prev => [
+            ...prev, 
+            { 
+              text: transcript, 
+              timestamp: Date.now(),
+              source
+            }
+          ]);
+        },
+        
         onConnectionStateChange: (state) => {
           setIsConnected(state === 'connected');
           if (state === 'failed' || state === 'disconnected' || state === 'closed') {
@@ -100,8 +147,9 @@ export function useRealtimeSession(): UseRealtimeSessionResult {
       setIsConnecting(false);
       setIsConnected(true);
       
-      // Clear previous messages
+      // Clear previous messages and transcriptions
       setMessages([]);
+      setTranscriptions([]);
       
     } catch (err) {
       console.error('Error connecting to realtime session:', err);
@@ -138,6 +186,7 @@ export function useRealtimeSession(): UseRealtimeSessionResult {
     isConnected,
     error,
     messages,
+    transcriptions,
     connect,
     disconnect,
     sendMessage,

@@ -3,9 +3,42 @@ import { EphemeralSession } from './ephemeralSession';
 interface RealtimeSessionOptions {
   onTrack?: (event: RTCTrackEvent) => void;
   onMessage?: (event: MessageEvent) => void;
+  onTextResponse?: (text: string) => void;
+  onTranscription?: (transcript: string) => void;
   onConnectionStateChange?: (state: RTCPeerConnectionState) => void;
   onError?: (error: Error) => void;
 }
+
+// Define interfaces for the OpenAI Realtime API events
+interface OpenAIBaseEvent {
+  event_id: string;
+  type: string;
+}
+
+interface OpenAITextDoneEvent extends OpenAIBaseEvent {
+  type: 'response.text.done';
+  response_id: string;
+  item_id: string;
+  output_index: number;
+  content_index: number;
+  text: string;
+}
+
+interface OpenAITranscriptionEvent extends OpenAIBaseEvent {
+  type: 'conversation.item.input_audio_transcription.completed';
+  item_id: string;
+  content_index: number;
+  transcript: string;
+}
+
+interface OpenAIAudioTranscriptDoneEvent extends OpenAIBaseEvent {
+  type: 'response.audio_transcript.done';
+  response_id: string;
+  item_id: string;
+  transcript: string;
+}
+
+type OpenAIEvent = OpenAITextDoneEvent | OpenAITranscriptionEvent | OpenAIAudioTranscriptDoneEvent | OpenAIBaseEvent;
 
 export class RealtimeSession {
   private peerConnection: RTCPeerConnection | null = null;
@@ -15,6 +48,7 @@ export class RealtimeSession {
   private options: RealtimeSessionOptions;
   private ephemeralKey: string | null = null;
   private model: string | null = null;
+  private lastEventType: string | null = null;
 
   constructor(options: RealtimeSessionOptions = {}) {
     this.options = options;
@@ -72,9 +106,41 @@ export class RealtimeSession {
 
       // Create data channel for sending and receiving events
       this.dataChannel = this.peerConnection.createDataChannel('oai-events');
+      
+      // Set up event handling for OpenAI events
       this.dataChannel.onmessage = (event) => {
-        if (this.options.onMessage) {
-          this.options.onMessage(event);
+        try {
+          // Parse the event data
+          const serverEvent = JSON.parse(event.data) as OpenAIEvent;
+          
+          // Store the last event type
+          this.lastEventType = serverEvent.type;
+          
+          // Handle different event types
+          switch (serverEvent.type) {
+            case 'response.text.done':
+              // Handle completed text response
+              if (this.options.onTextResponse) {
+                const textEvent = serverEvent as OpenAITextDoneEvent;
+                this.options.onTextResponse(textEvent.text);
+              }
+              break;       
+              
+            case 'response.audio_transcript.done':
+              // Handle audio transcript done event
+              if (this.options.onTranscription) {
+                const transcriptEvent = serverEvent as OpenAIAudioTranscriptDoneEvent;
+                this.options.onTranscription(transcriptEvent.transcript);
+              }
+              break;
+          }
+          
+          // Pass the raw event to the general message handler if provided
+          if (this.options.onMessage) {
+            this.options.onMessage(event);
+          }
+        } catch (error) {
+          console.error('Error processing server event:', error, event.data);
         }
       };
 
@@ -181,5 +247,13 @@ export class RealtimeSession {
       !!this.peerConnection &&
       ['connected', 'completed'].includes(this.peerConnection.connectionState)
     );
+  }
+
+  /**
+   * Get the type of the last received event
+   * @returns The event type or null if no event has been received
+   */
+  getLastEventType(): string | null {
+    return this.lastEventType;
   }
 } 
