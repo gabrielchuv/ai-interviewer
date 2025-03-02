@@ -27,6 +27,7 @@ The implementation consists of:
    - Handles messages, transcriptions, and errors
    - Processes and stores completed text responses
    - Distinguishes between user and AI transcriptions
+   - Provides a function to clear transcriptions
 
 4. **UI Component** (`/components/RealtimeChat.tsx`):
    - Provides a chat interface for the realtime session
@@ -34,6 +35,8 @@ The implementation consists of:
    - Visually distinguishes between complete and incomplete responses
    - Shows user and AI transcriptions with different styling
    - Allows users to connect/disconnect and send messages
+   - Includes a debug panel for monitoring events (in development)
+   - Provides controls to show/hide and clear transcriptions
 
 ## OpenAI Realtime API Events
 
@@ -182,6 +185,7 @@ function MyCustomChat() {
     connect,
     disconnect,
     sendMessage,
+    clearTranscriptions,
     audioElement
   } = useRealtimeSession();
 
@@ -200,4 +204,4 @@ Most modern browsers (Chrome, Firefox, Safari, Edge) support these features.
 
 ## Demo
 
-Visit `/realtime-chat` to see a live demo of the realtime chat functionality. 
+Visit `/realtime-chat` to see a live demo of the realtime chat functionality.

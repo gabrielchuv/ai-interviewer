@@ -110,3 +110,51 @@ async function init() {
 
 init();
 ```
+
+## Documentation for listening to server events
+
+Example:Listen for response.done to see the final results
+```
+function handleEvent(e) {
+  const serverEvent = JSON.parse(e.data);
+  if (serverEvent.type === "response.done") {
+    console.log(serverEvent.response.output[0]);
+  }
+}
+
+// Listen for server messages (WebRTC)
+dataChannel.addEventListener("message", handleEvent);
+```
+
+
+## Documentation for input audio transcription events
+### conversation.item.input_audio_transcription.completed
+This event is the output of audio transcription for user audio written to the user audio buffer. Transcription begins when the input audio buffer is committed by the client or server (in server_vad mode). Transcription runs asynchronously with Response creation, so this event may come before or after the Response events.
+
+Realtime API models accept audio natively, and thus input transcription is a separate process run on a separate ASR (Automatic Speech Recognition) model, currently always whisper-1. Thus the transcript may diverge somewhat from the model's interpretation, and should be treated as a rough guide.
+
+```
+{
+    "event_id": "event_2122",
+    "type": "conversation.item.input_audio_transcription.completed",
+    "item_id": "msg_003",
+    "content_index": 0,
+    "transcript": "Hello, how are you?"
+}
+```
+
+## Documentation for response output events
+### response.text.done
+Returned when the text value of a "text" content part is done streaming. Also emitted when a Response is interrupted, incomplete, or cancelled.
+
+```
+{
+    "event_id": "event_4344",
+    "type": "response.text.done",
+    "response_id": "resp_001",
+    "item_id": "msg_007",
+    "output_index": 0,
+    "content_index": 0,
+    "text": "Sure, I can help with that."
+}
+```

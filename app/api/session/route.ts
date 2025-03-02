@@ -11,6 +11,10 @@ export async function GET(request: Request) {
       body: JSON.stringify({
         model: "gpt-4o-realtime-preview-2024-12-17",
         voice: "verse",
+        modalities: ["text", "audio"],
+        input_audio_transcription: {
+            model: "whisper-1"
+          }
       }),
     });
 

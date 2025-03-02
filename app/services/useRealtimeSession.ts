@@ -11,6 +11,7 @@ interface UseRealtimeSessionResult {
   connect: () => Promise<void>;
   disconnect: () => void;
   sendMessage: (message: string) => void;
+  clearTranscriptions: () => void;
   audioElement: HTMLAudioElement | null;
 }
 
@@ -101,15 +102,23 @@ export function useRealtimeSession(): UseRealtimeSessionResult {
         
         // Handle transcriptions from the API
         onTranscription: (transcript) => {
-          console.log('Received transcription:', transcript);
+          const eventType = realtimeSessionRef.current?.getLastEventType();
+          console.log(`[useRealtimeSession] Transcription received (${eventType}):`, transcript);
           
           // Determine the source based on the event type
-          const eventType = realtimeSessionRef.current?.getLastEventType();
-          const source = eventType === 'response.audio_transcript.done' 
-              ? 'ai' 
-              : 'user'; // Default to user if unknown
+          let source: 'user' | 'ai';
           
-          console.log(`Transcription source (${eventType}):`, source);
+          if (eventType === 'conversation.item.input_audio_transcription.completed') {
+            source = 'user';
+            console.log('[useRealtimeSession] User transcription detected');
+          } else if (eventType === 'response.audio_transcript.done') {
+            source = 'ai';
+            console.log('[useRealtimeSession] AI transcription detected');
+          } else {
+            // Default fallback logic
+            source = eventType?.includes('input_audio_transcription') ? 'user' : 'ai';
+            console.log(`[useRealtimeSession] Using fallback logic for transcription source: ${source}`);
+          }
           
           setTranscriptions(prev => [
             ...prev, 
@@ -181,6 +190,10 @@ export function useRealtimeSession(): UseRealtimeSessionResult {
     realtimeSessionRef.current.sendMessage(message);
   }, [isConnected]);
 
+  const clearTranscriptions = useCallback(() => {
+    setTranscriptions([]);
+  }, []);
+
   return {
     isConnecting,
     isConnected,
@@ -190,6 +203,7 @@ export function useRealtimeSession(): UseRealtimeSessionResult {
     connect,
     disconnect,
     sendMessage,
+    clearTranscriptions,
     audioElement
   };
 } 

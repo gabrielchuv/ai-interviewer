@@ -126,6 +126,15 @@ export class RealtimeSession {
               }
               break;       
               
+            case 'conversation.item.input_audio_transcription.completed':
+              // Handle user audio transcription
+              console.log('[OpenAI Event] User audio transcription completed:', (serverEvent as OpenAITranscriptionEvent).transcript);
+              if (this.options.onTranscription) {
+                const transcriptEvent = serverEvent as OpenAITranscriptionEvent;
+                this.options.onTranscription(transcriptEvent.transcript);
+              }
+              break;
+              
             case 'response.audio_transcript.done':
               // Handle audio transcript done event
               if (this.options.onTranscription) {
