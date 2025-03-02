@@ -1,4 +1,4 @@
-interface EphemeralSession {
+export interface EphemeralSession {
   id: string;
   object: string;
   model: string;
