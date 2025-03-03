@@ -158,3 +158,23 @@ Returned when the text value of a "text" content part is done streaming. Also em
     "text": "Sure, I can help with that."
 }
 ```
+
+## Documentation for text input events
+```
+const event = {
+  type: "conversation.item.create",
+  item: {
+    type: "message",
+    role: "user",
+    content: [
+      {
+        type: "input_text",
+        text: "What Prince album sold the most copies?",
+      }
+    ]
+  },
+};
+
+// WebRTC data channel and WebSocket both have .send()
+dataChannel.send(JSON.stringify(event));
+```

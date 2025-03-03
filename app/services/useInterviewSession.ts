@@ -53,7 +53,8 @@ export function useInterviewSession(): UseInterviewSessionResult {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "ai",
-      text: "Welcome to the technical interview! Click the Connect button above to start. You'll be able to speak with the AI interviewer and discuss your approach to the coding problem."
+      text: "Welcome to the technical interview! Click the Connect button above to start. You'll be able to speak with the AI interviewer and discuss your approach to the coding problem.",
+      timestamp: Date.now()
     }
   ]);
   const [transcriptions, setTranscriptions] = useState<Array<{ text: string; timestamp: number; source: 'user' | 'ai' }>>([]);
@@ -102,7 +103,7 @@ export function useInterviewSession(): UseInterviewSessionResult {
             
             // Handle legacy message format (if any)
             if (data.type === 'message' && data.content) {
-              setMessages(prev => [...prev, { role: "ai", text: data.content }]);
+              setMessages(prev => [...prev, { role: "ai", text: data.content, timestamp: Date.now() }]);
             } else if (data.type === 'error') {
               console.error('Realtime session error:', data);
               setError(new Error(data.message || 'Unknown error from realtime session'));
@@ -117,7 +118,7 @@ export function useInterviewSession(): UseInterviewSessionResult {
           console.log('Received text response:', text);
           setMessages(prev => {
             // Add a new complete message
-            return [...prev, { role: "ai", text }];
+            return [...prev, { role: "ai", text, timestamp: Date.now() }];
           });
         },
         
@@ -180,7 +181,8 @@ export function useInterviewSession(): UseInterviewSessionResult {
       // Replace the initial welcome message with the AI's welcome message
       setMessages([{
         role: "ai",
-        text: `Welcome! I'm your technical interviewer today. I'll be asking you about the ${questionTitle} problem. Please feel free to ask any clarifying questions and outline your approach before you start coding. Good luck!`
+        text: `Welcome! I'm your technical interviewer today. I'll be asking you about the ${questionTitle} problem. Please feel free to ask any clarifying questions and outline your approach before you start coding. Good luck!`,
+        timestamp: Date.now()
       }]);
       
       // Clear previous transcriptions
@@ -211,7 +213,7 @@ export function useInterviewSession(): UseInterviewSessionResult {
     }
 
     // Add message to the list
-    setMessages(prev => [...prev, { role: "user", text: message }]);
+    setMessages(prev => [...prev, { role: "user", text: message, timestamp: Date.now() }]);
     
     // Send message to the AI
     realtimeSessionRef.current.sendMessage(message);

@@ -15,6 +15,7 @@ import { MdMic, MdMicOff } from "react-icons/md";
 export interface Message {
   role: "user" | "ai";
   text: string;
+  timestamp?: number;
 }
 
 export type MessageCategory =
@@ -74,13 +75,28 @@ export default function InterviewPage() {
   };
 
   const saveInterviewAndRedirectToFeedback = useCallback(() => {
+    // Create a combined conversation that includes both messages and transcriptions
+    const combinedConversation = [
+      ...messages,
+      ...transcriptions.map(transcript => ({
+        role: transcript.source === 'user' ? 'user' : 'ai',
+        text: transcript.text,
+        timestamp: transcript.timestamp
+      }))
+    ].sort((a, b) => {
+      // Sort by timestamp if available, otherwise keep original order
+      const timeA = (a as any).timestamp || 0;
+      const timeB = (b as any).timestamp || 0;
+      return timeA - timeB;
+    });
+
     localStorage.setItem(
       "interview_conversation",
-      JSON.stringify(messages)
+      JSON.stringify(combinedConversation)
     );
     localStorage.setItem("interview_code", currentCode);
     router.push("/feedback");
-  }, [messages, currentCode, router]);
+  }, [messages, transcriptions, currentCode, router]);
 
   const handleTimeUp = useCallback(() => {
     saveInterviewAndRedirectToFeedback();
