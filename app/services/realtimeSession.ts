@@ -87,8 +87,19 @@ export class RealtimeSession {
 
       // Handle connection state changes
       this.peerConnection.onconnectionstatechange = () => {
-        if (this.options.onConnectionStateChange && this.peerConnection) {
-          this.options.onConnectionStateChange(this.peerConnection.connectionState);
+        if (this.peerConnection) {
+          const state = this.peerConnection.connectionState;
+          console.log(`[RealtimeSession] Connection state changed to: ${state}`);
+          
+          if (state === 'connected') {
+            console.log('[RealtimeSession] WebRTC connection established successfully');
+          } else if (state === 'failed' || state === 'disconnected' || state === 'closed') {
+            console.warn(`[RealtimeSession] WebRTC connection ${state}`);
+          }
+          
+          if (this.options.onConnectionStateChange) {
+            this.options.onConnectionStateChange(state);
+          }
         }
       };
 
@@ -107,11 +118,29 @@ export class RealtimeSession {
       // Create data channel for sending and receiving events
       this.dataChannel = this.peerConnection.createDataChannel('oai-events');
       
+      // Log when the data channel opens
+      this.dataChannel.onopen = () => {
+        console.log('[RealtimeSession] Data channel opened');
+      };
+      
+      // Log when the data channel closes
+      this.dataChannel.onclose = () => {
+        console.log('[RealtimeSession] Data channel closed');
+      };
+      
+      // Log data channel errors
+      this.dataChannel.onerror = (error) => {
+        console.error('[RealtimeSession] Data channel error:', error);
+      };
+      
       // Set up event handling for OpenAI events
       this.dataChannel.onmessage = (event) => {
         try {
           // Parse the event data
           const serverEvent = JSON.parse(event.data) as OpenAIEvent;
+          
+          // Enhanced logging for all events
+          console.log('[OpenAI Event Received]', serverEvent.type, serverEvent);
           
           // Store the last event type
           this.lastEventType = serverEvent.type;
@@ -122,6 +151,7 @@ export class RealtimeSession {
               // Handle completed text response
               if (this.options.onTextResponse) {
                 const textEvent = serverEvent as OpenAITextDoneEvent;
+                console.log('[OpenAI Event] Text response completed:', textEvent.text);
                 this.options.onTextResponse(textEvent.text);
               }
               break;       
@@ -137,10 +167,31 @@ export class RealtimeSession {
               
             case 'response.audio_transcript.done':
               // Handle audio transcript done event
+              console.log('[OpenAI Event] AI audio transcript done:', (serverEvent as OpenAIAudioTranscriptDoneEvent).transcript);
               if (this.options.onTranscription) {
                 const transcriptEvent = serverEvent as OpenAIAudioTranscriptDoneEvent;
                 this.options.onTranscription(transcriptEvent.transcript);
               }
+              break;
+
+            case 'response.created':
+              console.log('[OpenAI Event] Response created');
+              break;
+
+            case 'response.completed':
+              console.log('[OpenAI Event] Response completed');
+              break;
+
+            case 'response.chunk':
+              console.log('[OpenAI Event] Response chunk received');
+              break;
+
+            case 'response.audio.chunk':
+              console.log('[OpenAI Event] Audio chunk received');
+              break;
+
+            default:
+              console.log(`[OpenAI Event] Unhandled event type: ${serverEvent.type}`);
               break;
           }
           
@@ -199,12 +250,43 @@ export class RealtimeSession {
       return;
     }
 
+    // Check data channel state
+    console.log('[RealtimeSession] Data channel state:', this.dataChannel.readyState);
+    
+    // Create message object in the format expected by the OpenAI Realtime API
     const messageObj = {
-      type: 'message',
-      content: message,
+      type: "conversation.item.create",
+      item: {
+        type: "message",
+        role: "user",
+        content: [
+          {
+            type: "input_text",
+            text: message,
+          }
+        ]
+      },
     };
 
-    this.dataChannel.send(JSON.stringify(messageObj));
+    // Log the message being sent
+    console.log('[RealtimeSession] Sending message:', messageObj);
+    
+    try {
+      // Send the message
+      this.dataChannel.send(JSON.stringify(messageObj));
+      console.log('[RealtimeSession] Message sent successfully');
+      
+      // Trigger a response creation
+      const responseCreateEvent = {
+        type: "response.create"
+      };
+      
+      console.log('[RealtimeSession] Sending response.create event:', responseCreateEvent);
+      this.dataChannel.send(JSON.stringify(responseCreateEvent));
+      console.log('[RealtimeSession] response.create event sent successfully');
+    } catch (error) {
+      console.error('[RealtimeSession] Error sending message:', error);
+    }
   }
 
   /**
