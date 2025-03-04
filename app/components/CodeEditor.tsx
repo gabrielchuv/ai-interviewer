@@ -1,10 +1,10 @@
 "use client";
 
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Stack } from "@mui/material";
 import CodeMirror from "@uiw/react-codemirror";
-import { javascript } from "@codemirror/lang-javascript";
 import { useState, useEffect } from "react";
 import { Question } from "../data/questionBank";
+import { LanguageSelector, ProgrammingLanguage, LANGUAGES } from "./LanguageSelector";
 
 const INSTRUCTION = "Write your solution below:";
 
@@ -15,13 +15,18 @@ interface CodeEditorProps {
 
 export function CodeEditor({ question, onCodeChange }: CodeEditorProps) {
   const [containerWidth, setContainerWidth] = useState(0);
+  const [language, setLanguage] = useState<ProgrammingLanguage>(LANGUAGES[0]);
+
+  const handleLanguageChange = (selectedLanguage: ProgrammingLanguage) => {
+    setLanguage(selectedLanguage);
+  };
 
   const getFormattedValue = () => {
-    return `/*
+    return `${language.commentStart}
 ${question.description}
 
 ${INSTRUCTION}
-*/`;
+${language.commentEnd}`;
   };
 
   useEffect(() => {
@@ -52,22 +57,32 @@ ${INSTRUCTION}
         height: "100vh",
       }}
     >
-      <Typography
-        variant="h6"
-        gutterBottom
-        sx={{
-          color: "rgb(96, 165, 250)", // text-blue-400
-          fontWeight: "bold",
-          marginBottom: 0,
-        }}
+      <Stack 
+        direction="row" 
+        spacing={2} 
+        alignItems="center" 
+        sx={{ marginBottom: 1 }}
       >
-        Code
-      </Typography>
+        <Typography
+          variant="h6"
+          sx={{
+            color: "rgb(96, 165, 250)", // text-blue-400
+            fontWeight: "bold",
+            marginBottom: 0,
+          }}
+        >
+          Code
+        </Typography>
+        <LanguageSelector
+          selectedLanguage={language.value}
+          onLanguageChange={handleLanguageChange}
+        />
+      </Stack>
       <CodeMirror
         style={{ padding: 0, marginTop: 0 }}
         value={getFormattedValue()}
         height="calc(100vh - 170px)"
-        extensions={[javascript()]}
+        extensions={[language.extension()]}
         theme="dark"
         width={containerWidth ? `${containerWidth * 0.7}px` : "100%"}
         onChange={onCodeChange}
