@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useEphemeralSession } from './useEphemeralSession';
 import { RealtimeSession } from './realtimeSession';
 import { Message } from '../interview/page';
+import { EphemeralSession } from './ephemeralSession';
 
 interface UseInterviewSessionResult {
   isConnecting: boolean;
@@ -17,7 +17,7 @@ interface UseInterviewSessionResult {
 }
 
 // Updated to use a custom function to get the ephemeral session with question details
-async function getEphemeralSessionWithQuestion(questionTitle: string, questionDescription: string) {
+async function getEphemeralSessionWithQuestion(questionTitle: string, questionDescription: string): Promise<EphemeralSession> {
   try {
     const response = await fetch('/api/session', {
       method: 'POST',
@@ -42,11 +42,7 @@ async function getEphemeralSessionWithQuestion(questionTitle: string, questionDe
 }
 
 export function useInterviewSession(): UseInterviewSessionResult {
-  // We'll manage the session ourselves instead of using useEphemeralSession
-  const [session, setSession] = useState(null);
-  const [sessionLoading, setSessionLoading] = useState(false);
-  const [sessionError, setSessionError] = useState<Error | null>(null);
-  
+  // Remove unused states
   const [isConnecting, setIsConnecting] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -72,13 +68,6 @@ export function useInterviewSession(): UseInterviewSessionResult {
     };
   }, []);
 
-  // Handle session errors
-  useEffect(() => {
-    if (sessionError) {
-      setError(sessionError);
-    }
-  }, [sessionError]);
-
   const connect = useCallback(async (questionTitle: string, questionDescription: string) => {
     if (isConnected || isConnecting) {
       return;
@@ -86,13 +75,10 @@ export function useInterviewSession(): UseInterviewSessionResult {
 
     setIsConnecting(true);
     setError(null);
-    setSessionLoading(true);
 
     try {
       // Get the ephemeral session with question details
-      const newSession = await getEphemeralSessionWithQuestion(questionTitle, questionDescription);
-      setSession(newSession);
-      setSessionLoading(false);
+      const ephemeralSession = await getEphemeralSessionWithQuestion(questionTitle, questionDescription);
 
       // Create a new realtime session
       const realtimeSession = new RealtimeSession({
@@ -166,7 +152,7 @@ export function useInterviewSession(): UseInterviewSessionResult {
       });
 
       // Initialize the session
-      await realtimeSession.initialize(newSession);
+      await realtimeSession.initialize(ephemeralSession);
       
       // Store the session reference
       realtimeSessionRef.current = realtimeSession;
@@ -193,7 +179,6 @@ export function useInterviewSession(): UseInterviewSessionResult {
       setError(err instanceof Error ? err : new Error(String(err)));
       setIsConnecting(false);
       setIsConnected(false);
-      setSessionLoading(false);
     }
   }, [isConnected, isConnecting]);
 

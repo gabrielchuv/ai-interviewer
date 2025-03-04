@@ -1,27 +1,5 @@
 import OpenAI from 'openai';
-
-interface EphemeralSession {
-  id: string;
-  object: string;
-  model: string;
-  modalities: string[];
-  instructions: string;
-  voice: string;
-  input_audio_format: string;
-  output_audio_format: string;
-  input_audio_transcription: {
-    model: string;
-  };
-  turn_detection: null;
-  tools: any[];
-  tool_choice: string;
-  temperature: number;
-  max_response_output_tokens: number;
-  client_secret: {
-    value: string;
-    expires_at: number;
-  };
-}
+import { EphemeralSession } from './ephemeralSession';
 
 /**
  * Creates an OpenAI client using an ephemeral session key

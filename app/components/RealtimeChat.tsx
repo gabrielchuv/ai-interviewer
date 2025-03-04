@@ -22,7 +22,6 @@ export default function RealtimeChat() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const audioContainerRef = useRef<HTMLDivElement>(null);
   const [showTranscriptions, setShowTranscriptions] = useState(false);
-  const [showDebugPanel, setShowDebugPanel] = useState(false);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -65,10 +64,6 @@ export default function RealtimeChat() {
 
   const toggleTranscriptions = () => {
     setShowTranscriptions(!showTranscriptions);
-  };
-
-  const toggleDebugPanel = () => {
-    setShowDebugPanel(!showDebugPanel);
   };
 
   const handleClearTranscriptions = () => {

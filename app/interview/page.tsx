@@ -10,7 +10,6 @@ import { questionBank } from "../data/questionBank";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Header from "../components/Header";
 import { useInterviewSession } from "../services/useInterviewSession";
-import { MdMic, MdMicOff } from "react-icons/md";
 import { InterviewChat } from "../components/InterviewChat";
 
 export interface Message {
@@ -86,8 +85,8 @@ export default function InterviewPage() {
       }))
     ].sort((a, b) => {
       // Sort by timestamp if available, otherwise keep original order
-      const timeA = (a as any).timestamp || 0;
-      const timeB = (b as any).timestamp || 0;
+      const timeA = (a).timestamp || 0;
+      const timeB = (b).timestamp || 0;
       return timeA - timeB;
     });
 

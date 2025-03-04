@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import { useRef } from "react";
 import { FaCode } from "react-icons/fa";
 import { ChatWindow } from "./ChatWindow";
 

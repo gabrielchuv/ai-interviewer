@@ -1,28 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { getEphemeralSession, isSessionExpired } from './ephemeralSession';
-
-interface EphemeralSession {
-  id: string;
-  object: string;
-  model: string;
-  modalities: string[];
-  instructions: string;
-  voice: string;
-  input_audio_format: string;
-  output_audio_format: string;
-  input_audio_transcription: {
-    model: string;
-  };
-  turn_detection: null;
-  tools: any[];
-  tool_choice: string;
-  temperature: number;
-  max_response_output_tokens: number;
-  client_secret: {
-    value: string;
-    expires_at: number;
-  };
-}
+import { getEphemeralSession, EphemeralSession } from './ephemeralSession';
 
 interface UseEphemeralSessionResult {
   session: EphemeralSession | null;

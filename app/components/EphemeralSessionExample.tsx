@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useEphemeralSession } from '../services/useEphemeralSession';
 import { createOpenAIClient } from '../services/createOpenAIClient';
-import OpenAI from 'openai';
 
 export default function EphemeralSessionExample() {
   const { session, loading, error, refreshSession } = useEphemeralSession();

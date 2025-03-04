@@ -11,7 +11,8 @@ export interface EphemeralSession {
     model: string;
   };
   turn_detection: null;
-  tools: any[];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+tools: any[];
   tool_choice: string;
   temperature: number;
   max_response_output_tokens: number;
