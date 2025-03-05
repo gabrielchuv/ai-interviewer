@@ -7,7 +7,6 @@ import { Timer } from "../components/Timer";
 import { Footer } from "../components/Footer";
 import { useRouter } from "next/navigation";
 import { questionBank } from "../data/questionBank";
-import ProtectedRoute from "../components/ProtectedRoute";
 import Header from "../components/Header";
 import { useInterviewSession } from "../services/useInterviewSession";
 import { InterviewChat } from "../components/InterviewChat";
@@ -44,7 +43,7 @@ export default function InterviewPage() {
   } = useInterviewSession();
 
   const [question] = useState(() => {
-    return questionBank[Math.floor(Math.random() * questionBank.length) + 1];
+    return questionBank[0];
   });
 
   // Scroll to bottom when messages change
@@ -126,7 +125,6 @@ export default function InterviewPage() {
   }, [disconnect]);
 
   return (
-    <ProtectedRoute>
       <Box
         sx={{
           height: "calc(100% - 120px)",
@@ -167,6 +165,5 @@ export default function InterviewPage() {
           </Box>
         </Box>
       </Box>
-    </ProtectedRoute>
   );
 }
