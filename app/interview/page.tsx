@@ -163,7 +163,6 @@ export default function InterviewPage() {
               <Footer
                 onSubmit={handleInterviewComplete}
                 disableComplete={!isConnected}
-                disableRestart={!isConnected}
               />
             </Box>
           </Box>

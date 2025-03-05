@@ -6,19 +6,16 @@ import {
   Tooltip,
   DialogContent,
 } from "@mui/material";
-import { RestartInterviewButton } from "./RestartInterviewButton";
 import { useState } from "react";
 import { Button } from "../uiLibrary";
 
 interface FooterProps {
   onSubmit: () => void;
-  disableRestart?: boolean;
   disableComplete?: boolean;
 }
 
 export function Footer({
   onSubmit,
-  disableRestart,
   disableComplete,
 }: FooterProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -46,7 +43,6 @@ export function Footer({
         pt: 1,
       }}
     >
-      <RestartInterviewButton disabled={disableRestart} />
       <Tooltip title="Complete the interview and view feedback">
         <Button
           variant="primary"
