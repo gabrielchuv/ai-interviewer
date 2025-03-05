@@ -4,7 +4,6 @@ import { javascript } from "@codemirror/lang-javascript";
 import { python } from "@codemirror/lang-python";
 import { java } from "@codemirror/lang-java";
 import { cpp } from "@codemirror/lang-cpp";
-import { ReactNode } from "react";
 
 // Define language options
 export type ProgrammingLanguage = {
@@ -61,7 +60,7 @@ export const LANGUAGES: ProgrammingLanguage[] = [
 ];
 
 // Styled Select component for better visibility
-const StyledSelect = styled(Select<string>)(({ theme }) => ({
+const StyledSelect = styled(Select<string>)(() => ({
   height: 36,
   fontSize: "0.9rem",
   fontWeight: 500,
@@ -92,7 +91,7 @@ const StyledSelect = styled(Select<string>)(({ theme }) => ({
 }));
 
 // Styled MenuItem for dropdown options
-const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+const StyledMenuItem = styled(MenuItem)(() => ({
   fontSize: "0.9rem",
   "&.Mui-selected": {
     backgroundColor: "rgba(96, 165, 250, 0.1)",
@@ -111,7 +110,7 @@ interface LanguageSelectorProps {
 }
 
 export function LanguageSelector({ selectedLanguage, onLanguageChange }: LanguageSelectorProps) {
-  const handleChange = (event: SelectChangeEvent<string>, child: ReactNode) => {
+  const handleChange = (event: SelectChangeEvent<string>) => {
     const selectedLang = LANGUAGES.find(lang => lang.value === event.target.value);
     if (selectedLang) {
       onLanguageChange(selectedLang);
