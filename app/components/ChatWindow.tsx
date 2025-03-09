@@ -1,6 +1,5 @@
 import { Box } from "@mui/material";
-import { MdMic, MdMicOff } from "react-icons/md";
-import { useState, useEffect } from "react";
+import { MdMic } from "react-icons/md";
 
 interface ChatWindowProps {
   isConnecting: boolean;
@@ -49,28 +48,16 @@ export function ChatWindow({
               mr: 1
             }} 
           />
-          {isConnecting ? 'Connecting...' : isConnected ? 'Connected' : 'Disconnected'}
+          {isConnecting ? 'Connecting...' : isConnected ? 'Connected' : 'Waiting to connect...'}
         </Box>
         <Box sx={{ display: 'flex', gap: 1 }}>
-          {autoConnectCountdown === null && (
+          {/* Only show connect button when not connected and not auto-connecting */}
+          {!isConnected && !isConnecting && autoConnectCountdown === null && (
             <button
               onClick={handleConnect}
-              className={`px-2 py-1 rounded-full text-xs flex items-center ${
-                isConnected ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'
-              } text-white`}
-              disabled={isConnecting}
+              className="px-2 py-1 rounded-full text-xs flex items-center bg-green-500 hover:bg-green-600 text-white"
             >
-              {isConnecting ? (
-                <span>Connecting...</span>
-              ) : isConnected ? (
-                <>
-                  <MdMicOff className="mr-1" size={12} /> Disconnect
-                </>
-              ) : (
-                <>
-                  <MdMic className="mr-1" size={12} /> Connect
-                </>
-              )}
+              <MdMic className="mr-1" size={12} /> Connect
             </button>
           )}
         </Box>
@@ -231,7 +218,7 @@ export function ChatWindow({
                     {autoConnectCountdown}
                   </Box>
                   <Box sx={{ fontSize: '0.875rem', color: 'rgba(156, 163, 175, 0.8)' }}>
-                    Prepare your questions and get ready to discuss the problem
+                    Be ready to discuss the problem
                   </Box>
                 </Box>
               ) : (
@@ -239,7 +226,7 @@ export function ChatWindow({
                   <MdMic size={32} className="text-blue-400 mb-2" />
                   <Box sx={{ textAlign: 'center', fontSize: '0.9rem', color: 'rgb(156, 163, 175)' }}>
                     {!isConnected ? 
-                      "Click the Connect button above to start your interview" :
+                      "Your interview will begin shortly" :
                       "Your conversation will appear here"
                     }
                   </Box>

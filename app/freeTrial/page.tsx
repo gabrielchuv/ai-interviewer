@@ -82,11 +82,9 @@ export default function InterviewPage() {
     }
   }, [audioElement]);
 
-  // Replace the automatic connection with a manual connection handler
+  // Modified to only handle connection, not disconnection
   const handleConnect = () => {
-    if (isConnected) {
-      disconnect();
-    } else {
+    if (!isConnected && !isConnecting) {
       connect(question.title, question.description);
     }
   };
