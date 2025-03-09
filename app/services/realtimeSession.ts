@@ -49,6 +49,7 @@ export class RealtimeSession {
   private ephemeralKey: string | null = null;
   private model: string | null = null;
   private lastEventType: string | null = null;
+  private isMuted: boolean = false;
 
   constructor(options: RealtimeSessionOptions = {}) {
     this.options = options;
@@ -287,6 +288,68 @@ export class RealtimeSession {
     } catch (error) {
       console.error('[RealtimeSession] Error sending message:', error);
     }
+  }
+
+  /**
+   * Mute the microphone without disconnecting the session
+   * @returns boolean indicating if the operation was successful
+   */
+  mute(): boolean {
+    if (!this.mediaStream) {
+      console.warn('No media stream available to mute');
+      return false;
+    }
+
+    try {
+      this.mediaStream.getAudioTracks().forEach(track => {
+        track.enabled = false;
+      });
+      this.isMuted = true;
+      console.log('[RealtimeSession] Microphone muted');
+      return true;
+    } catch (error) {
+      console.error('Error muting microphone:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Unmute the microphone
+   * @returns boolean indicating if the operation was successful
+   */
+  unmute(): boolean {
+    if (!this.mediaStream) {
+      console.warn('No media stream available to unmute');
+      return false;
+    }
+
+    try {
+      this.mediaStream.getAudioTracks().forEach(track => {
+        track.enabled = true;
+      });
+      this.isMuted = false;
+      console.log('[RealtimeSession] Microphone unmuted');
+      return true;
+    } catch (error) {
+      console.error('Error unmuting microphone:', error);
+      return false;
+    }
+  }
+
+  /**
+   * Toggle the mute state of the microphone
+   * @returns The new mute state (true = muted, false = unmuted)
+   */
+  toggleMute(): boolean {
+    return this.isMuted ? this.unmute() : this.mute();
+  }
+
+  /**
+   * Check if the microphone is currently muted
+   * @returns boolean indicating if the microphone is muted
+   */
+  getMuteState(): boolean {
+    return this.isMuted;
   }
 
   /**

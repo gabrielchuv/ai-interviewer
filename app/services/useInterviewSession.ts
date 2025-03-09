@@ -14,6 +14,8 @@ interface UseInterviewSessionResult {
   sendMessage: (message: string) => void;
   clearTranscriptions: () => void;
   audioElement: HTMLAudioElement | null;
+  isMuted: boolean;
+  toggleMute: () => void;
 }
 
 // Updated to use a custom function to get the ephemeral session with question details
@@ -55,6 +57,7 @@ export function useInterviewSession(): UseInterviewSessionResult {
   ]);
   const [transcriptions, setTranscriptions] = useState<Array<{ text: string; timestamp: number; source: 'user' | 'ai' }>>([]);
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
   
   const realtimeSessionRef = useRef<RealtimeSession | null>(null);
 
@@ -163,6 +166,7 @@ export function useInterviewSession(): UseInterviewSessionResult {
       // Update state
       setIsConnecting(false);
       setIsConnected(true);
+      setIsMuted(false);
       
       // Replace the initial welcome message with the AI's welcome message
       setMessages([{
@@ -188,6 +192,7 @@ export function useInterviewSession(): UseInterviewSessionResult {
       realtimeSessionRef.current = null;
       setIsConnected(false);
       setAudioElement(null);
+      setIsMuted(false);
     }
   }, []);
 
@@ -208,6 +213,28 @@ export function useInterviewSession(): UseInterviewSessionResult {
     setTranscriptions([]);
   }, []);
 
+  const toggleMute = useCallback(() => {
+    if (!realtimeSessionRef.current || !isConnected) {
+      return;
+    }
+
+    try {
+      // Get the current mute state before toggling
+      const currentMuteState = realtimeSessionRef.current.getMuteState();
+      
+      // Toggle the mute state in the RealtimeSession
+      const success = realtimeSessionRef.current.toggleMute();
+      
+      if (success) {
+        // Update the UI state with the new (opposite) mute state
+        setIsMuted(!currentMuteState);
+        console.log(`[useInterviewSession] Microphone ${!currentMuteState ? 'muted' : 'unmuted'}`);
+      }
+    } catch (error) {
+      console.error('Error toggling mute state:', error);
+    }
+  }, [isConnected]);
+
   return {
     isConnecting,
     isConnected,
@@ -218,6 +245,8 @@ export function useInterviewSession(): UseInterviewSessionResult {
     disconnect,
     sendMessage,
     clearTranscriptions,
-    audioElement
+    audioElement,
+    isMuted,
+    toggleMute
   };
 } 

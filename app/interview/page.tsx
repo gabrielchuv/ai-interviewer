@@ -40,7 +40,9 @@ export default function InterviewPage() {
     connect,
     disconnect,
     sendMessage,
-    audioElement
+    audioElement,
+    isMuted,
+    toggleMute
   } = useInterviewSession();
 
   const [question] = useState(() => {
@@ -150,6 +152,8 @@ export default function InterviewPage() {
               messagesEndRef={messagesEndRef as React.RefObject<HTMLDivElement>}
               currentCode={currentCode}
               sendMessage={sendMessage}
+              isMuted={isMuted}
+              toggleMute={toggleMute}
             />
             <Box
               sx={{

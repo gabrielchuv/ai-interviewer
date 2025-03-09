@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { FaCode } from "react-icons/fa";
+import { MdMic, MdMicOff } from "react-icons/md";
 import { ChatWindow } from "./ChatWindow";
 
 interface InterviewChatProps {
@@ -11,6 +12,8 @@ interface InterviewChatProps {
   messagesEndRef: React.RefObject<HTMLDivElement>;
   currentCode: string;
   sendMessage: (message: string) => void;
+  isMuted?: boolean;
+  toggleMute?: () => void;
 }
 
 export function InterviewChat({
@@ -21,7 +24,9 @@ export function InterviewChat({
   handleConnect,
   messagesEndRef,
   currentCode,
-  sendMessage
+  sendMessage,
+  isMuted = false,
+  toggleMute
 }: InterviewChatProps) {
   
   const handleReviewCode = () => {
@@ -52,21 +57,49 @@ export function InterviewChat({
         messagesEndRef={messagesEndRef}
       />
       
-      {/* Review Code Button */}
-      <button
-        onClick={handleReviewCode}
-        disabled={!isConnected}
-        className={`
-          w-full py-2 px-4 rounded flex items-center justify-center
-          ${isConnected 
-            ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-            : 'bg-gray-600 text-gray-300 cursor-not-allowed'}
-          transition-colors duration-200
-        `}
-      >
-        <FaCode className="mr-2" />
-        Review Code
-      </button>
+      <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+        {/* Mute Button - Only show when connected */}
+        {isConnected && toggleMute && (
+          <button
+            onClick={toggleMute}
+            className={`
+              flex-1 py-2 px-4 rounded flex items-center justify-center
+              ${isMuted 
+                ? 'bg-red-600 hover:bg-red-700 text-white' 
+                : 'bg-green-600 hover:bg-green-700 text-white'}
+              transition-colors duration-200
+            `}
+          >
+            {isMuted ? (
+              <>
+                <MdMicOff className="mr-2" />
+                Unmute Mic
+              </>
+            ) : (
+              <>
+                <MdMic className="mr-2" />
+                Mute Mic
+              </>
+            )}
+          </button>
+        )}
+        
+        {/* Review Code Button */}
+        <button
+          onClick={handleReviewCode}
+          disabled={!isConnected}
+          className={`
+            flex-1 py-2 px-4 rounded flex items-center justify-center
+            ${isConnected 
+              ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+              : 'bg-gray-600 text-gray-300 cursor-not-allowed'}
+            transition-colors duration-200
+          `}
+        >
+          <FaCode className="mr-2" />
+          Review Code
+        </button>
+      </Box>
     </Box>
   );
 } 
