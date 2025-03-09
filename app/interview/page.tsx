@@ -30,6 +30,7 @@ export default function InterviewPage() {
   const [currentCode, setCurrentCode] = useState("");
   const audioContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [autoConnectCountdown, setAutoConnectCountdown] = useState<number | null>(10);
 
   const {
     isConnecting,
@@ -48,6 +49,22 @@ export default function InterviewPage() {
   const [question] = useState(() => {
     return questionBank[Math.floor(Math.random() * questionBank.length) + 1];
   });
+
+  // Auto-connect countdown
+  useEffect(() => {
+    if (autoConnectCountdown === null || isConnected || isConnecting) return;
+
+    const timer = setTimeout(() => {
+      if (autoConnectCountdown > 1) {
+        setAutoConnectCountdown(autoConnectCountdown - 1);
+      } else {
+        setAutoConnectCountdown(null);
+        handleConnect();
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [autoConnectCountdown, isConnected, isConnecting]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -141,7 +158,8 @@ export default function InterviewPage() {
         
         <Header />
         <Box sx={{ flex: 1, position: "relative" }}>
-          <Timer onTimeUp={handleTimeUp} />
+          {/* Only show timer when connected */}
+          {isConnected && <Timer onTimeUp={handleTimeUp} />}
           <Box display="flex" sx={{ height: "calc(100% - 120px)" }}>
             <InterviewChat
               isConnecting={isConnecting}
@@ -154,6 +172,7 @@ export default function InterviewPage() {
               sendMessage={sendMessage}
               isMuted={isMuted}
               toggleMute={toggleMute}
+              autoConnectCountdown={autoConnectCountdown}
             />
             <Box
               sx={{

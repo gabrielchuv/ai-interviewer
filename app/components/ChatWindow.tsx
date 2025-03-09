@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import { MdMic, MdMicOff } from "react-icons/md";
+import { useState, useEffect } from "react";
 
 interface ChatWindowProps {
   isConnecting: boolean;
@@ -8,6 +9,7 @@ interface ChatWindowProps {
   transcriptions: Array<{ text: string; timestamp: number; source: 'user' | 'ai' }>;
   handleConnect: () => void;
   messagesEndRef: React.RefObject<HTMLDivElement>;
+  autoConnectCountdown?: number | null;
 }
 
 export function ChatWindow({
@@ -16,7 +18,8 @@ export function ChatWindow({
   error,
   transcriptions,
   handleConnect,
-  messagesEndRef
+  messagesEndRef,
+  autoConnectCountdown
 }: ChatWindowProps) {
   return (
     <>
@@ -49,25 +52,27 @@ export function ChatWindow({
           {isConnecting ? 'Connecting...' : isConnected ? 'Connected' : 'Disconnected'}
         </Box>
         <Box sx={{ display: 'flex', gap: 1 }}>
-          <button
-            onClick={handleConnect}
-            className={`px-2 py-1 rounded-full text-xs flex items-center ${
-              isConnected ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'
-            } text-white`}
-            disabled={isConnecting}
-          >
-            {isConnecting ? (
-              <span>Connecting...</span>
-            ) : isConnected ? (
-              <>
-                <MdMicOff className="mr-1" size={12} /> Disconnect
-              </>
-            ) : (
-              <>
-                <MdMic className="mr-1" size={12} /> Connect
-              </>
-            )}
-          </button>
+          {autoConnectCountdown === null && (
+            <button
+              onClick={handleConnect}
+              className={`px-2 py-1 rounded-full text-xs flex items-center ${
+                isConnected ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'
+              } text-white`}
+              disabled={isConnecting}
+            >
+              {isConnecting ? (
+                <span>Connecting...</span>
+              ) : isConnected ? (
+                <>
+                  <MdMicOff className="mr-1" size={12} /> Disconnect
+                </>
+              ) : (
+                <>
+                  <MdMic className="mr-1" size={12} /> Connect
+                </>
+              )}
+            </button>
+          )}
         </Box>
       </Box>
       
@@ -197,13 +202,49 @@ export function ChatWindow({
                 opacity: 0.7
               }}
             >
-              <MdMic size={32} className="text-blue-400 mb-2" />
-              <Box sx={{ textAlign: 'center', fontSize: '0.9rem', color: 'rgb(156, 163, 175)' }}>
-                {!isConnected ? 
-                  "Click the Connect button above to start your interview" :
-                  "Your conversation will appear here"
-                }
-              </Box>
+              {autoConnectCountdown !== null && autoConnectCountdown !== undefined && autoConnectCountdown > 0 && !isConnected && !isConnecting ? (
+                <Box 
+                  sx={{ 
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    color: 'rgb(96, 165, 250)',
+                  }}
+                >
+                  <Box sx={{ fontWeight: 'bold', fontSize: '1.25rem', mb: 2 }}>
+                    You will be connected to an interviewer in
+                  </Box>
+                  <Box sx={{ 
+                    fontWeight: 'bold', 
+                    fontSize: '3rem', 
+                    mb: 2,
+                    width: '80px',
+                    height: '80px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    border: '3px solid rgba(37, 99, 235, 0.5)',
+                  }}>
+                    {autoConnectCountdown}
+                  </Box>
+                  <Box sx={{ fontSize: '0.875rem', color: 'rgba(156, 163, 175, 0.8)' }}>
+                    Prepare your questions and get ready to discuss the problem
+                  </Box>
+                </Box>
+              ) : (
+                <>
+                  <MdMic size={32} className="text-blue-400 mb-2" />
+                  <Box sx={{ textAlign: 'center', fontSize: '0.9rem', color: 'rgb(156, 163, 175)' }}>
+                    {!isConnected ? 
+                      "Click the Connect button above to start your interview" :
+                      "Your conversation will appear here"
+                    }
+                  </Box>
+                </>
+              )}
             </Box>
           )}
           <div ref={messagesEndRef} />

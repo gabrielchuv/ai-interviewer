@@ -14,6 +14,7 @@ interface InterviewChatProps {
   sendMessage: (message: string) => void;
   isMuted?: boolean;
   toggleMute?: () => void;
+  autoConnectCountdown?: number | null;
 }
 
 export function InterviewChat({
@@ -26,7 +27,8 @@ export function InterviewChat({
   currentCode,
   sendMessage,
   isMuted = false,
-  toggleMute
+  toggleMute,
+  autoConnectCountdown = null
 }: InterviewChatProps) {
   
   const handleReviewCode = () => {
@@ -55,6 +57,7 @@ export function InterviewChat({
         transcriptions={transcriptions}
         handleConnect={handleConnect}
         messagesEndRef={messagesEndRef}
+        autoConnectCountdown={autoConnectCountdown}
       />
       
       <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
