@@ -93,7 +93,9 @@ export default function InterviewPage() {
       JSON.stringify(combinedConversation)
     );
     localStorage.setItem("interview_code", currentCode);
-    router.push("/feedback");
+    
+    // Redirect to the free trial feedback page instead of the regular feedback page
+    router.push("/freeTrial/feedback");
   }, [messages, transcriptions, currentCode, router]);
 
   const handleTimeUp = useCallback(() => {
