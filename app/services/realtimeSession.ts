@@ -244,8 +244,9 @@ export class RealtimeSession {
   /**
    * Send a message to the AI through the data channel
    * @param message The message to send
+   * @param role The role of the message sender ('user' or 'system')
    */
-  sendMessage(message: string): void {
+  sendMessage(message: string, role?: 'user' | 'system'): void {
     if (!this.dataChannel || this.dataChannel.readyState !== 'open') {
       console.warn('Data channel not open, cannot send message');
       return;
@@ -259,7 +260,7 @@ export class RealtimeSession {
       type: "conversation.item.create",
       item: {
         type: "message",
-        role: "user",
+        role: role || 'user',
         content: [
           {
             type: "input_text",

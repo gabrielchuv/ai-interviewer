@@ -11,7 +11,7 @@ interface UseInterviewSessionResult {
   transcriptions: Array<{ text: string; timestamp: number; source: 'user' | 'ai' }>;
   connect: (questionTitle: string, questionDescription: string) => Promise<void>;
   disconnect: () => void;
-  sendMessage: (message: string) => void;
+  sendMessage: (message: string, role?: 'user' | 'system') => void;
   clearTranscriptions: () => void;
   audioElement: HTMLAudioElement | null;
   isMuted: boolean;
@@ -196,17 +196,19 @@ export function useInterviewSession(): UseInterviewSessionResult {
     }
   }, []);
 
-  const sendMessage = useCallback((message: string) => {
+  const sendMessage = useCallback((message: string, role?: 'user' | 'system') => {
     if (!realtimeSessionRef.current || !isConnected) {
       setError(new Error('Not connected to realtime session'));
       return;
     }
 
-    // Add message to the list
-    setMessages(prev => [...prev, { role: "user", text: message, timestamp: Date.now() }]);
+    // Add message to the list if it's a user message (don't show system messages in the UI)
+    if (role !== 'system') {
+      setMessages(prev => [...prev, { role: "user", text: message, timestamp: Date.now() }]);
+    }
     
-    // Send message to the AI
-    realtimeSessionRef.current.sendMessage(message);
+    // Send message to the AI with the specified role
+    realtimeSessionRef.current.sendMessage(message, role || 'user');
   }, [isConnected]);
 
   const clearTranscriptions = useCallback(() => {

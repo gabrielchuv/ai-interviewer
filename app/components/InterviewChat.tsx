@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { FaCode } from "react-icons/fa";
 import { MdMic, MdMicOff } from "react-icons/md";
 import { ChatWindow } from "./ChatWindow";
+import { useEffect } from "react";
 
 interface InterviewChatProps {
   isConnecting: boolean;
@@ -11,7 +12,7 @@ interface InterviewChatProps {
   handleConnect: () => void;
   messagesEndRef: React.RefObject<HTMLDivElement>;
   currentCode: string;
-  sendMessage: (message: string) => void;
+  sendMessage: (message: string, role?: 'user' | 'system') => void;
   isMuted?: boolean;
   toggleMute?: () => void;
   autoConnectCountdown?: number | null;
@@ -31,11 +32,28 @@ export function InterviewChat({
   autoConnectCountdown = null
 }: InterviewChatProps) {
   
+  // Send introduction message when connection is established
+  useEffect(() => {
+    if (isConnected) {
+      // Use a small delay to ensure the connection is fully established
+      const timer = setTimeout(() => {
+        sendMessage(`Introduce yourself as an interviewer. Let the candidate know the following:
+- They can ask questions to understand the requirements
+- They should outline their approach before coding
+- When done coding, click on Review Code to proceed with the interview
+- They will be assessed based on their approach and thinking process, not perfect syntax
+`, 'system');
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isConnected, sendMessage]);
+  
   const handleReviewCode = () => {
     if (!isConnected) return;
     
     const codeMessage = `I have completed coding my solution. Here it is:\n\n${currentCode}`;
-    sendMessage(codeMessage);
+    sendMessage(codeMessage, 'user');
   };
   
   return (
