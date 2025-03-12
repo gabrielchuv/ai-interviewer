@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { FaCode } from "react-icons/fa";
 import { MdMic, MdMicOff } from "react-icons/md";
+import { IoRocket, IoRocketOutline } from "react-icons/io5";
 import { ChatWindow } from "./ChatWindow";
 import { useEffect } from "react";
 
@@ -16,6 +17,8 @@ interface InterviewChatProps {
   isMuted?: boolean;
   toggleMute?: () => void;
   autoConnectCountdown?: number | null;
+  autoResponseEnabled?: boolean;
+  toggleAutoResponse?: () => void;
 }
 
 export function InterviewChat({
@@ -29,7 +32,9 @@ export function InterviewChat({
   sendMessage,
   isMuted = false,
   toggleMute,
-  autoConnectCountdown = null
+  autoConnectCountdown = null,
+  autoResponseEnabled = true,
+  toggleAutoResponse
 }: InterviewChatProps) {
   
   // Send introduction message when connection is established
@@ -78,7 +83,7 @@ export function InterviewChat({
         autoConnectCountdown={autoConnectCountdown}
       />
       
-      <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+      <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
         {/* Mute Button - Only show when connected */}
         {isConnected && toggleMute && (
           <button
@@ -100,6 +105,32 @@ export function InterviewChat({
               <>
                 <MdMic className="mr-2" />
                 Mute Mic
+              </>
+            )}
+          </button>
+        )}
+        
+        {/* Auto Response Toggle Button - Only show when connected */}
+        {isConnected && toggleAutoResponse && (
+          <button
+            onClick={toggleAutoResponse}
+            className={`
+              flex-1 py-2 px-4 rounded flex items-center justify-center
+              ${autoResponseEnabled 
+                ? 'bg-purple-600 hover:bg-purple-700 text-white' 
+                : 'bg-gray-600 hover:bg-gray-700 text-white'}
+              transition-colors duration-200
+            `}
+          >
+            {autoResponseEnabled ? (
+              <>
+                <IoRocket className="mr-2" />
+                Auto Response On
+              </>
+            ) : (
+              <>
+                <IoRocketOutline className="mr-2" />
+                Auto Response Off
               </>
             )}
           </button>

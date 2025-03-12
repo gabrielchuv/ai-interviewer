@@ -42,7 +42,9 @@ export default function InterviewPage() {
     sendMessage,
     audioElement,
     isMuted,
-    toggleMute
+    toggleMute,
+    autoResponseEnabled,
+    toggleAutoResponse
   } = useInterviewSession();
 
   const [question] = useState(() => {
@@ -171,6 +173,8 @@ export default function InterviewPage() {
               isMuted={isMuted}
               toggleMute={toggleMute}
               autoConnectCountdown={autoConnectCountdown}
+              autoResponseEnabled={autoResponseEnabled}
+              toggleAutoResponse={toggleAutoResponse}
             />
             <Box
               sx={{

@@ -411,4 +411,38 @@ export class RealtimeSession {
   getLastEventType(): string | null {
     return this.lastEventType;
   }
+
+  /**
+   * Update session settings
+   * @param createResponse Boolean to toggle turn_detection.create_response
+   * @returns boolean indicating if the operation was successful
+   */
+  updateSessionSettings(createResponse: boolean): boolean {
+    if (!this.dataChannel || this.dataChannel.readyState !== 'open') {
+      console.warn('[RealtimeSession] Data channel not open, cannot update session settings');
+      return false;
+    }
+
+    try {
+      // Create session update event
+      const updateEvent = {
+        event_id: `event_${Date.now()}`,
+        type: "session.update",
+        session: {
+          turn_detection: {
+            type: "server_vad",
+            create_response: createResponse
+          }
+        }
+      };
+
+      console.log('[RealtimeSession] Sending session.update event:', updateEvent);
+      this.dataChannel.send(JSON.stringify(updateEvent));
+      console.log('[RealtimeSession] session.update event sent successfully');
+      return true;
+    } catch (error) {
+      console.error('[RealtimeSession] Error updating session settings:', error);
+      return false;
+    }
+  }
 } 

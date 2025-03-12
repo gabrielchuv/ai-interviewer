@@ -16,6 +16,8 @@ interface UseInterviewSessionResult {
   audioElement: HTMLAudioElement | null;
   isMuted: boolean;
   toggleMute: () => void;
+  autoResponseEnabled: boolean;
+  toggleAutoResponse: () => void;
 }
 
 // Updated to use a custom function to get the ephemeral session with question details
@@ -58,6 +60,7 @@ export function useInterviewSession(): UseInterviewSessionResult {
   const [transcriptions, setTranscriptions] = useState<Array<{ text: string; timestamp: number; source: 'user' | 'ai' }>>([]);
   const [audioElement, setAudioElement] = useState<HTMLAudioElement | null>(null);
   const [isMuted, setIsMuted] = useState(false);
+  const [autoResponseEnabled, setAutoResponseEnabled] = useState(true);
   
   const realtimeSessionRef = useRef<RealtimeSession | null>(null);
 
@@ -237,6 +240,26 @@ export function useInterviewSession(): UseInterviewSessionResult {
     }
   }, [isConnected]);
 
+  const toggleAutoResponse = useCallback(() => {
+    if (!realtimeSessionRef.current || !isConnected) {
+      return;
+    }
+
+    try {
+      // Toggle the auto response setting
+      const newAutoResponseState = !autoResponseEnabled;
+      const success = realtimeSessionRef.current.updateSessionSettings(newAutoResponseState);
+      
+      if (success) {
+        // Update the UI state
+        setAutoResponseEnabled(newAutoResponseState);
+        console.log(`[useInterviewSession] Auto response ${newAutoResponseState ? 'enabled' : 'disabled'}`);
+      }
+    } catch (error) {
+      console.error('Error toggling auto response setting:', error);
+    }
+  }, [isConnected, autoResponseEnabled]);
+
   return {
     isConnecting,
     isConnected,
@@ -249,6 +272,8 @@ export function useInterviewSession(): UseInterviewSessionResult {
     clearTranscriptions,
     audioElement,
     isMuted,
-    toggleMute
+    toggleMute,
+    autoResponseEnabled,
+    toggleAutoResponse
   };
 } 
