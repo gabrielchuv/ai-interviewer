@@ -57,8 +57,19 @@ export function InterviewChat({
   const handleReviewCode = () => {
     if (!isConnected) return;
     
-    const codeMessage = `I have completed coding my solution. Here it is:\n\n${currentCode}`;
-    sendMessage(codeMessage, 'user');
+    // Always ensure auto-response is enabled when reviewing code
+    if (toggleAutoResponse && !autoResponseEnabled) {
+      toggleAutoResponse();
+      // Add a small delay to ensure the session settings are updated before sending the message
+      setTimeout(() => {
+        const codeMessage = `I have completed coding my solution. Here it is:\n\n${currentCode}`;
+        sendMessage(codeMessage, 'user');
+      }, 300);
+    } else {
+      // If auto-response is already enabled or toggleAutoResponse is not available, send the message immediately
+      const codeMessage = `I have completed coding my solution. Here it is:\n\n${currentCode}`;
+      sendMessage(codeMessage, 'user');
+    }
   };
   
   return (
