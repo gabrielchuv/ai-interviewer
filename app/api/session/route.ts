@@ -22,9 +22,9 @@ export async function POST(request: Request) {
             model: "whisper-1"
         },
         instructions: `Pretend you are a technical interviewer asking the ${questionTitle} question: ${questionDescription}
-        - Expect clarification questions from me before allowing me to code the solution. Your answers to these should be very concise. 
+        - Expect clarification questions from me before allowing me to code the solution. Your answers to these should be VERY concise. 
         - Expect an approach from me before allowing me to code the solution. If it is incorrect, guide me by asking targeted open-ended questions to help me identify the issue. 
-        For instance: "How does your approach handle [a particular edge case]?".
+        For instance: "How does your approach handle [a particular edge case]?". If the approach is correct say: "You can start coding now." in your answer.
         - After coding the solution, you should terminate the interview if it is correct without further feedback. If not correct guide me by asking targeted open ended questions to help me identify the issue. 
         For instance: "How does your approach handle [a particular edge case]?" or "Can you walk me through what happens in this step?
 
