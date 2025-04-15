@@ -1,13 +1,34 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Header from "../components/Header";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import HistoryIcon from '@mui/icons-material/History';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { getUserInterviewsRemaining } from "../services/firebase";
 
 export default function HomePage() {
   const router = useRouter();
+  const [interviewsRemaining, setInterviewsRemaining] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchInterviewsRemaining = async () => {
+      try {
+        const count = await getUserInterviewsRemaining();
+        console.log("count", count);
+        setInterviewsRemaining(count);
+      } catch (error) {
+        console.error("Error fetching interviews remaining:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInterviewsRemaining();
+  }, []);
 
   return (
     <ProtectedRoute>
@@ -19,36 +40,68 @@ export default function HomePage() {
               Welcome to AlgoMentor
             </h1>
             
-            <div className="w-full grid gap-8 sm:grid-cols-2">
-              <div className="flex flex-col items-center space-y-4 border border-gray-700 p-8 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-colors duration-300">
-                <PlayArrowIcon sx={{ fontSize: 60, color: "#60a5fa" }} />
-                <h2 className="text-2xl font-bold text-blue-400">
+            {/* Interviews Remaining Counter */}
+            <div className="py-2 px-4 bg-gray-800/80 border border-gray-700 rounded-lg flex items-center justify-center">
+              {loading ? (
+                <div className="animate-pulse">Loading interview credits...</div>
+              ) : (
+                <div className="text-center">
+                  <span className="font-bold text-lg text-blue-400">{interviewsRemaining}</span>
+                  <span className="ml-1 text-gray-300">interview{interviewsRemaining !== 1 ? 's' : ''} remaining</span>
+                </div>
+              )}
+            </div>
+            
+            <div className="w-full grid gap-8 sm:grid-cols-3">
+              <div className="flex flex-col items-center space-y-4 border border-gray-700 p-6 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-colors duration-300">
+                <PlayArrowIcon sx={{ fontSize: 50, color: "#60a5fa" }} />
+                <h2 className="text-xl font-bold text-blue-400">
                   Start Mock Interview
                 </h2>
-                <p className="text-center text-gray-300 mb-4">
-                  Practice your coding interview skills with our AI interviewer. Get real-time feedback and improve your performance.
+                <p className="text-center text-gray-300 mb-4 text-sm">
+                  Practice your coding interview skills with our AI interviewer.
                 </p>
                 <button
                   onClick={() => router.push('/setup')}
-                  className="px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium transition-colors duration-200"
+                  className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium transition-colors duration-200 text-sm w-full"
+                  disabled={interviewsRemaining === 0}
                 >
                   Start Interview
                 </button>
+                {interviewsRemaining === 0 && (
+                  <p className="text-xs text-red-400">Purchase credits to start</p>
+                )}
               </div>
 
-              <div className="flex flex-col items-center space-y-4 border border-gray-700 p-8 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-colors duration-300">
-                <HistoryIcon sx={{ fontSize: 60, color: "#60a5fa" }} />
-                <h2 className="text-2xl font-bold text-blue-400">
-                  View Feedback History
+              <div className="flex flex-col items-center space-y-4 border border-gray-700 p-6 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-colors duration-300">
+                <HistoryIcon sx={{ fontSize: 50, color: "#60a5fa" }} />
+                <h2 className="text-xl font-bold text-blue-400">
+                  View Feedback
                 </h2>
-                <p className="text-center text-gray-300 mb-4">
-                  Review your past interview performances, track your progress, and identify areas for improvement.
+                <p className="text-center text-gray-300 mb-4 text-sm">
+                  Review your past interview performances, track your progress.
                 </p>
                 <button
                   onClick={() => router.push('/feedbackHistory')}
-                  className="px-6 py-3 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium transition-colors duration-200"
+                  className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium transition-colors duration-200 text-sm w-full"
                 >
                   View History
+                </button>
+              </div>
+
+              <div className="flex flex-col items-center space-y-4 border border-gray-700 p-6 rounded-lg bg-gray-800/50 hover:bg-gray-800 transition-colors duration-300">
+                <ShoppingCartIcon sx={{ fontSize: 50, color: "#60a5fa" }} />
+                <h2 className="text-xl font-bold text-blue-400">
+                  Buy Interview Credits
+                </h2>
+                <p className="text-center text-gray-300 mb-4 text-sm">
+                  Purchase more interview credits to continue practicing.
+                </p>
+                <button
+                  onClick={() => router.push('/pricing')}
+                  className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium transition-colors duration-200 text-sm w-full"
+                >
+                  View Packages
                 </button>
               </div>
             </div>
