@@ -3,7 +3,7 @@ import { FaCode } from "react-icons/fa";
 import { MdMic, MdMicOff } from "react-icons/md";
 import { IoRocket, IoRocketOutline } from "react-icons/io5";
 import { ChatWindow } from "./ChatWindow";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface InterviewChatProps {
   isConnecting: boolean;
@@ -38,6 +38,10 @@ export function InterviewChat({
 }: InterviewChatProps) {
   // Add state for notification
   const [showNotification, setShowNotification] = useState(false);
+  // Add state to track when Review Code was clicked
+  const [reviewCodeClicked, setReviewCodeClicked] = useState(false);
+  // Keep track of the last transcription length to avoid re-processing
+  const lastTranscriptLengthRef = useRef(0);
   
   // Send introduction message when connection is established
   useEffect(() => {
@@ -61,21 +65,25 @@ When you believe the candidate has a good understanding of the problem and has o
   
   // Parse AI transcripts for "you can start coding now" and disable auto-response
   useEffect(() => {
-    // Only check when connected and auto-response is enabled and toggle function exists
-    if (!isConnected || !autoResponseEnabled || !toggleAutoResponse) {
+    // Skip checks if Review Code was recently clicked or there are no new transcriptions
+    if (!isConnected || !autoResponseEnabled || !toggleAutoResponse || 
+        reviewCodeClicked || transcriptions.length <= lastTranscriptLengthRef.current) {
       return;
     }
     
-    // Get the last 3 AI transcripts (in case the message spans multiple transcripts)
-    const recentAiTranscripts = transcriptions
-      .filter(t => t.source === 'ai')
-      .slice(-3);
+    // Update the last checked transcription length
+    lastTranscriptLengthRef.current = transcriptions.length;
     
-    // Join recent AI transcripts text and convert to lowercase for case-insensitive matching
-    const recentAiText = recentAiTranscripts
-      .map(t => t.text)
-      .join(' ')
-      .toLowerCase();
+    // Get only the very last AI transcript
+    const aiTranscripts = transcriptions.filter(t => t.source === 'ai');
+    if (aiTranscripts.length === 0) return;
+    
+    const lastAiTranscript = aiTranscripts[aiTranscripts.length - 1];
+    console.log("Last AI transcript:", lastAiTranscript);
+    
+    // Convert to lowercase for case-insensitive matching
+    const lastAiText = lastAiTranscript.text.toLowerCase();
+    console.log("Last AI text:", lastAiText);
     
     // Check for the trigger phrase or similar variations
     const triggerPhrases = [
@@ -87,7 +95,7 @@ When you believe the candidate has a good understanding of the problem and has o
     ];
     
     const shouldDisableAutoResponse = triggerPhrases.some(phrase => 
-      recentAiText.includes(phrase.toLowerCase())
+      lastAiText.includes(phrase.toLowerCase())
     );
     
     // Toggle auto-response off if trigger phrase detected and auto-response is enabled
@@ -103,7 +111,7 @@ When you believe the candidate has a good understanding of the problem and has o
         setShowNotification(false);
       }, 5000);
     }
-  }, [transcriptions, isConnected, autoResponseEnabled, toggleAutoResponse]);
+  }, [transcriptions, isConnected, autoResponseEnabled, toggleAutoResponse, reviewCodeClicked]);
   
   const handleReviewCode = () => {
     if (!isConnected) return;
@@ -111,17 +119,31 @@ When you believe the candidate has a good understanding of the problem and has o
     // Always ensure auto-response is enabled when reviewing code
     console.log("toggleAutoResponse", toggleAutoResponse);
     console.log("autoResponseEnabled", autoResponseEnabled);
+    
+    // Set reviewCodeClicked to true
+    setReviewCodeClicked(true);
+    
     if (toggleAutoResponse && !autoResponseEnabled) {
       toggleAutoResponse();
       // Add a small delay to ensure the session settings are updated before sending the message
       setTimeout(() => {
         const codeMessage = `I have completed coding my solution. Here it is:\n\n${currentCode}`;
         sendMessage(codeMessage, 'user');
+        
+        // Reset reviewCodeClicked flag after a longer delay
+        setTimeout(() => {
+          setReviewCodeClicked(false);
+        }, 2000);
       }, 300);
     } else {
       // If auto-response is already enabled or toggleAutoResponse is not available, send the message immediately
       const codeMessage = `I have completed coding my solution. Here it is:\n\n${currentCode}`;
       sendMessage(codeMessage, 'user');
+      
+      // Reset reviewCodeClicked flag after a delay
+      setTimeout(() => {
+        setReviewCodeClicked(false);
+      }, 2000);
     }
   };
   
