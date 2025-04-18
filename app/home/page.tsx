@@ -79,7 +79,7 @@ export default function HomePage() {
                   View Feedback
                 </h2>
                 <p className="text-center text-gray-300 mb-4 text-sm">
-                  Review your past interview performances, track your progress.
+                  Review your past interview performances.
                 </p>
                 <button
                   onClick={() => router.push('/feedbackHistory')}

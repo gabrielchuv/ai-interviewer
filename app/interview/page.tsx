@@ -11,6 +11,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Header from "../components/Header";
 import { useInterviewSession } from "../services/useInterviewSession";
 import { InterviewChat } from "../components/InterviewChat";
+import { getUserInterviewsRemaining } from "../services/firebase";
 
 export interface Message {
   role: "user" | "ai";
@@ -31,6 +32,8 @@ export default function InterviewPage() {
   const audioContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [autoConnectCountdown, setAutoConnectCountdown] = useState<number | null>(10);
+  const [checkingAccess, setCheckingAccess] = useState(true);
+  const [accessDenied, setAccessDenied] = useState(false);
 
   const {
     isConnecting,
@@ -52,9 +55,41 @@ export default function InterviewPage() {
     return questionBank[Math.floor(Math.random() * questionBank.length) + 1];
   });
 
+  // Check if user should have access to the interview page
+  useEffect(() => {
+    const checkAccess = async () => {
+      try {
+        // Check if user came from setup page (valid path)
+        const fromSetup = localStorage.getItem('interview_access') === 'granted';
+        
+        if (!fromSetup) {          
+            // Not from setup - redirect to pricing
+            setAccessDenied(true);
+            setTimeout(() => {
+              router.push('/home');
+            }, 5000);
+            return;
+          
+        }
+        
+        // Clear the access token to prevent reuse
+        localStorage.removeItem('interview_access');
+        setCheckingAccess(false);
+      } catch (error) {
+        console.error("Error checking interview access:", error);
+        setAccessDenied(true);
+        setTimeout(() => {
+          router.push('/setup');
+        }, 1500);
+      }
+    };
+
+    checkAccess();
+  }, [router]);
+
   // Auto-connect countdown
   useEffect(() => {
-    if (autoConnectCountdown === null || isConnected || isConnecting) return;
+    if (autoConnectCountdown === null || isConnected || isConnecting || checkingAccess) return;
 
     const timer = setTimeout(() => {
       if (autoConnectCountdown > 1) {
@@ -66,7 +101,7 @@ export default function InterviewPage() {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [autoConnectCountdown, isConnected, isConnecting]);
+  }, [autoConnectCountdown, isConnected, isConnecting, checkingAccess]);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -143,6 +178,32 @@ export default function InterviewPage() {
       }
     };
   }, [disconnect]);
+
+  if (checkingAccess) {
+    return (
+      <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
+        <Header />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="flex flex-col items-center space-y-4">
+            {!accessDenied ? (
+              <>
+                <div className="animate-spin h-12 w-12 border-b-2 border-blue-400 rounded-full"></div>
+                <p className="text-gray-300">Verifying access...</p>
+              </>
+            ) : (
+              <>
+                <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-6 text-center">
+                  <p className="text-red-400 font-medium text-lg mb-2">Access Denied</p>
+                  <p className="text-gray-300">You need to purchase interview credits first. If you have credits, please start the interview from the home page.</p>
+                  <p className="text-gray-300 mt-2">Redirecting you...</p>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <ProtectedRoute>

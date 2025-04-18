@@ -63,6 +63,9 @@ export default function SetupPage() {
         // Decrement the interview count
         const success = await decrementInterviewsRemaining();
         if (success) {
+          // Set access token for the interview page
+          localStorage.setItem('interview_access', 'granted');
+          
           // Navigate to the interview page
           router.push('/interview');
         } else {
