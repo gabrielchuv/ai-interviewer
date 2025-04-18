@@ -8,54 +8,31 @@ import { addInterviewCredits } from "../services/firebase";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-const pricingPlans = [
-  {
-    name: "Basic",
-    price: 19.99,
-    interviews: 5,
-    features: [
-      "5 AI Interview Sessions",
-      "Detailed Performance Feedback",
-      "Common Algorithm Questions",
-      "Valid for 30 Days"
-    ],
-  },
-  {
-    name: "Pro",
-    price: 49.99,
-    interviews: 15,
-    features: [
-      "15 AI Interview Sessions",
-      "Detailed Performance Feedback",
-      "Advanced Algorithm Questions",
-      "System Design Questions",
-      "Valid for 90 Days"
-    ],
-    recommended: true
-  },
-  {
-    name: "Ultimate",
-    price: 99.99,
-    interviews: 35,
-    features: [
-      "35 AI Interview Sessions",
-      "Detailed Performance Feedback",
-      "Advanced Algorithm Questions",
-      "System Design Questions",
-      "FAANG-style Interview Questions",
-      "Valid for 180 Days"
-    ],
-  },
+// New pricing structure - £5 per interview for smaller packages, £4 for larger packages
+const interviewPackages = [
+  { count: 2, price: 10, pricePerInterview: 5 },
+  { count: 4, price: 20, pricePerInterview: 5 },
+  { count: 6, price: 24, pricePerInterview: 4, recommended: true, discount: true },
+  { count: 8, price: 32, pricePerInterview: 4, discount: true },
+  { count: 10, price: 40, pricePerInterview: 4, discount: true },
+];
+
+const features = [
+  "Realistic AI Interviewer Experience",
+  "Detailed Performance Feedback",
+  "Algorithm & Data Structure Problems",
+  "Save Feedback History",
+  "24/7 Practice Availability"
 ];
 
 export default function PricingPage() {
   const router = useRouter();
-  const [loading, setLoading] = useState<string | null>(null);
+  const [loading, setLoading] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const handlePurchase = async (planName: string, interviewCount: number) => {
-    setLoading(planName);
+  const handlePurchase = async (interviewCount: number) => {
+    setLoading(interviewCount);
     setError(null);
     setSuccess(null);
 
@@ -65,7 +42,7 @@ export default function PricingPage() {
       const result = await addInterviewCredits(interviewCount);
       
       if (result) {
-        setSuccess(`Successfully purchased ${planName} plan with ${interviewCount} interviews!`);
+        setSuccess(`Successfully purchased ${interviewCount} interview credits!`);
         // Redirect to home after 2 seconds
         setTimeout(() => {
           router.push('/home');
@@ -89,10 +66,11 @@ export default function PricingPage() {
           <div className="max-w-5xl mx-auto space-y-8">
             <div className="text-center space-y-4">
               <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
-                Interview Packages
+                Interview Credits
               </h1>
               <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                Choose the perfect package to practice and master your coding interview skills
+                Choose your package - <span className="font-bold text-blue-400">£5</span> per interview for small packages, 
+                <span className="font-bold text-green-400"> £4</span> for 6+ interviews
               </p>
             </div>
 
@@ -109,62 +87,92 @@ export default function PricingPage() {
               </div>
             )}
 
-            <div className="grid gap-8 md:grid-cols-3">
-              {pricingPlans.map((plan) => (
+            {/* Interview packages */}
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+              {interviewPackages.map((pkg) => (
                 <div 
-                  key={plan.name}
-                  className={`relative flex flex-col rounded-lg ${plan.recommended ? 'bg-blue-900/30 border-blue-500/50' : 'bg-gray-800/50 border-gray-700'} border p-6 transition-all duration-200 hover:transform hover:scale-105`}
+                  key={pkg.count}
+                  className={`relative flex flex-col rounded-lg ${pkg.recommended ? 'bg-blue-900/30 border-blue-500/50' : pkg.discount ? 'bg-green-900/20 border-green-500/30' : 'bg-gray-800/50 border-gray-700'} border p-4 transition-all duration-200 hover:transform hover:scale-105`}
                 >
-                  {plan.recommended && (
-                    <div className="absolute -top-4 left-0 right-0 mx-auto w-fit px-4 py-1 bg-blue-600 text-white text-sm font-medium rounded-full">
-                      Most Popular
+                  {pkg.recommended && (
+                    <div className="absolute -top-3 left-0 right-0 mx-auto w-fit px-3 py-0.5 bg-blue-600 text-white text-xs font-medium rounded-full">
+                      Best Value
                     </div>
                   )}
-                  <h3 className="text-2xl font-bold text-white mb-2">{plan.name}</h3>
-                  <div className="mt-1 mb-4">
-                    <span className="text-3xl font-bold">${plan.price}</span>
+                  {pkg.discount && !pkg.recommended && (
+                    <div className="absolute -top-3 left-0 right-0 mx-auto w-fit px-3 py-0.5 bg-green-600 text-white text-xs font-medium rounded-full">
+                      Discounted
+                    </div>
+                  )}
+                  <div className="text-center mb-4">
+                    <span className="text-4xl font-bold text-white">{pkg.count}</span>
+                    <span className="block text-sm text-gray-300 mt-1">interviews</span>
                   </div>
-                  <p className="text-gray-300 mb-4">
-                    <span className="font-semibold text-blue-400">{plan.interviews}</span> Interview Sessions
-                  </p>
-                  <ul className="mb-6 space-y-2 flex-1">
-                    {plan.features.map((feature, index) => (
-                      <li key={index} className="flex items-center text-gray-300">
-                        <CheckCircleIcon fontSize="small" className="text-blue-400 mr-2" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
+                  <div className="text-center mb-4">
+                    <span className="text-2xl font-bold">{pkg.discount ? <span className="text-green-400">£{pkg.price}</span> : `£${pkg.price}`}</span>
+                    <span className="block text-sm text-gray-400">
+                      {pkg.discount ? (
+                        <>
+                          <span className="text-green-400">£{pkg.pricePerInterview}</span> per interview
+                          <span className="block text-xs text-green-400 mt-1">Save £{pkg.count} compared to standard rate</span>
+                        </>
+                      ) : (
+                        <>£{pkg.pricePerInterview} per interview</>
+                      )}
+                    </span>
+                  </div>
                   <button
-                    onClick={() => handlePurchase(plan.name, plan.interviews)}
-                    disabled={loading === plan.name}
-                    className={`mt-auto w-full px-6 py-3 text-white ${plan.recommended ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-700 hover:bg-gray-600'} rounded-md font-medium transition-colors duration-200 flex items-center justify-center`}
+                    onClick={() => handlePurchase(pkg.count)}
+                    disabled={loading === pkg.count}
+                    className={`mt-auto w-full px-3 py-2 text-white ${
+                      pkg.recommended ? 'bg-blue-600 hover:bg-blue-700' : 
+                      pkg.discount ? 'bg-green-600 hover:bg-green-700' : 
+                      'bg-gray-700 hover:bg-gray-600'
+                    } rounded-md font-medium transition-colors duration-200 flex items-center justify-center text-sm`}
                   >
-                    {loading === plan.name ? (
-                      <span className="animate-spin h-5 w-5 mr-2 border-b-2 border-white rounded-full"></span>
+                    {loading === pkg.count ? (
+                      <span className="animate-spin h-4 w-4 mr-2 border-b-2 border-white rounded-full"></span>
                     ) : (
-                      <ShoppingCartIcon className="mr-2" fontSize="small" />
+                      <ShoppingCartIcon className="mr-1" fontSize="small" />
                     )}
-                    {loading === plan.name ? "Processing..." : "Purchase Now"}
+                    {loading === pkg.count ? "Processing..." : "Buy Now"}
                   </button>
                 </div>
               ))}
             </div>
 
+            {/* Features section */}
             <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 mt-8">
-              <h3 className="text-xl font-bold mb-4">Why Choose AlgoMentor?</h3>
-              <div className="grid gap-4 md:grid-cols-3">
+              <h3 className="text-xl font-bold mb-4 text-center">Every Purchase Includes</h3>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+                {features.map((feature, index) => (
+                  <div key={index} className="flex flex-col items-center text-center p-3">
+                    <CheckCircleIcon fontSize="medium" className="text-blue-400 mb-2" />
+                    <p className="text-gray-300 text-sm">{feature}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* FAQ section */}
+            <div className="bg-gray-800/50 border border-gray-700 rounded-lg p-6 mt-8">
+              <h3 className="text-xl font-bold mb-4">Frequently Asked Questions</h3>
+              <div className="space-y-4">
                 <div className="space-y-2">
-                  <h4 className="font-semibold text-blue-400">Realistic Interviews</h4>
-                  <p className="text-gray-300 text-sm">Our AI provides realistic interview experiences similar to top tech companies.</p>
+                  <h4 className="font-semibold text-blue-400">How does the pricing work?</h4>
+                  <p className="text-gray-300 text-sm">Smaller packages (2-4 interviews) cost £5 per interview. Larger packages (6+ interviews) are discounted to £4 per interview, saving you money as you practice more.</p>
                 </div>
                 <div className="space-y-2">
-                  <h4 className="font-semibold text-blue-400">Detailed Feedback</h4>
-                  <p className="text-gray-300 text-sm">Get comprehensive feedback on your technical skills, problem-solving approach, and code quality.</p>
+                  <h4 className="font-semibold text-blue-400">How long do my credits last?</h4>
+                  <p className="text-gray-300 text-sm">Your interview credits never expire - use them whenever you're ready to practice.</p>
                 </div>
                 <div className="space-y-2">
-                  <h4 className="font-semibold text-blue-400">Practice Anytime</h4>
-                  <p className="text-gray-300 text-sm">Practice at your own pace, whenever you want, from anywhere in the world.</p>
+                  <h4 className="font-semibold text-blue-400">What types of questions will I face?</h4>
+                  <p className="text-gray-300 text-sm">Our AI interviewer covers a wide range of algorithm and data structure problems similar to those asked by top tech companies.</p>
+                </div>
+                <div className="space-y-2">
+                  <h4 className="font-semibold text-blue-400">Are there any additional costs?</h4>
+                  <p className="text-gray-300 text-sm">No hidden fees - the price you see is the price you pay. All features are included with every package.</p>
                 </div>
               </div>
             </div>
