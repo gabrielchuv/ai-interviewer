@@ -2,16 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Typography, Paper } from "@mui/material";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import ReactMarkdown from "react-markdown";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Header from "../components/Header";
 import { getUserInterviewsRemaining, decrementInterviewsRemaining } from "../services/firebase";
-
-const welcomeText = `
-Welcome to your technical interview! This experience is designed to simulate a real coding interview with an AI interviewer.
-`;
 
 const expectationsText = `
 ## What to expect during your interview:

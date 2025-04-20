@@ -11,7 +11,6 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Header from "../components/Header";
 import { useInterviewSession } from "../services/useInterviewSession";
 import { InterviewChat } from "../components/InterviewChat";
-import { getUserInterviewsRemaining } from "../services/firebase";
 
 export interface Message {
   role: "user" | "ai";
@@ -177,7 +176,7 @@ export default function InterviewPage() {
         disconnect();
       }
     };
-  }, [disconnect]);
+  }, [disconnect, isConnected]);
 
   if (checkingAccess) {
     return (

@@ -143,7 +143,7 @@ export default function InterviewPage() {
         disconnect();
       }
     };
-  }, [disconnect]);
+  }, [disconnect, isConnected]);
 
   return (
       <Box

@@ -102,6 +102,7 @@ export async function POST(request: NextRequest) {
         message: 'Failed to add interview credits'
       }, { status: 500 });
     }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error('Error verifying payment:', error);
     return NextResponse.json({

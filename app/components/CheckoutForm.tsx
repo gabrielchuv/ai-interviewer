@@ -114,6 +114,7 @@ export default function CheckoutForm({
       } else {
         throw new Error(`Payment status: ${paymentIntent.status}`);
       }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error('Payment error:', err);
       setErrorMessage(err.message || "An unknown error occurred");

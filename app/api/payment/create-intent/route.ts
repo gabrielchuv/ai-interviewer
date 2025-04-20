@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       clientSecret: paymentIntent.client_secret 
     });
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     console.error('Error creating payment intent:', error);
     return NextResponse.json({ 

@@ -19,6 +19,7 @@ if (!apps.length) {
     });
   } else {
     // For local development - use service account JSON
+// eslint-disable-next-line @typescript-eslint/no-require-imports
     const serviceAccount = require('../../service-account.json');
     initializeApp({
       credential: cert(serviceAccount),

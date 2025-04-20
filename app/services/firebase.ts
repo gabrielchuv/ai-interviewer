@@ -1,5 +1,5 @@
 import { db } from '../../firebaseConfig';
-import { collection, addDoc, query, where, getDocs, doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs, updateDoc } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
 
 interface FeedbackSection {

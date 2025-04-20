@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Header from "../components/Header";
 import { Elements } from "@stripe/react-stripe-js";
@@ -34,7 +33,6 @@ const features = [
 ];
 
 export default function PricingPage() {
-  const router = useRouter();
   const [loading, setLoading] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -94,6 +92,7 @@ export default function PricingPage() {
       }
       
       setClientSecret(data.clientSecret);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       console.error("Error initiating payment:", err);
       setError(err.message || "An error occurred while initiating your payment. Please try again.");
@@ -262,7 +261,7 @@ export default function PricingPage() {
                   </div>
                   <div className="space-y-2">
                     <h4 className="font-semibold text-blue-400">How long do my credits last?</h4>
-                    <p className="text-gray-300 text-sm">Your interview credits never expire - use them whenever you're ready to practice.</p>
+                    <p className="text-gray-300 text-sm">Your interview credits never expire - use them whenever you&apos;re ready to practice.</p>
                   </div>
                   <div className="space-y-2">
                     <h4 className="font-semibold text-blue-400">What types of questions will I face?</h4>
