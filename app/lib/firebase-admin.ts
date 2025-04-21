@@ -18,13 +18,10 @@ if (!apps.length) {
       databaseURL: `https://${process.env.FIREBASE_PROJECT_ID}.firebaseio.com`,
     });
   } else {
-    // For local development - use service account JSON
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-    // const serviceAccount = require('../../service-account.json');
-    // initializeApp({
-    //   credential: cert(serviceAccount),
-    //   databaseURL: `https://${serviceAccount.project_id}.firebaseio.com`,
-    // });
+    // If Firebase project ID is missing, log an error and throw an exception
+    const errorMessage = 'Firebase configuration is missing. Please check your environment variables.';
+    console.error(errorMessage);
+    throw new Error(errorMessage);
   }
 }
 
