@@ -13,13 +13,13 @@ const expectationsText = `
 
 - **Assessment focus**: You'll be evaluated on your approach and thinking process, not perfect syntax.
 
-- **Ask questions**: Feel free to ask clarifying questions to understand the requirements better.
+- **Ask questions**: Ask clarifying questions to understand the requirements better.
 
 - **Outline your approach**: Before coding, explain your approach to the problem.
 
 - **Review your code**: When you've finished coding, click the "Review Code" button to proceed with the interview.
 
-- **Coding in silence**: No need to talk through your solution while coding (yet) - you can mute yourself during this part if preferred.
+- **Speak while coding**: Feel free to share your thoughts and reasoning while coding to be evaluated on your communication skills.
 
 - **Feedback**: After completing the interview, you'll receive feedback on your performance.
 `;
