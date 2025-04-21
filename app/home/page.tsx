@@ -18,7 +18,6 @@ export default function HomePage() {
     const fetchInterviewsRemaining = async () => {
       try {
         const count = await getUserInterviewsRemaining();
-        console.log("count", count);
         setInterviewsRemaining(count);
       } catch (error) {
         console.error("Error fetching interviews remaining:", error);

@@ -81,18 +81,14 @@ export const getUserFeedback = async () => {
 export const getUserInterviewsRemaining = async (): Promise<number> => {
   try {
     const user = await getCurrentUser();
-    console.log("user", user);
     // Find the user document in the userEmails collection
     const userQuery = query(
       collection(db, 'userEmails'),
       where('uid', '==', user.uid)
     );
-
-    console.log("userQuery", userQuery);
     
     const userSnapshot = await getDocs(userQuery);
 
-    console.log("userSnapshot", userSnapshot);
     if (userSnapshot.empty) {
       console.error('User document not found');
       return 0;
@@ -100,8 +96,6 @@ export const getUserInterviewsRemaining = async (): Promise<number> => {
     
     const userDoc = userSnapshot.docs[0];
     const userData = userDoc.data();
-
-    console.log("userData.interviewsRemaining", userData.interviewsRemaining);
     
     // If the interviewsRemaining field doesn't exist yet, default to 3 (or whatever your default is)
     if (userData.interviewsRemaining === undefined) {
