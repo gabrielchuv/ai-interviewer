@@ -176,7 +176,7 @@ export default function InterviewPage() {
         disconnect();
       }
     };
-  }, [disconnect, isConnected]);
+  }, [disconnect]);
 
   if (checkingAccess) {
     return (
