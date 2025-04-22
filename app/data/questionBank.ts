@@ -78,8 +78,9 @@ Checks if the code handles all possible valid inputs.
     {
         id: 2,
         title: "Valid Parentheses",
-        description: `Imagine you're building a restaurant kitchen game. After the day is over and the paltes have been washed 
-the player must organise the plates and cover them with a matching cover. 
+        description: `Imagine you're building a restaurant kitchen game. After the day is over and the plates
+have been washed the player must organise the plates and cover them with a matching cover. 
+
 There are three types of plates and their matching covers:
 - A soup plate represented by '(' matched by a cover ')',
 - A dinner plate represented by '[' matched by a cover ']',
@@ -105,11 +106,13 @@ Output: false`
         description: `Imagine you're working in a spy agency, and agents communicate using secret passphrases.
 These passphrases must read the same forwards and backwards to verify authenticity. However:
 - Agents are often in a hurry, so the message may include spaces, punctuation, or mixed casing.
-- The system must ignore anything that isn’t a letter or a number, and it must treat uppercase and lowercase as the same.
+- The system must ignore anything that isn't a letter or a number, and it must treat uppercase 
+and lowercase as the same.
+
 Your job is to create a system that:
 - Cleans up the message (removes spaces, commas, colons, etc.)
 - Ignores casing
-- Checks if what’s left reads the same forwards and backwards
+- Checks if what's left reads the same forwards and backwards
 
 If this criteria is met, return true, otherwise return false.`,
         examples: `Examples:
@@ -137,8 +140,9 @@ If this criteria is met, return true, otherwise return false.`,
     {
         id: 5,
         title: "Add Two Numbers",
-        description: `You are given two non-empty linked lists representing two non-negative integers. The digits are 
-stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.`,
+        description: `You are given two non-empty linked lists representing two non-negative integers. The 
+digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers
+and return the sum as a linked list.`,
         examples: `Examples:
 
         Input: l1 = [2,4,3], l2 = [5,6,4]
@@ -151,10 +155,11 @@ stored in reverse order, and each of their nodes contains a single digit. Add th
     {
         id: 6,
         title: "Count Good Nodes in Binary Tree",
-        description: `Imagine you're hiking through a mountain trail network (a tree). Each junction has a signpost with an elevation number.
-As you hike from the starting point (root) to any junction, a junction is considered 'good' if its elevation is higher than or equal to any
-previous elevation on that path — it's a new personal best. You are given a binary tree representing the mountain trail network. Your goal 
-is to count how many junctions are 'good', meaning they're the highest seen so far on their way from the start.`,
+        description: `Imagine you're hiking through a mountain trail network (a tree). Each junction has a 
+signpost with an elevation number. As you hike from the starting point (root) to any junction, a junction 
+is considered 'good' if its elevation is higher than or equal to any previous elevation on that path — 
+it's a new personal best. You are given a binary tree representing the mountain trail network. Your goal is 
+to count how many junctions are 'good', meaning they're the highest seen so far on their way from the start.`,
         examples: `Examples:
 
         Input:
@@ -176,10 +181,11 @@ is to count how many junctions are 'good', meaning they're the highest seen so f
     {
         id: 7,
         title: "Rotting Oranges",
-        description: `Imagine a fruit storage room arranged like a grid. Each cell in the grid holds either a fresh orange (1), 
-a rotten orange (2), or is empty (0). Every minute, the smell from rotten oranges spreads to any fresh orange directly next to them 
-(up, down, left, or right), causing them to rot too. Your task is to figure out the minimum time it takes for all fresh oranges to rot, 
-or determine if it is impossible for all fresh oranges to rot.`,
+        description: `Imagine a fruit storage room arranged like a grid. Each cell in the grid holds either 
+a fresh orange (1), a rotten orange (2), or is empty (0). Every minute, the smell from rotten oranges 
+spreads to any fresh orange directly next to them (up, down, left, or right), causing them to rot too. 
+Your task is to figure out the minimum time it takes for all fresh oranges to rot, or determine if it 
+is impossible for all fresh oranges to rot.`,
         examples: `Examples:
 
         Input: grid = [[2,1,1],[1,1,0],[0,1,1]]
@@ -191,9 +197,10 @@ or determine if it is impossible for all fresh oranges to rot.`,
     {
         id: 8,
         title: "3Sum",
-        description: `You're fixing a broken chair leg and need to recreate it using spare wood pieces. Each piece has 
-a specific length, and your goal is to combine exactly three different pieces to match the required leg length (e.g., 30 cm).
-You can't reuse the same piece, and you want to find all unique combinations of three pieces that add up to that exact target length.`,
+        description: `You're fixing a broken chair leg and need to recreate it using spare wood pieces. 
+Each piece has a specific length, and your goal is to combine exactly three different pieces to match the 
+required leg length (e.g., 30 cm). You can't reuse the same piece, and you want to find all unique 
+combinations of three pieces that add up to that exact target length.`,
         examples: `Examples:
 
         Input: nums = [-1,0,1,2,-1,-4]
@@ -202,9 +209,9 @@ You can't reuse the same piece, and you want to find all unique combinations of 
     {
         id: 9,
         title: "Letter Combinations of a Phone Number",
-        description: `Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could 
-represent. Return the answer in any order. A mapping of digits to letters (just like on the telephone buttons) is given below. 
-Note that 1 does not map to any letters.`,
+        description: `Given a string containing digits from 2-9 inclusive, return all possible letter 
+combinations that the number could represent. Return the answer in any order. A mapping of digits to 
+letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.`,
         examples: `Examples:
 
         Input: digits = "23"
@@ -213,33 +220,37 @@ Note that 1 does not map to any letters.`,
     {
         id: 10,
         title: "Remove Nth Node From End of List",
-        description: `Imagine a line of people waiting for coffee, and you want to remove the nth person from the end 
-— maybe the 2nd-to-last person forgot their wallet. You can only walk the line from front to back. You are given
-a linked list representing the line of people and the nth person to remove.`,
+        description: `Imagine a line of people waiting for coffee, and you want to remove the nth person 
+from the end — maybe the 2nd-to-last person forgot their wallet. You can only walk the line from front to 
+back. You are given a linked list representing the line of people and the nth person to remove.`,
         examples: `Examples:
 
         Input: head = [1,2,3,4,5], n = 2
         Output: [1,2,3,5]`
     },
-    // {
-    //     id: 11,
-    //     title: "Generate Parentheses",
-    //     description: "Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.",
-    //     examples: `Examples:
+    {
+        id: 11,
+        title: "Generate Parentheses",
+        description: `Given n pairs of parentheses, write a function to generate all combinations of 
+well-formed parentheses.`,
+        examples: `Examples:
 
-    //     Input: n = 3
-    //     Output: ["((()))","(()())","(())()","()(())","()()()"]`
-    // },
-    // {
-    //     id: 12,
-    //     title: "Unique Paths",
-    //     description: "There is a robot on an m x n grid. The robot is initially located at the top-left corner (i.e., grid[0][0]). The robot tries to move to the bottom-right corner (i.e., grid[m - 1][n - 1]). The robot can only move either down or right at any point in time. Given the two integers m and n, return the number of possible unique paths that the robot can take to reach the bottom-right corner. The test cases are generated so that the answer will be less than or equal to 2 * 10^9.",
-    //     examples: `Examples:
+        Input: n = 3
+        Output: ["((()))","(()())","(())()","()(())","()()()"]`
+    },
+    {
+        id: 12,
+        title: "Unique Paths",
+        description: `You're flying over a flooded landscape, where a map shows '1' for land and '0' 
+for water. Land areas that are connected side-by-side (not diagonally) form a single island. Your job 
+is to count how many separate land patches (islands) you can see from above — each one surrounded 
+by water and not touching another.`,
+        examples: `Examples:
 
-    //     Input: m = 3, n = 7
-    //     Output: 28
+        Input: m = 3, n = 7
+        Output: 28
 
-    //     Input: m = 3, n = 2
-    //     Output: 3`
-    // },
+        Input: m = 3, n = 2
+        Output: 3`
+    },
 ]
