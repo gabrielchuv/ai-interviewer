@@ -6,7 +6,7 @@ import { CodeEditor } from "../components/CodeEditor";
 import { Timer } from "../components/Timer";
 import { Footer } from "../components/Footer";
 import { useRouter } from "next/navigation";
-import { questionBank } from "../data/questionBank";
+import { questionBank, Question } from "../data/questionBank";
 import Header from "../components/Header";
 import { useInterviewSession } from "../services/useInterviewSession";
 import { InterviewChat } from "../components/InterviewChat";
@@ -30,6 +30,8 @@ export default function InterviewPage() {
   const audioContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [autoConnectCountdown, setAutoConnectCountdown] = useState<number | null>(10);
+  const [question, setQuestion] = useState<Question | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const {
     isConnecting,
@@ -47,9 +49,12 @@ export default function InterviewPage() {
     toggleAutoResponse
   } = useInterviewSession();
 
-  const [question] = useState(() => {
-    return questionBank[0];
-  });
+  // Load the fixed first question for free trial
+  useEffect(() => {
+    // Always use the first question for free trials
+    setQuestion(questionBank[0]);
+    setLoading(false);
+  }, []);
 
   // Auto-connect countdown
   useEffect(() => {
@@ -86,7 +91,7 @@ export default function InterviewPage() {
 
   // Modified to only handle connection, not disconnection
   const handleConnect = () => {
-    if (!isConnected && !isConnecting) {
+    if (!isConnected && !isConnecting && question) {
       connect(question.title, question.description);
     }
   };
@@ -145,6 +150,20 @@ export default function InterviewPage() {
     };
   }, [disconnect]);
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
+        <Header />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="animate-spin h-12 w-12 border-b-2 border-blue-400 rounded-full"></div>
+            <p className="text-gray-300">Loading your interview question...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
       <Box
         sx={{
@@ -183,7 +202,9 @@ export default function InterviewPage() {
                 flex: 1,
               }}
             >
-              <CodeEditor question={question} onCodeChange={setCurrentCode} />
+              {question && (
+                <CodeEditor question={question} onCodeChange={setCurrentCode} />
+              )}
               <Footer
                 onSubmit={handleInterviewComplete}
                 disableComplete={!isConnected}

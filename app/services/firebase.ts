@@ -1,6 +1,7 @@
 import { db } from '../../firebaseConfig';
-import { collection, addDoc, query, where, getDocs, updateDoc } from 'firebase/firestore';
+import { collection, addDoc, query, where, getDocs, updateDoc, doc, getDoc, setDoc, arrayUnion } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged, User } from 'firebase/auth';
+import { Question, questionBank } from '../data/questionBank';
 
 interface FeedbackSection {
   rating: number;
@@ -179,5 +180,93 @@ export const addInterviewCredits = async (count: number): Promise<boolean> => {
   } catch (error) {
     console.error('Error adding interview credits:', error);
     return false;
+  }
+};
+
+/**
+ * Gets an array of question IDs that the user has previously seen
+ */
+export const getUserSeenQuestions = async (): Promise<number[]> => {
+  try {
+    const user = await getCurrentUser();
+    
+    // Check if user history document exists
+    const userHistoryRef = doc(db, 'userQuestionHistory', user.uid);
+    const userHistoryDoc = await getDoc(userHistoryRef);
+    
+    if (!userHistoryDoc.exists()) {
+      // Initialize with empty array if document doesn't exist
+      await setDoc(userHistoryRef, { seenQuestions: [] });
+      return [];
+    }
+    
+    const userData = userHistoryDoc.data();
+    return userData.seenQuestions || [];
+  } catch (error) {
+    console.error('Error getting user seen questions:', error);
+    return [];
+  }
+};
+
+/**
+ * Adds a question ID to the user's seen questions list
+ */
+export const addQuestionToUserHistory = async (questionId: number): Promise<boolean> => {
+  try {
+    const user = await getCurrentUser();
+    
+    const userHistoryRef = doc(db, 'userQuestionHistory', user.uid);
+    
+    // Use arrayUnion to add the question ID if it doesn't already exist
+    await updateDoc(userHistoryRef, {
+      seenQuestions: arrayUnion(questionId)
+    }).catch(async (error) => {
+      // If document doesn't exist yet, create it
+      if (error.code === 'not-found') {
+        await setDoc(userHistoryRef, { 
+          seenQuestions: [questionId] 
+        });
+      } else {
+        throw error;
+      }
+    });
+    
+    return true;
+  } catch (error) {
+    console.error('Error adding question to user history:', error);
+    return false;
+  }
+};
+
+/**
+ * Gets a question that the user has not seen before.
+ * If testing mode is enabled, this restriction is ignored.
+ * If all questions have been seen, returns a random question.
+ */
+export const getNewQuestionForUser = async (testingMode: boolean = false): Promise<Question> => {
+  // If in testing mode, just return a random question
+  if (testingMode) {
+    return questionBank[Math.floor(Math.random() * questionBank.length)];
+  }
+  
+  try {
+    // Get questions the user has already seen
+    const seenQuestionIds = await getUserSeenQuestions();
+    console.log("Seen question IDs:", seenQuestionIds);
+    
+    // Filter out questions the user has already seen
+    const unseenQuestions = questionBank.filter(q => !seenQuestionIds.includes(q.id));
+    console.log("Unseen questions:", unseenQuestions);
+    // If there are unseen questions, return a random one from that set
+    if (unseenQuestions.length > 0) {
+      return unseenQuestions[Math.floor(Math.random() * unseenQuestions.length)];
+    }
+    
+    // If all questions have been seen, return a random question
+    return questionBank[Math.floor(Math.random() * questionBank.length)];
+  } catch (error) {
+    console.error('Error getting new question for user:', error);
+    // Fallback to random question on error
+    return questionBank[Math.floor(Math.random() * questionBank.length)];
   }
 }; 
