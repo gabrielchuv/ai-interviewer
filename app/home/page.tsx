@@ -7,20 +7,31 @@ import Header from "../components/Header";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import HistoryIcon from '@mui/icons-material/History';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { getUserInterviewsRemaining } from "../services/firebase";
 
 export default function HomePage() {
   const router = useRouter();
   const [interviewsRemaining, setInterviewsRemaining] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     const fetchInterviewsRemaining = async () => {
       try {
         const count = await getUserInterviewsRemaining();
-        setInterviewsRemaining(count);
+        
+        // Check if there was an error getting the count
+        if (count === -1) {
+          setError(true);
+          setInterviewsRemaining(0); // Default to 0 for UI display
+        } else {
+          setInterviewsRemaining(count);
+        }
       } catch (error) {
         console.error("Error fetching interviews remaining:", error);
+        setError(true);
+        setInterviewsRemaining(0); // Default to 0 for UI display
       } finally {
         setLoading(false);
       }
@@ -40,9 +51,14 @@ export default function HomePage() {
             </h1>
             
             {/* Interviews Remaining Counter */}
-            <div className="py-2 px-4 bg-gray-800/80 border border-gray-700 rounded-lg flex items-center justify-center">
+            <div className="py-2 px-4 bg-gray-800/80 border border-gray-700 rounded-lg flex flex-col items-center justify-center">
               {loading ? (
                 <div className="animate-pulse">Loading interview credits...</div>
+              ) : error ? (
+                <div className="flex items-center text-yellow-400">
+                  <ErrorOutlineIcon className="mr-2" fontSize="small" />
+                  <span>Error determining remaining interviews</span>
+                </div>
               ) : (
                 <div className="text-center">
                   <span className="font-bold text-lg text-blue-400">{interviewsRemaining}</span>

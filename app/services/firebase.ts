@@ -92,25 +92,23 @@ export const getUserInterviewsRemaining = async (): Promise<number> => {
 
     if (userSnapshot.empty) {
       console.error('User document not found');
-      return 0;
+      return -1; // Return -1 to signal an error
     }
     
     const userDoc = userSnapshot.docs[0];
     const userData = userDoc.data();
     
-    // If the interviewsRemaining field doesn't exist yet, default to 3 (or whatever your default is)
+    // If the interviewsRemaining field doesn't exist yet
     if (userData.interviewsRemaining === undefined) {
-      // Initialize the field with a default value
-      await updateDoc(userDoc.ref, {
-        interviewsRemaining: 0
-      });
-      return 3;
+      console.warn('interviewsRemaining field not defined for user:', user.uid);
+      // Return -1 to signal that the value couldn't be determined
+      return -1;
     }
     
     return userData.interviewsRemaining;
   } catch (error) {
     console.error('Error getting interviews remaining:', error);
-    return 0;
+    return -1; // Return -1 to signal an error
   }
 };
 
@@ -133,6 +131,12 @@ export const decrementInterviewsRemaining = async (): Promise<boolean> => {
     
     const userDoc = userSnapshot.docs[0];
     const userData = userDoc.data();
+    
+    // If interviewsRemaining is undefined, we can't decrement
+    if (userData.interviewsRemaining === undefined) {
+      console.error('interviewsRemaining field is undefined for user:', user.uid);
+      return false;
+    }
     
     // If the user has interviews remaining, decrement the count
     if (userData.interviewsRemaining && userData.interviewsRemaining > 0) {
@@ -170,7 +174,14 @@ export const addInterviewCredits = async (count: number): Promise<boolean> => {
     const userData = userDoc.data();
     
     // Add the specified count to the existing interviewsRemaining, or initialize if undefined
-    const currentCount = userData.interviewsRemaining || 0;
+    let currentCount = 0;
+    
+    if (userData.interviewsRemaining === undefined) {
+      console.warn('interviewsRemaining field not defined for user:', user.uid);
+      console.log('Initializing interviewsRemaining with count:', count);
+    } else {
+      currentCount = userData.interviewsRemaining;
+    }
     
     await updateDoc(userDoc.ref, {
       interviewsRemaining: currentCount + count
