@@ -2,13 +2,13 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import ProtectedRoute from "../components/ProtectedRoute";
 import Header from "../components/Header";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import HistoryIcon from '@mui/icons-material/History';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { getUserInterviewsRemaining } from "../services/firebase";
+import CombinedProtection from "../components/CombinedProtection";
 
 export default function HomePage() {
   const router = useRouter();
@@ -41,7 +41,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <ProtectedRoute>
+    <CombinedProtection>
       <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
         <Header />
         <div className="flex-1 container mx-auto px-4 flex items-center justify-center">
@@ -123,6 +123,6 @@ export default function HomePage() {
           </div>
         </div>
       </div>
-    </ProtectedRoute>
+    </CombinedProtection>
   );
 } 

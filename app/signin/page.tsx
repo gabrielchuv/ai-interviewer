@@ -4,13 +4,20 @@ import { Button } from "../ui/button"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { FormEvent, useState } from "react"
+import { FormEvent, useState, useEffect } from "react"
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../firebaseConfig'
+import { isMobileDevice } from '../utils/utils'
 
 export default function SignInPage() {
   const router = useRouter()
   const [error, setError] = useState<string | null>(null)
+  const [isMobile, setIsMobile] = useState<boolean | null>(null)
+
+  // Check for mobile device on client-side
+  useEffect(() => {
+    setIsMobile(isMobileDevice())
+  }, [])
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -22,7 +29,13 @@ export default function SignInPage() {
 
     try {
       await signInWithEmailAndPassword(auth, email, password)
-      router.push('/home')
+      
+      // After successful login, check if mobile and redirect accordingly
+      if (isMobile) {
+        router.push('/mobile-not-supported')
+      } else {
+        router.push('/home')
+      }
     } catch (err: any) { // eslint-disable-line @typescript-eslint/no-explicit-any
       console.error('Error signing in:', err)
       if (err.code === 'auth/invalid-credential') {
@@ -53,6 +66,15 @@ export default function SignInPage() {
               Sign in to continue your practice
             </p>
           </div>
+
+          {/* Show mobile warning if on a mobile device */}
+          {isMobile && (
+            <div className="bg-amber-900/20 border border-amber-700/30 rounded-lg p-4">
+              <p className="text-amber-300 text-sm">
+                <strong>Note:</strong> AlgoMentor AI works best on desktop. Mobile access is limited.
+              </p>
+            </div>
+          )}
 
           <div className="space-y-4">
             <form className="space-y-4" onSubmit={handleSubmit}>
