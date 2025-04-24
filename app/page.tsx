@@ -36,8 +36,7 @@ export default function LandingPage() {
                     </Button>
                     <Button
                       size="lg"
-                      variant="outline"
-                      className="w-full sm:w-auto max-w-[200px] sm:max-w-none mx-auto lg:mx-0 text-blue-400 border-blue-400 hover:bg-blue-400/10 text-base sm:text-lg"
+                      className="w-full sm:w-auto max-w-[200px] sm:max-w-none mx-auto lg:mx-0 bg-purple-600 hover:bg-purple-700 text-white text-base sm:text-lg"
                       asChild
                     >
                       <Link href="/signin">Sign In</Link>
