@@ -11,7 +11,6 @@ export default function Header() {
   const router = useRouter();
   const pathname = usePathname();
   const showHomeLink = pathname !== "/interview";
-  const isFreeTrial = pathname === "/freeTrial";
 
   const handleLogout = async () => {
     try {
@@ -20,10 +19,6 @@ export default function Header() {
     } catch (error) {
       console.error("Error signing out:", error);
     }
-  };
-
-  const handleSignUp = () => {
-    router.push("/signup");
   };
 
   return (
@@ -81,30 +76,12 @@ export default function Header() {
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          {isFreeTrial ? (
-            <>
-              <span style={{ 
-                color: "rgb(156, 163, 175)", // text-gray-400
-                fontSize: "0.875rem",
-                fontWeight: "medium"
-              }}>
-                Unlock unlimited interviews and personalized feedback!
-              </span>
-              <Button
-                onClick={handleSignUp}
-                className="px-4 py-2 text-white bg-green-600 hover:bg-green-700 rounded-md font-medium transition-colors duration-200"
-              >
-                Sign Up
-              </Button>
-            </>
-          ) : (
-            <Button
-              onClick={handleLogout}
-              className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium transition-colors duration-200"
-            >
-              Log out
-            </Button>
-          )}
+          <Button
+            onClick={handleLogout}
+            className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium transition-colors duration-200"
+          >
+            Log out
+          </Button>
         </div>
       </div>
     </header>
