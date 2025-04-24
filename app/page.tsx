@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Code2, Brain, ArrowRight, Rocket, Gift, Zap, Users, MessageSquare } from "lucide-react"
+import { Brain, ArrowRight, Gift } from "lucide-react"
 import { Button } from "./ui/button"
 
 export default function LandingPage() {
@@ -23,7 +23,7 @@ export default function LandingPage() {
                     Master the Interview, Not Just the Code
                   </h1>
                   <p className="text-gray-300 md:text-xl lg:text-2xl">
-                    You've solved dozens of problems. Your algorithms are solid. Now bridge the gap between technical knowledge and interview success with AI-powered realistic mock interviews.
+                    You&apos;ve solved dozens of problems. Your algorithms are solid. Now bridge the gap between technical knowledge and interview success with AI-powered realistic mock interviews.
                   </p>
                   
                   {/* Free Interview Promo */}
@@ -78,7 +78,7 @@ export default function LandingPage() {
               <div className="flex flex-col space-y-2 lg:space-y-3">
                 <h3 className="text-xl lg:text-2xl font-bold text-blue-400">Beyond Leetcode Practice</h3>
                 <p className="text-gray-300 lg:text-lg">
-                  You've mastered the algorithms. Now master the delivery. AlgoMentor AI bridges the gap between solving problems alone and performing under interview conditions.
+                  You&apos;ve mastered the algorithms. Now master the delivery. AlgoMentor AI bridges the gap between solving problems alone and performing under interview conditions.
                 </p>
               </div>
               <div className="flex flex-col space-y-2 lg:space-y-3">
@@ -106,10 +106,10 @@ export default function LandingPage() {
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2 max-w-3xl">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-                  You've Done the Hard Work. Now Close the Deal.
+                  You&apos;ve Done the Hard Work. Now Close the Deal.
                 </h2>
                 <p className="mx-auto max-w-[800px] text-gray-200 md:text-xl lg:text-2xl">
-                  Your algorithm skills deserve to shine in the interview. Don't let interview nerves or communication gaps cost you your dream job. Our AI-powered platform helps you perform at your best.
+                  Your algorithm skills deserve to shine in the interview. Don&apos;t let interview nerves or communication gaps cost you your dream job. Our AI-powered platform helps you perform at your best.
                 </p>
                 <p className="mx-auto max-w-[600px] text-green-300 md:text-lg mt-2">
                   Sign up now for interview-specific training and receive a free mock interview session!
