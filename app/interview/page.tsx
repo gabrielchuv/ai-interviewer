@@ -7,7 +7,7 @@ import { Timer } from "../components/Timer";
 import { Footer } from "../components/Footer";
 import { useRouter } from "next/navigation";
 import { questionBank, Question } from "../data/questionBank";
-import ProtectedRoute from "../components/ProtectedRoute";
+import CombinedProtection from "../components/CombinedProtection";
 import Header from "../components/Header";
 import { useInterviewSession } from "../services/useInterviewSession";
 import { InterviewChat } from "../components/InterviewChat";
@@ -241,7 +241,7 @@ export default function InterviewPage() {
   }
 
   return (
-    <ProtectedRoute>
+    <CombinedProtection>
       <Box
         sx={{
           height: "calc(100% - 120px)",
@@ -290,6 +290,6 @@ export default function InterviewPage() {
           </Box>
         </Box>
       </Box>
-    </ProtectedRoute>
+    </CombinedProtection>
   );
 }

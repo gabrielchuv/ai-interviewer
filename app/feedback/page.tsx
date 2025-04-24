@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from "react";
 import ReactMarkdown from "react-markdown";
-import ProtectedRoute from "../components/ProtectedRoute";
+import CombinedProtection from "../components/CombinedProtection";
 import Header from "../components/Header";
 import { getFeedback } from "../services/feedback";
 import { storeFeedback } from "../services/firebase";
@@ -60,7 +60,7 @@ const overallScore = feedback && Math.round((feedback.technicalDepth.rating + fe
 const hireInclination = overallScore && overallScore >= 3 ? "Hire" : "No Hire"
 
   return (
-    <ProtectedRoute>
+    <CombinedProtection>
       <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
         <Header />
         <div className="flex-1 container mx-auto px-4 py-8 md:py-12 lg:py-16">
@@ -118,6 +118,6 @@ const hireInclination = overallScore && overallScore >= 3 ? "Hire" : "No Hire"
           )}
         </div>
       </div>
-    </ProtectedRoute>
+    </CombinedProtection>
   );
 }

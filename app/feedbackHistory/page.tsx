@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getUserFeedback } from "../services/firebase";
-import ProtectedRoute from "../components/ProtectedRoute";
+import CombinedProtection from "../components/CombinedProtection";
 import Header from "../components/Header";
 
 interface FeedbackHistoryEntry {
@@ -43,7 +43,7 @@ export default function FeedbackHistoryPage() {
   };
 
   return (
-    <ProtectedRoute>
+    <CombinedProtection>
       <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
         <Header />
         <div className="flex-1 container mx-auto px-4 py-8 md:py-12 lg:py-16">
@@ -93,6 +93,6 @@ export default function FeedbackHistoryPage() {
           </div>
         </div>
       </div>
-    </ProtectedRoute>
+    </CombinedProtection>
   );
 } 

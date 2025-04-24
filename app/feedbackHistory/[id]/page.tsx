@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import ProtectedRoute from "../../components/ProtectedRoute";
+import CombinedProtection from "../../components/CombinedProtection";
 import Header from "../../components/Header";
 import { useParams } from "next/navigation";
 import { doc, getDoc } from "firebase/firestore";
@@ -49,7 +49,7 @@ export default function FeedbackDetailsPage() {
   }, [params.id]);
 
   return (
-    <ProtectedRoute>
+    <CombinedProtection>
       <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
         <Header />
         <div className="flex-1 container mx-auto px-4 py-8 md:py-12 lg:py-16">
@@ -119,6 +119,6 @@ export default function FeedbackDetailsPage() {
           )}
         </div>
       </div>
-    </ProtectedRoute>
+    </CombinedProtection>
   );
 } 

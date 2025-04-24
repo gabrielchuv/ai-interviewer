@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ProtectedRoute from "../components/ProtectedRoute";
+import CombinedProtection from "../components/CombinedProtection";
 import Header from "../components/Header";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -117,7 +117,7 @@ export default function PricingPage() {
   };
 
   return (
-    <ProtectedRoute>
+    <CombinedProtection>
       <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
         <Header />
         <div className="flex-1 container mx-auto px-4 py-12">
@@ -277,6 +277,6 @@ export default function PricingPage() {
           </div>
         </div>
       </div>
-    </ProtectedRoute>
+    </CombinedProtection>
   );
 } 

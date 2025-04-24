@@ -4,7 +4,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '../../components/Header';
-import ProtectedRoute from '../../components/ProtectedRoute';
+import CombinedProtection from "../../components/CombinedProtection";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import HomeIcon from '@mui/icons-material/Home';
 
@@ -66,7 +66,7 @@ function PaymentSuccessContent() {
 
 export default function PaymentSuccessPage() {
   return (
-    <ProtectedRoute>
+    <CombinedProtection>
       <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
         <Header />
         <Suspense fallback={
@@ -77,6 +77,6 @@ export default function PaymentSuccessPage() {
           <PaymentSuccessContent />
         </Suspense>
       </div>
-    </ProtectedRoute>
+    </CombinedProtection>
   );
 } 
