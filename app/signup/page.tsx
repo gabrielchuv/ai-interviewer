@@ -25,12 +25,13 @@ export default function SignUpPage() {
       // Create user with Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       
-      // Add user email to database
+      // Add user email to database with 1 free interview credit
       await addDoc(collection(db, 'userEmails'), {
         email: email.toLowerCase(),
         createdAt: new Date().toISOString(),
         trialStartDate: new Date().toISOString(),
-        uid: userCredential.user.uid
+        uid: userCredential.user.uid,
+        interviewsRemaining: 1 // Give one free interview to every new user
       })
 
       router.push('/home')
@@ -61,7 +62,7 @@ export default function SignUpPage() {
               Try AlgoMentor
             </h1>
             <p className="text-gray-400">
-              Get access to AlgoMentor for free
+              Sign up and get 1 free interview
             </p>
           </div>
 

@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Code2, Brain, ArrowRight, Rocket } from "lucide-react"
+import { Code2, Brain, ArrowRight, Rocket, Gift } from "lucide-react"
 import { Button } from "./ui/button"
 
 export default function LandingPage() {
@@ -26,6 +26,15 @@ export default function LandingPage() {
                     Simulate real interview scenarios, tackle a wide range of problems, and gain immediate insights to
                     boost your confidence and performance.
                   </p>
+                  
+                  {/* Free Interview Promo */}
+                  <div className="bg-gradient-to-r from-green-600/20 to-blue-600/20 border border-green-500/30 rounded-lg px-4 py-3 flex items-center my-4">
+                    <Gift className="h-6 w-6 mr-3 text-green-400 flex-shrink-0" />
+                    <p className="text-green-300 text-sm md:text-base">
+                      Sign up today and get your first interview <span className="font-bold">free</span>!
+                    </p>
+                  </div>
+                  
                   <div className="flex flex-col sm:flex-row w-full gap-4 pt-4 lg:pt-8 justify-center lg:justify-start">
                     <Button
                       size="lg"
@@ -137,6 +146,9 @@ export default function LandingPage() {
                 </h2>
                 <p className="mx-auto max-w-[800px] text-gray-200 md:text-xl lg:text-2xl">
                   Start practicing with our AI interviewer and improve your chances of landing your dream job.
+                </p>
+                <p className="mx-auto max-w-[600px] text-green-300 md:text-lg mt-2">
+                  Sign up now and receive a free interview session!
                 </p>
               </div>
               <div className="pt-4 lg:pt-8 flex gap-4 justify-center">
