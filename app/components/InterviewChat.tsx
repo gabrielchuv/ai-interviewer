@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import { FaCode } from "react-icons/fa";
 import { MdMic, MdMicOff } from "react-icons/md";
-import { IoRocket, IoRocketOutline } from "react-icons/io5";
 import { ChatWindow } from "./ChatWindow";
 import { useEffect, useState, useRef } from "react";
 
@@ -213,32 +212,6 @@ When you believe the candidate has a good understanding of the problem and has o
               <>
                 <MdMic className="mr-2" />
                 Mute Mic
-              </>
-            )}
-          </button>
-        )}
-        
-        {/* Auto Response Toggle Button - Only show when connected */}
-        {isConnected && toggleAutoResponse && (
-          <button
-            onClick={toggleAutoResponse}
-            className={`
-              flex-1 py-2 px-4 rounded flex items-center justify-center
-              ${autoResponseEnabled 
-                ? 'bg-purple-600 hover:bg-purple-700 text-white' 
-                : 'bg-gray-600 hover:bg-gray-700 text-white'}
-              transition-colors duration-200
-            `}
-          >
-            {autoResponseEnabled ? (
-              <>
-                <IoRocket className="mr-2" />
-                Auto Response On
-              </>
-            ) : (
-              <>
-                <IoRocketOutline className="mr-2" />
-                Auto Response Off
               </>
             )}
           </button>
