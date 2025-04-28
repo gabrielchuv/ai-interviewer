@@ -215,7 +215,7 @@ export default function InterviewPage() {
               <>
                 <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-6 text-center">
                   <p className="text-red-400 font-medium text-lg mb-2">Access Denied</p>
-                  <p className="text-gray-300">You need to purchase interview credits first. If you have credits, please start the interview from the home page.</p>
+                  <p className="text-gray-300">You need to purchase interview credits first or start the interview from the home page.</p>
                   <p className="text-gray-300 mt-2">Redirecting you...</p>
                 </div>
               </>
