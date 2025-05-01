@@ -130,6 +130,10 @@ export default function LandingPage() {
       <footer className="w-full py-6 lg:py-8 border-t border-gray-700 bg-gray-900">
         <div className="container mx-auto px-4 md:px-6 flex flex-col sm:flex-row justify-between items-center">
           <p className="text-xs lg:text-sm text-gray-400">© 2023 AlgoMentor AI. All rights reserved.</p>
+          <div className="flex gap-4 mt-4 sm:mt-0">
+            <Link href="/terms" className="text-xs lg:text-sm text-gray-400 hover:text-blue-400">Terms</Link>
+            <Link href="/privacy" className="text-xs lg:text-sm text-gray-400 hover:text-blue-400">Privacy</Link>
+          </div>
         </div>
       </footer>
     </div>
