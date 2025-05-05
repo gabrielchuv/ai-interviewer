@@ -12,6 +12,7 @@ import Header from "../components/Header";
 import { useInterviewSession } from "../services/useInterviewSession";
 import { InterviewChat } from "../components/InterviewChat";
 import { getNewQuestionForUser, addQuestionToUserHistory } from "../services/firebase";
+import { MicStatus } from "../components/MicStatus";
 
 export interface Message {
   role: "user" | "ai";
@@ -253,6 +254,8 @@ export default function InterviewPage() {
         <div ref={audioContainerRef} className="hidden"></div>
         
         <Header />
+        {/* Add MicStatus component for visual feedback */}
+        {isConnected && <MicStatus isMuted={isMuted} />}
         <Box sx={{ flex: 1, position: "relative" }}>
           {/* Only show timer when connected */}
           {isConnected && <Timer onTimeUp={handleTimeUp} />}      

@@ -62,6 +62,11 @@ export function useInterviewSession(): UseInterviewSessionResult {
   const [isMuted, setIsMuted] = useState(false);
   const [autoResponseEnabled, setAutoResponseEnabled] = useState(true);
   
+  // Add state to track if AI is currently speaking
+  const [isAISpeaking, setIsAISpeaking] = useState(false);
+  // Add ref to track previous mute state before AI started speaking
+  const previousMuteStateRef = useRef<boolean>(false);
+  
   const realtimeSessionRef = useRef<RealtimeSession | null>(null);
 
   // Clean up on unmount
@@ -92,6 +97,36 @@ export function useInterviewSession(): UseInterviewSessionResult {
           try {
             const data = JSON.parse(event.data);
             console.log('Received event:', data);
+            
+            // Handle AI speech start/end detection based on OpenAI events
+            if (data.type === 'response.audio_transcript.delta') {
+              // AI has started speaking
+              if (!isAISpeaking) {
+                console.log('[useInterviewSession] AI speech started (detected response.audio_transcript.delta)');
+                setIsAISpeaking(true);
+                
+                // Save current mute state before muting
+                previousMuteStateRef.current = realtimeSessionRef.current?.getMuteState() || false;
+                
+                // Only mute if not already muted
+                if (!previousMuteStateRef.current && realtimeSessionRef.current) {
+                  realtimeSessionRef.current.mute();
+                  setIsMuted(true);
+                }
+              }
+            } else if (data.type === 'response.audio.done') {
+              // AI has finished speaking
+              if (isAISpeaking) {
+                console.log('[useInterviewSession] AI speech ended (detected response.done)');
+                setIsAISpeaking(false);
+                
+                // Restore previous mute state (only unmute if it wasn't muted before)
+                if (!previousMuteStateRef.current && realtimeSessionRef.current) {
+                  realtimeSessionRef.current.unmute();
+                  setIsMuted(false);
+                }
+              }
+            }
             
             // Handle legacy message format (if any)
             if (data.type === 'message' && data.content) {
@@ -187,7 +222,7 @@ export function useInterviewSession(): UseInterviewSessionResult {
       setIsConnecting(false);
       setIsConnected(false);
     }
-  }, [isConnected, isConnecting]);
+  }, [isConnected, isConnecting, isAISpeaking]);
 
   const disconnect = useCallback(() => {
     if (realtimeSessionRef.current) {
@@ -196,6 +231,7 @@ export function useInterviewSession(): UseInterviewSessionResult {
       setIsConnected(false);
       setAudioElement(null);
       setIsMuted(false);
+      setIsAISpeaking(false);
     }
   }, []);
 
@@ -224,6 +260,12 @@ export function useInterviewSession(): UseInterviewSessionResult {
     }
 
     try {
+      // Don't allow manual toggling while AI is speaking
+      if (isAISpeaking) {
+        console.log('[useInterviewSession] Cannot toggle mute while AI is speaking');
+        return;
+      }
+      
       // Get the current mute state before toggling
       const currentMuteState = realtimeSessionRef.current.getMuteState();
       
@@ -233,12 +275,16 @@ export function useInterviewSession(): UseInterviewSessionResult {
       if (success) {
         // Update the UI state with the new (opposite) mute state
         setIsMuted(!currentMuteState);
+        
+        // Also update the previous mute state reference
+        previousMuteStateRef.current = !currentMuteState;
+        
         console.log(`[useInterviewSession] Microphone ${!currentMuteState ? 'muted' : 'unmuted'}`);
       }
     } catch (error) {
       console.error('Error toggling mute state:', error);
     }
-  }, [isConnected]);
+  }, [isConnected, isAISpeaking]);
 
   const toggleAutoResponse = useCallback(() => {
     if (!realtimeSessionRef.current || !isConnected) {
@@ -248,15 +294,16 @@ export function useInterviewSession(): UseInterviewSessionResult {
     try {
       // Toggle the auto response setting
       const newAutoResponseState = !autoResponseEnabled;
+      
+      // Update the session settings
       const success = realtimeSessionRef.current.updateSessionSettings(newAutoResponseState);
       
       if (success) {
-        // Update the UI state
         setAutoResponseEnabled(newAutoResponseState);
         console.log(`[useInterviewSession] Auto response ${newAutoResponseState ? 'enabled' : 'disabled'}`);
       }
     } catch (error) {
-      console.error('Error toggling auto response setting:', error);
+      console.error('Error toggling auto response:', error);
     }
   }, [isConnected, autoResponseEnabled]);
 
