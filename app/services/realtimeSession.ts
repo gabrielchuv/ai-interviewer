@@ -90,10 +90,10 @@ export class RealtimeSession {
       this.peerConnection.onconnectionstatechange = () => {
         if (this.peerConnection) {
           const state = this.peerConnection.connectionState;
-          console.log(`[RealtimeSession] Connection state changed to: ${state}`);
+        //   console.log(`[RealtimeSession] Connection state changed to: ${state}`);
           
           if (state === 'connected') {
-            console.log('[RealtimeSession] WebRTC connection established successfully');
+            // console.log('[RealtimeSession] WebRTC connection established successfully');
           } else if (state === 'failed' || state === 'disconnected' || state === 'closed') {
             console.warn(`[RealtimeSession] WebRTC connection ${state}`);
           }
@@ -121,12 +121,12 @@ export class RealtimeSession {
       
       // Log when the data channel opens
       this.dataChannel.onopen = () => {
-        console.log('[RealtimeSession] Data channel opened');
+        // console.log('[RealtimeSession] Data channel opened');
       };
       
       // Log when the data channel closes
       this.dataChannel.onclose = () => {
-        console.log('[RealtimeSession] Data channel closed');
+        // console.log('[RealtimeSession] Data channel closed');
       };
       
       // Log data channel errors
@@ -141,7 +141,7 @@ export class RealtimeSession {
           const serverEvent = JSON.parse(event.data) as OpenAIEvent;
           
           // Enhanced logging for all events
-          console.log('[OpenAI Event Received]', serverEvent.type, serverEvent);
+        //   console.log('[OpenAI Event Received]', serverEvent.type, serverEvent);
           
           // Store the last event type
           this.lastEventType = serverEvent.type;
@@ -152,14 +152,14 @@ export class RealtimeSession {
               // Handle completed text response
               if (this.options.onTextResponse) {
                 const textEvent = serverEvent as OpenAITextDoneEvent;
-                console.log('[OpenAI Event] Text response completed:', textEvent.text);
+                // console.log('[OpenAI Event] Text response completed:', textEvent.text);
                 this.options.onTextResponse(textEvent.text);
               }
               break;       
               
             case 'conversation.item.input_audio_transcription.completed':
               // Handle user audio transcription
-              console.log('[OpenAI Event] User audio transcription completed:', (serverEvent as OpenAITranscriptionEvent).transcript);
+            //   console.log('[OpenAI Event] User audio transcription completed:', (serverEvent as OpenAITranscriptionEvent).transcript);
               if (this.options.onTranscription) {
                 const transcriptEvent = serverEvent as OpenAITranscriptionEvent;
                 this.options.onTranscription(transcriptEvent.transcript);
@@ -168,7 +168,7 @@ export class RealtimeSession {
               
             case 'response.audio_transcript.done':
               // Handle audio transcript done event
-              console.log('[OpenAI Event] AI audio transcript done:', (serverEvent as OpenAIAudioTranscriptDoneEvent).transcript);
+            //   console.log('[OpenAI Event] AI audio transcript done:', (serverEvent as OpenAIAudioTranscriptDoneEvent).transcript);
               if (this.options.onTranscription) {
                 const transcriptEvent = serverEvent as OpenAIAudioTranscriptDoneEvent;
                 this.options.onTranscription(transcriptEvent.transcript);
@@ -176,23 +176,23 @@ export class RealtimeSession {
               break;
 
             case 'response.created':
-              console.log('[OpenAI Event] Response created');
+            //   console.log('[OpenAI Event] Response created');
               break;
 
             case 'response.completed':
-              console.log('[OpenAI Event] Response completed');
+            //   console.log('[OpenAI Event] Response completed');
               break;
 
             case 'response.chunk':
-              console.log('[OpenAI Event] Response chunk received');
+            //   console.log('[OpenAI Event] Response chunk received');
               break;
 
             case 'response.audio.chunk':
-              console.log('[OpenAI Event] Audio chunk received');
+            //   console.log('[OpenAI Event] Audio chunk received');
               break;
 
             default:
-              console.log(`[OpenAI Event] Unhandled event type: ${serverEvent.type}`);
+            //   console.log(`[OpenAI Event] Unhandled event type: ${serverEvent.type}`);
               break;
           }
           
@@ -253,7 +253,7 @@ export class RealtimeSession {
     }
 
     // Check data channel state
-    console.log('[RealtimeSession] Data channel state:', this.dataChannel.readyState);
+    // console.log('[RealtimeSession] Data channel state:', this.dataChannel.readyState);
     
     // Create message object in the format expected by the OpenAI Realtime API
     const messageObj = {
@@ -276,16 +276,16 @@ export class RealtimeSession {
     try {
       // Send the message
       this.dataChannel.send(JSON.stringify(messageObj));
-      console.log('[RealtimeSession] Message sent successfully');
+    //   console.log('[RealtimeSession] Message sent successfully');
       
       // Trigger a response creation
       const responseCreateEvent = {
         type: "response.create"
       };
       
-      console.log('[RealtimeSession] Sending response.create event:', responseCreateEvent);
+    //   console.log('[RealtimeSession] Sending response.create event:', responseCreateEvent);
       this.dataChannel.send(JSON.stringify(responseCreateEvent));
-      console.log('[RealtimeSession] response.create event sent successfully');
+    //   console.log('[RealtimeSession] response.create event sent successfully');
     } catch (error) {
       console.error('[RealtimeSession] Error sending message:', error);
     }
@@ -306,7 +306,7 @@ export class RealtimeSession {
         track.enabled = false;
       });
       this.isMuted = true;
-      console.log('[RealtimeSession] Microphone muted');
+    //   console.log('[RealtimeSession] Microphone muted');
       return true;
     } catch (error) {
       console.error('Error muting microphone:', error);
@@ -329,7 +329,7 @@ export class RealtimeSession {
         track.enabled = true;
       });
       this.isMuted = false;
-      console.log('[RealtimeSession] Microphone unmuted');
+    //   console.log('[RealtimeSession] Microphone unmuted');
       return true;
     } catch (error) {
       console.error('Error unmuting microphone:', error);
@@ -436,9 +436,9 @@ export class RealtimeSession {
         }
       };
 
-      console.log('[RealtimeSession] Sending session.update event:', updateEvent);
+    //   console.log('[RealtimeSession] Sending session.update event:', updateEvent);
       this.dataChannel.send(JSON.stringify(updateEvent));
-      console.log('[RealtimeSession] session.update event sent successfully');
+    //   console.log('[RealtimeSession] session.update event sent successfully');
       return true;
     } catch (error) {
       console.error('[RealtimeSession] Error updating session settings:', error);
