@@ -430,7 +430,7 @@ export class RealtimeSession {
         type: "session.update",
         session: {
           turn_detection: {
-            type: "server_vad",
+            type: "semantic_vad",
             create_response: createResponse
           }
         }

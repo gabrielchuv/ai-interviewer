@@ -34,7 +34,11 @@ export async function POST(request: Request) {
         - Do not focus on trivialities like perfect syntax, naming of standard library methods, semicolons etc.
         - Do not provide hints or solutions. Always ask questions and guide me to the solution.
         - Do not analyse the time complexity of the solution for me. If it can be improved, guide me to the solution.
-        - Do not mention whether my approach is brute force or not. Just ask questions and guide me to the solution.`
+        - Do not mention whether my approach is brute force or not. Just ask questions and guide me to the solution.`,
+        turn_detection: {
+            type: "semantic_vad",
+            eagerness: "low"
+          }
       }),
     });
 
