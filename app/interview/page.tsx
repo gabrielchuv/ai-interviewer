@@ -11,7 +11,10 @@ import CombinedProtection from "../components/CombinedProtection";
 import Header from "../components/Header";
 import { useInterviewSession } from "../services/useInterviewSession";
 import { InterviewChat } from "../components/InterviewChat";
-import { getNewQuestionForUser, addQuestionToUserHistory } from "../services/firebase";
+import {
+  getNewQuestionForUser,
+  addQuestionToUserHistory,
+} from "../services/firebase";
 
 export interface Message {
   role: "user" | "ai";
@@ -31,7 +34,9 @@ export default function InterviewPage() {
   const [currentCode, setCurrentCode] = useState("");
   const audioContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [autoConnectCountdown, setAutoConnectCountdown] = useState<number | null>(10);
+  const [autoConnectCountdown, setAutoConnectCountdown] = useState<
+    number | null
+  >(10);
   const [checkingAccess, setCheckingAccess] = useState(true);
   const [accessDenied, setAccessDenied] = useState(false);
   const [question, setQuestion] = useState<Question | null>(null);
@@ -50,67 +55,75 @@ export default function InterviewPage() {
     isMuted,
     toggleMute,
     autoResponseEnabled,
-    toggleAutoResponse
+    toggleAutoResponse,
   } = useInterviewSession();
 
-  // Fetch a new question when the component mounts
-  useEffect(() => {
-    const fetchQuestion = async () => {
-      try {
-        if (!checkingAccess) {
-          const newQuestion = await getNewQuestionForUser();
-          setQuestion(newQuestion);
-          
-          await addQuestionToUserHistory(newQuestion.id);
-          
-          setLoading(false);
-        }
-      } catch (error) {
-        console.error("Error fetching question:", error);
-        // Fallback to random question selection if there's an error
-        setQuestion(questionBank[Math.floor(Math.random() * questionBank.length)]);
-        setLoading(false);
-      }
-    };
+  const checkAccess = useCallback(async () => {
+    try {
+      // Check if user came from setup page (valid path)
+      const fromSetup = localStorage.getItem("interview_access") === "granted";
 
-    fetchQuestion();
-  }, [checkingAccess]);
+      if (!fromSetup) {
+        // Not from setup - redirect to pricing
+        setAccessDenied(true);
+        setTimeout(() => {
+          router.push("/home");
+        }, 5000);
+        return;
+      }
+
+      // Clear the access token to prevent reuse
+      localStorage.removeItem("interview_access");
+      setCheckingAccess(false);
+    } catch (error) {
+      console.error("Error checking interview access:", error);
+      setAccessDenied(true);
+      setTimeout(() => {
+        router.push("/setup");
+      }, 1500);
+    }
+  }, [router]);
+
+  const fetchQuestion = useCallback(async () => {
+    try {
+      const newQuestion = await getNewQuestionForUser();
+      setQuestion(newQuestion);
+
+      await addQuestionToUserHistory(newQuestion.id);
+
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching question:", error);
+      // Fallback to random question selection if there's an error
+      setQuestion(
+        questionBank[Math.floor(Math.random() * questionBank.length)]
+      );
+      setLoading(false);
+    }
+  }, []);
+
+  // Modified to only handle connection, not disconnection
+  const handleConnect = useCallback(() => {
+    if (!question) {
+      return;
+    }
+    connect(question.title, question.description);
+  }, [connect, question]);
 
   // Check if user should have access to the interview page
   useEffect(() => {
-    const checkAccess = async () => {
-      try {
-        // Check if user came from setup page (valid path)
-        const fromSetup = localStorage.getItem('interview_access') === 'granted';
-        
-        if (!fromSetup) {          
-            // Not from setup - redirect to pricing
-            setAccessDenied(true);
-            setTimeout(() => {
-              router.push('/home');
-            }, 5000);
-            return;
-          
-        }
-        
-        // Clear the access token to prevent reuse
-        localStorage.removeItem('interview_access');
-        setCheckingAccess(false);
-      } catch (error) {
-        console.error("Error checking interview access:", error);
-        setAccessDenied(true);
-        setTimeout(() => {
-          router.push('/setup');
-        }, 1500);
-      }
-    };
-
-    checkAccess();
-  }, [router]);
+    checkAccess().then(fetchQuestion);
+  }, [checkAccess, fetchQuestion]);
 
   // Auto-connect countdown
   useEffect(() => {
-    if (autoConnectCountdown === null || isConnected || isConnecting || checkingAccess) return;
+    if (
+      autoConnectCountdown === null ||
+      isConnected ||
+      isConnecting ||
+      checkingAccess
+    )
+      return;
 
     const timer = setTimeout(() => {
       if (autoConnectCountdown > 1) {
@@ -122,45 +135,37 @@ export default function InterviewPage() {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [autoConnectCountdown, isConnected, isConnecting, checkingAccess]);
-
-  // Scroll to bottom when messages change
-  useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages, transcriptions]);
+  }, [
+    autoConnectCountdown,
+    isConnected,
+    isConnecting,
+    checkingAccess,
+    handleConnect,
+  ]);
 
   // Append audio element to the DOM
   useEffect(() => {
     if (audioElement && audioContainerRef.current) {
       // Clear previous audio elements
-      audioContainerRef.current.innerHTML = '';
+      audioContainerRef.current.innerHTML = "";
       // Append the new audio element
       audioContainerRef.current.appendChild(audioElement);
     }
   }, [audioElement]);
 
-  // Modified to only handle connection, not disconnection
-  const handleConnect = () => {
-    if (!isConnected && !isConnecting && question) {
-      connect(question.title, question.description);
-    }
-  };
-
   const saveInterviewAndRedirectToFeedback = useCallback(() => {
     // Create a combined conversation that includes both messages and transcriptions
     const combinedConversation = [
       ...messages,
-      ...transcriptions.map(transcript => ({
-        role: transcript.source === 'user' ? 'user' : 'ai',
+      ...transcriptions.map((transcript) => ({
+        role: transcript.source === "user" ? "user" : "ai",
         text: transcript.text,
-        timestamp: transcript.timestamp
-      }))
+        timestamp: transcript.timestamp,
+      })),
     ].sort((a, b) => {
       // Sort by timestamp if available, otherwise keep original order
-      const timeA = (a).timestamp || 0;
-      const timeB = (b).timestamp || 0;
+      const timeA = a.timestamp || 0;
+      const timeB = b.timestamp || 0;
       return timeA - timeB;
     });
 
@@ -176,29 +181,27 @@ export default function InterviewPage() {
     saveInterviewAndRedirectToFeedback();
   }, [saveInterviewAndRedirectToFeedback]);
 
-  const handleInterviewComplete = () => {
+  const handleInterviewComplete = useCallback(() => {
     // Send a final message with the code
     if (isConnected) {
       const codeMessage = `I have completed coding my solution. Here it is:\n\n${currentCode}`;
       sendMessage(codeMessage);
-      
+
       // Wait a moment for the message to be processed before redirecting
       setTimeout(() => {
         saveInterviewAndRedirectToFeedback();
+        disconnect();
       }, 2000);
     } else {
-    saveInterviewAndRedirectToFeedback();
+      saveInterviewAndRedirectToFeedback();
     }
-  };
-
-  // Add cleanup effect
-  useEffect(() => {
-    return () => {
-      if (isConnected) {
-        disconnect();
-      }
-    };
-  }, [disconnect]);
+  }, [
+    currentCode,
+    disconnect,
+    isConnected,
+    saveInterviewAndRedirectToFeedback,
+    sendMessage,
+  ]);
 
   if (checkingAccess) {
     return (
@@ -214,8 +217,13 @@ export default function InterviewPage() {
             ) : (
               <>
                 <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-6 text-center">
-                  <p className="text-red-400 font-medium text-lg mb-2">Access Denied</p>
-                  <p className="text-gray-300">You need to purchase interview credits first or start the interview from the home page.</p>
+                  <p className="text-red-400 font-medium text-lg mb-2">
+                    Access Denied
+                  </p>
+                  <p className="text-gray-300">
+                    You need to purchase interview credits first or start the
+                    interview from the home page.
+                  </p>
                   <p className="text-gray-300 mt-2">Redirecting you...</p>
                 </div>
               </>
@@ -251,11 +259,11 @@ export default function InterviewPage() {
       >
         {/* Hidden audio container */}
         <div ref={audioContainerRef} className="hidden"></div>
-        
+
         <Header />
         <Box sx={{ flex: 1, position: "relative" }}>
           {/* Only show timer when connected */}
-          {isConnected && <Timer onTimeUp={handleTimeUp} />}      
+          {isConnected && <Timer onTimeUp={handleTimeUp} />}
           <Box display="flex" sx={{ height: "calc(100% - 120px)" }}>
             <InterviewChat
               isConnecting={isConnecting}
