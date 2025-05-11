@@ -255,7 +255,7 @@ When you believe the candidate has a good understanding of the problem and has o
                 flex-1 py-2 px-4 rounded flex items-center justify-center
                 ${!autoResponseEnabled 
                   ? 'bg-purple-600 hover:bg-purple-700 text-white' 
-                  : 'bg-gray-600 hover:bg-gray-700 text-white'}
+                  : 'bg-cyan-600 hover:bg-cyan-700 text-white'}
                 transition-colors duration-200
               `}
             >
