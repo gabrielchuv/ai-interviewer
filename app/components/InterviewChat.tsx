@@ -45,8 +45,6 @@ export function InterviewChat({
   });
   // Add state to track when Review Code was clicked
   const [reviewCodeClicked, setReviewCodeClicked] = useState(false);
-  // Keep track of the last transcription length to avoid re-processing
-  const lastTranscriptLengthRef = useRef(0);
   // Track previous auto-response state to detect changes
   const prevAutoResponseEnabledRef = useRef(autoResponseEnabled);
   
@@ -60,6 +58,7 @@ export function InterviewChat({
 - They should outline their approach before coding
 - When done coding, click on Review Code to proceed with the interview
 - They will be assessed based on their approach and thinking process, not perfect syntax
+- They can use the Share Thought Process button to think aloud without being interrupted
 
 IMPORTANT FOR THE INTERVIEW FLOW:
 When you believe the candidate has a good understanding of the problem and has outlined their approach, please explicitly say "You can start coding now." This will signal to them that it's time to begin implementing their solution.
@@ -70,62 +69,6 @@ When you believe the candidate has a good understanding of the problem and has o
     }
   }, [isConnected, sendMessage]);
   
-  // Parse AI transcripts for "you can start coding now" and disable auto-response
-  useEffect(() => {
-    // Skip checks if Review Code was recently clicked or there are no new transcriptions
-    if (!isConnected || !autoResponseEnabled || !toggleAutoResponse || 
-        reviewCodeClicked || transcriptions.length <= lastTranscriptLengthRef.current) {
-      return;
-    }
-    
-    // Update the last checked transcription length
-    lastTranscriptLengthRef.current = transcriptions.length;
-    
-    // Get only the very last AI transcript
-    const aiTranscripts = transcriptions.filter(t => t.source === 'ai');
-    if (aiTranscripts.length === 0) return;
-    
-    const lastAiTranscript = aiTranscripts[aiTranscripts.length - 1];
-    console.log("Last AI transcript:", lastAiTranscript);
-    
-    // Convert to lowercase for case-insensitive matching
-    const lastAiText = lastAiTranscript.text.toLowerCase();
-    console.log("Last AI text:", lastAiText);
-    
-    // Check for the trigger phrase or similar variations
-    const triggerPhrases = [
-      'you can start coding now',
-      'you may start coding',
-      'you can begin coding',
-      'feel free to start coding',
-      'you can code now'
-    ];
-    
-    const shouldDisableAutoResponse = triggerPhrases.some(phrase => 
-      lastAiText.includes(phrase.toLowerCase())
-    );
-    
-    // Toggle auto-response off if trigger phrase detected and auto-response is enabled
-    if (shouldDisableAutoResponse && autoResponseEnabled) {
-      console.log('[InterviewChat] "Start coding" phrase detected, disabling auto-response');
-      toggleAutoResponse();
-      
-      // Set specific notification for automatic detection
-      setNotificationMessage({
-        title: 'Coding Mode Activated',
-        message: 'Auto-response has been turned off to allow you to focus on coding.'
-      });
-      
-      // Show notification
-      setShowNotification(true);
-      
-      // Hide notification after 5 seconds
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 5000);
-    }
-  }, [transcriptions, isConnected, autoResponseEnabled, toggleAutoResponse, reviewCodeClicked]);
-  
   // Track changes to autoResponseEnabled to show notifications for manual toggling
   useEffect(() => {
     // Skip first render
@@ -134,7 +77,7 @@ When you believe the candidate has a good understanding of the problem and has o
       return;
     }
     
-    // Only show notifications for manual toggling (not auto detection or review code)
+    // Only show notifications for manual toggling (not review code)
     if (!reviewCodeClicked) {
       if (!autoResponseEnabled) {
         // Auto-response was disabled
