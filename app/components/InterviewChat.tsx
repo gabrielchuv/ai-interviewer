@@ -3,6 +3,9 @@ import { FaCode } from "react-icons/fa";
 import { MdMic, MdMicOff } from "react-icons/md";
 import { VscSymbolEvent } from "react-icons/vsc";
 import { ChatWindow } from "./ChatWindow";
+import Tooltip from "@mui/material/Tooltip";
+import Alert from "@mui/material/Alert";
+import AlertTitle from "@mui/material/AlertTitle";
 import { useEffect, useState, useRef } from "react";
 
 interface InterviewChatProps {
@@ -162,102 +165,130 @@ When you believe the candidate has a good understanding of the problem and has o
         autoConnectCountdown={autoConnectCountdown}
       />
       
-      {/* Auto-response notification */}
+      {/* Auto-response notification using MUI Alert */}
       {showNotification && (
-        <Box
-          sx={{
-            bgcolor: notificationMessage.title === 'Thought Process Mode' 
-              ? 'rgba(124, 58, 237, 0.1)' // Purple for thought process mode
+        <Alert 
+          severity={
+            notificationMessage.title === 'Thought Process Mode' 
+              ? 'info'
               : notificationMessage.title === 'Response Mode'
-                ? 'rgba(16, 185, 129, 0.1)' // Green for response mode
-                : 'rgba(37, 99, 235, 0.1)', // Default blue for coding mode
-            border: notificationMessage.title === 'Thought Process Mode'
-              ? '1px solid rgba(124, 58, 237, 0.3)' // Purple for thought process mode
-              : notificationMessage.title === 'Response Mode'
-                ? '1px solid rgba(16, 185, 129, 0.3)' // Green for response mode
-                : '1px solid rgba(37, 99, 235, 0.3)', // Default blue for coding mode
-            color: notificationMessage.title === 'Thought Process Mode'
-              ? 'rgb(167, 139, 250)' // Purple for thought process mode
-              : notificationMessage.title === 'Response Mode'
-                ? 'rgb(52, 211, 153)' // Green for response mode
-                : 'rgb(96, 165, 250)', // Default blue for coding mode
-            p: 2,
-            borderRadius: 1,
+                ? 'success'
+                : 'info'
+          }
+          sx={{ 
             mb: 2,
-            fontSize: '0.875rem',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            textAlign: 'center'
+            backgroundColor: notificationMessage.title === 'Thought Process Mode' 
+              ? 'rgba(124, 58, 237, 0.1)' 
+              : notificationMessage.title === 'Response Mode'
+                ? 'rgba(16, 185, 129, 0.1)'
+                : 'rgba(37, 99, 235, 0.1)',
+            color: notificationMessage.title === 'Thought Process Mode'
+              ? 'rgb(167, 139, 250)'
+              : notificationMessage.title === 'Response Mode'
+                ? 'rgb(52, 211, 153)'
+                : 'rgb(96, 165, 250)',
+            border: notificationMessage.title === 'Thought Process Mode'
+              ? '1px solid rgba(124, 58, 237, 0.3)'
+              : notificationMessage.title === 'Response Mode'
+                ? '1px solid rgba(16, 185, 129, 0.3)'
+                : '1px solid rgba(37, 99, 235, 0.3)',
+            '& .MuiAlert-icon': {
+              color: notificationMessage.title === 'Thought Process Mode'
+                ? 'rgb(167, 139, 250)'
+                : notificationMessage.title === 'Response Mode'
+                  ? 'rgb(52, 211, 153)'
+                  : 'rgb(96, 165, 250)',
+            }
           }}
         >
-          <Box sx={{ fontWeight: 'bold', mb: 1 }}>{notificationMessage.title}</Box>
-          <Box>{notificationMessage.message}</Box>
-        </Box>
+          <AlertTitle>{notificationMessage.title}</AlertTitle>
+          {notificationMessage.message}
+        </Alert>
       )}
       
       <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
         {/* Mute Button - Only show when connected */}
         {isConnected && toggleMute && (
-          <button
-            onClick={toggleMute}
-            className={`
-              flex-1 py-2 px-4 rounded flex items-center justify-center
-              ${isMuted 
-                ? 'bg-red-600 hover:bg-red-700 text-white' 
-                : 'bg-green-600 hover:bg-green-700 text-white'}
-              transition-colors duration-200
-            `}
+          <Tooltip
+            title={isMuted ? "Turn on your microphone" : "Turn off your microphone"}
+            arrow
+            placement="top"
           >
-            {isMuted ? (
-              <>
-                <MdMicOff className="mr-2" />
-                Unmute Mic
-              </>
-            ) : (
-              <>
-                <MdMic className="mr-2" />
-                Mute Mic
-              </>
-            )}
-          </button>
+            <button
+              onClick={toggleMute}
+              className={`
+                flex-1 py-2 px-4 rounded flex items-center justify-center
+                ${isMuted 
+                  ? 'bg-red-600 hover:bg-red-700 text-white' 
+                  : 'bg-green-600 hover:bg-green-700 text-white'}
+                transition-colors duration-200
+              `}
+            >
+              {isMuted ? (
+                <>
+                  <MdMicOff className="mr-2" />
+                  Unmute Mic
+                </>
+              ) : (
+                <>
+                  <MdMic className="mr-2" />
+                  Mute Mic
+                </>
+              )}
+            </button>
+          </Tooltip>
         )}
         
         {/* Share Thought Process Button - Only show when connected */}
         {isConnected && toggleAutoResponse && (
-          <button
-            onClick={toggleAutoResponse}
+          <Tooltip 
             title={!autoResponseEnabled 
               ? "Resume AI responses to your input" 
-              : "Pause AI responses to allow you to explain your thought process without interruption"}
-            className={`
-              flex-1 py-2 px-4 rounded flex items-center justify-center
-              ${!autoResponseEnabled 
-                ? 'bg-purple-600 hover:bg-purple-700 text-white' 
-                : 'bg-gray-600 hover:bg-gray-700 text-white'}
-              transition-colors duration-200
-            `}
+              : "Use during coding to pause AI responses to allow you to explain your thought process without interruption"
+            }
+            arrow
+            placement="top"
           >
-            <VscSymbolEvent className="mr-2" />
-            {!autoResponseEnabled ? 'Resume Responses' : 'Share Thought Process'}
-          </button>
+            <button
+              onClick={toggleAutoResponse}
+              className={`
+                flex-1 py-2 px-4 rounded flex items-center justify-center
+                ${!autoResponseEnabled 
+                  ? 'bg-purple-600 hover:bg-purple-700 text-white' 
+                  : 'bg-gray-600 hover:bg-gray-700 text-white'}
+                transition-colors duration-200
+              `}
+            >
+              <VscSymbolEvent className="mr-2" />
+              {!autoResponseEnabled ? 'Resume Responses' : 'Share Thought Process'}
+            </button>
+          </Tooltip>
         )}
         
         {/* Review Code Button */}
-        <button
-          onClick={handleReviewCode}
-          disabled={!isConnected}
-          className={`
-            flex-1 py-2 px-4 rounded flex items-center justify-center
-            ${isConnected 
-              ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-              : 'bg-gray-600 text-gray-300 cursor-not-allowed'}
-            transition-colors duration-200
-          `}
+        <Tooltip
+          title="Use afer done coding to submit your code for review by the interviewer"
+          arrow
+          placement="top"
+          disableHoverListener={!isConnected}
         >
-          <FaCode className="mr-2" />
-          Review Code
-        </button>
+          <span className="flex-1"> {/* Wrap disabled button in span for tooltip to work */}
+            <button
+              onClick={handleReviewCode}
+              disabled={!isConnected}
+              className={`
+                w-full py-2 px-4 rounded flex items-center justify-center
+                ${isConnected 
+                  ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                  : 'bg-gray-600 text-gray-300 cursor-not-allowed'}
+                transition-colors duration-200
+              `}
+            >
+              <FaCode className="mr-2" />
+              Review Code
+            </button>
+          </span>
+        </Tooltip>
       </Box>
     </Box>
   );
