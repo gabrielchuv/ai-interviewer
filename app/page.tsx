@@ -23,14 +23,14 @@ export default function LandingPage() {
                     Master the Interview, Not Just the Code
                   </h1>
                   <p className="text-gray-300 md:text-xl lg:text-2xl">
-                    You&apos;ve solved dozens of problems. Your algorithms are solid. Now bridge the gap between technical knowledge and interview success with AI-powered realistic mock interviews.
+                  Get real interview experience. Simulate it with AI, get feedback, and improve fast.
                   </p>
                   
                   {/* Free Interview Promo */}
                   <div className="bg-gradient-to-r from-green-600/20 to-blue-600/20 border border-green-500/30 rounded-lg px-4 py-3 flex items-center my-4">
                     <Gift className="h-6 w-6 mr-3 text-green-400 flex-shrink-0" />
                     <p className="text-green-300 text-sm md:text-base">
-                      Get your first AI-powered mock interview <span className="font-bold">free</span> when you sign up!
+                      GTry a full AI mock interview — completely free. No credit card needed.
                     </p>
                   </div>
                   
@@ -40,7 +40,7 @@ export default function LandingPage() {
                       className="w-full sm:w-auto max-w-[200px] sm:max-w-none mx-auto lg:mx-0 bg-green-600 hover:bg-green-700 text-white text-base sm:text-lg"
                       asChild
                     >
-                      <Link href="/signup">Sign Up</Link>
+                      <Link href="/signup">Start Practicing</Link>
                     </Button>
                     <Button
                       size="lg"
@@ -49,6 +49,11 @@ export default function LandingPage() {
                     >
                       <Link href="/signin">Sign In</Link>
                     </Button>
+                  </div>
+                  <div>
+                    <p className="text-blue-300 text-sm mt-4 text-center lg:text-left font-medium tracking-wide flex items-center justify-center lg:justify-start">
+                      <span className="mr-2 text-base">👨‍💻</span> Built by ex-FAANG engineers
+                    </p>
                   </div>
                 </div>
               </div>
@@ -72,28 +77,111 @@ export default function LandingPage() {
         <section id="benefits" className="w-full py-12 md:py-24 lg:py-32 bg-gray-900">
           <div className="container mx-auto px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl text-center mb-8 lg:mb-12 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
-              For Engineers Who Know Their Algorithms
+              Why AlgoMentor?
             </h2>
             <div className="grid gap-6 lg:gap-8 md:grid-cols-2 lg:grid-cols-3">
               <div className="flex flex-col space-y-2 lg:space-y-3">
-                <h3 className="text-xl lg:text-2xl font-bold text-blue-400">Beyond Leetcode Practice</h3>
-                <p className="text-gray-300 lg:text-lg">
-                  You&apos;ve mastered the algorithms. Now master the delivery. AlgoMentor AI bridges the gap between solving problems alone and performing under interview conditions.
-                </p>
-              </div>
-              <div className="flex flex-col space-y-2 lg:space-y-3">
-                <h3 className="text-xl lg:text-2xl font-bold text-blue-400">AI-Powered Interview Feedback</h3>
-                <p className="text-gray-300 lg:text-lg">
-                  Receive detailed feedback on your interview presence, communication style, and problem-solving approach—the exact skills that differentiate good from great candidates.
-                </p>
-              </div>
-              <div className="flex flex-col space-y-2 lg:space-y-3">
-                <h3 className="text-xl lg:text-2xl font-bold text-blue-400">
-                  Last-Mile Interview Preparation
+                <h3 className="text-xl lg:text-2xl font-bold text-blue-400 flex items-center">
+                  <span className="mr-2">🧠</span> Beyond Leetcode Practice
                 </h3>
                 <p className="text-gray-300 lg:text-lg">
-                  For engineers in the final stages of interview prep who need realistic practice without scheduling conflicts or relying on busy friends. Available exactly when you need it.
+                  You already know how to code — now train how to explain, strategize, and solve under pressure. AlgoMentor bridges the gap between silent grinding and confident interview delivery.
                 </p>
+              </div>
+              <div className="flex flex-col space-y-2 lg:space-y-3">
+                <h3 className="text-xl lg:text-2xl font-bold text-blue-400 flex items-center">
+                  <span className="mr-2">👨‍💻</span> Real-Time AI Feedback
+                </h3>
+                <p className="text-gray-300 lg:text-lg">
+Practice with an AI that listens like a real interviewer — and tells you what worked, what didn&apos;t, and how to improve your presence, logic, and communication.
+                </p>
+              </div>
+              <div className="flex flex-col space-y-2 lg:space-y-3">
+                <h3 className="text-xl lg:text-2xl font-bold text-blue-400 flex items-center">
+                  <span className="mr-2">⏰</span> Last-Mile Prep, On Demand
+                </h3>
+                <p className="text-gray-300 lg:text-lg">
+No more scheduling mock interviews with busy friends. Get interview-ready when it matters most — on your terms, right before the real thing.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section id="testimonials" className="w-full py-12 md:py-24 lg:py-32 bg-gray-800">
+          <div className="container mx-auto px-4 md:px-6">
+            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
+              What Our Users Say
+            </h2>
+            <div className="flex justify-center mb-12">
+              <p className="text-green-300 text-lg font-medium tracking-wide flex items-center">
+                <span className="mr-2 text-xl">👥</span> Used by 500+ engineers
+              </p>
+            </div>
+            <div className="grid gap-8 md:grid-cols-3">
+              {/* Testimonial 1 */}
+              <div className="bg-gray-900 p-6 rounded-xl border border-blue-500/20 shadow-lg">
+                <div className="flex flex-col h-full">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <p className="text-gray-300 italic mb-4">
+                      &quot;After 6 months of Leetcode grinding, I still froze up in real interviews. AlgoMentor AI&apos;s mock interviews helped me get comfortable explaining my thought process while coding. Just received offers from two FAANG companies!&quot;
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-blue-400">Michael K.</p>
+                    <p className="text-gray-400 text-sm">CS Student, London</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Testimonial 2 */}
+              <div className="bg-gray-900 p-6 rounded-xl border border-purple-500/20 shadow-lg">
+                <div className="flex flex-col h-full">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <p className="text-gray-300 italic mb-4">
+                      &quot;The detailed feedback on my communication style was invaluable. AlgoMentor AI pointed out that I wasn&apos;t structuring my responses quite right and I was not explaining my algorithm choices clearly enough. After a few sessions, I improved and landed one of my top-choice companies.&quot;
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-purple-400">Sarah J.</p>
+                    <p className="text-gray-400 text-sm">CS Student, London</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Testimonial 3 */}
+              <div className="bg-gray-900 p-6 rounded-xl border border-green-500/20 shadow-lg">
+                <div className="flex flex-col h-full">
+                  <div className="flex-1">
+                    <div className="flex items-center space-x-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <svg key={i} className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <p className="text-gray-300 italic mb-4">
+                      &quot;As a self-taught developer, I struggled with imposter syndrome during interviews. The flexibility to practice anytime with AlgoMentor AI meant I could do multiple sessions a week.&quot;
+                    </p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-green-400">David L.</p>
+                    <p className="text-gray-400 text-sm">Junior Software Engineer, Chicago</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -106,13 +194,17 @@ export default function LandingPage() {
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2 max-w-3xl">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl">
-                  You&apos;ve Done the Hard Work. Now Close the Deal.
+                Don&apos;t Just Hope You&apos;re Ready. Know You Are
                 </h2>
                 <p className="mx-auto max-w-[800px] text-gray-200 md:text-xl lg:text-2xl">
-                  Your algorithm skills deserve to shine in the interview. Don&apos;t let interview nerves or communication gaps cost you your dream job. Our AI-powered platform helps you perform at your best.
+                  Your algorithm skills deserve to shine in the interview.<br></br>
+Don&apos;t let nerves or poor delivery cost you the offer.<br></br>
+AlgoMentor gives you real interview practice, powered by AI.
+
+
                 </p>
                 <p className="mx-auto max-w-[600px] text-green-300 md:text-lg mt-2">
-                  Sign up now for interview-specific training and receive a free mock interview session!
+✅ Includes 1 Free AI-Powered Interview — no strings attached
                 </p>
               </div>
               <div className="pt-4 lg:pt-8 flex gap-4 justify-center">
