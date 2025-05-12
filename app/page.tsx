@@ -30,7 +30,7 @@ export default function LandingPage() {
                   <div className="bg-gradient-to-r from-green-600/20 to-blue-600/20 border border-green-500/30 rounded-lg px-4 py-3 flex items-center my-4">
                     <Gift className="h-6 w-6 mr-3 text-green-400 flex-shrink-0" />
                     <p className="text-green-300 text-sm md:text-base">
-                      GTry a full AI mock interview — completely free. No credit card needed.
+                      Try a full AI mock interview — completely free. No credit card needed.
                     </p>
                   </div>
                   
