@@ -261,14 +261,11 @@ export const getNewQuestionForUser = async (testingMode: boolean = false): Promi
   }
   
   try {
-    return questionBank[0];
     // Get questions the user has already seen
     const seenQuestionIds = await getUserSeenQuestions();
-    console.log("Seen question IDs:", seenQuestionIds);
     
     // Filter out questions the user has already seen
     const unseenQuestions = questionBank.filter(q => !seenQuestionIds.includes(q.id));
-    console.log("Unseen questions:", unseenQuestions);
     // If there are unseen questions, return a random one from that set
     if (unseenQuestions.length > 0) {
       return unseenQuestions[Math.floor(Math.random() * unseenQuestions.length)];
