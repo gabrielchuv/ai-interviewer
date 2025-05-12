@@ -261,6 +261,7 @@ export const getNewQuestionForUser = async (testingMode: boolean = false): Promi
   }
   
   try {
+    return questionBank[0];
     // Get questions the user has already seen
     const seenQuestionIds = await getUserSeenQuestions();
     console.log("Seen question IDs:", seenQuestionIds);
