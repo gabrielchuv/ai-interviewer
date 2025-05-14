@@ -22,6 +22,7 @@ interface InterviewChatProps {
   autoConnectCountdown?: number | null;
   autoResponseEnabled?: boolean;
   toggleAutoResponse?: () => void;
+  isFreeTrial?: boolean;
 }
 
 export function InterviewChat({
@@ -37,7 +38,8 @@ export function InterviewChat({
   toggleMute,
   autoConnectCountdown = null,
   autoResponseEnabled = true,
-  toggleAutoResponse
+  toggleAutoResponse,
+  isFreeTrial = false
 }: InterviewChatProps) {
   // Add state for notification
   const [showNotification, setShowNotification] = useState(false);
@@ -239,8 +241,8 @@ When you believe the candidate has a good understanding of the problem and has o
           </Tooltip>
         )}
         
-        {/* Share Thought Process Button - Only show when connected */}
-        {isConnected && toggleAutoResponse && (
+        {/* Share Thought Process Button - Only show when connected and not hidden */}
+        {isConnected && toggleAutoResponse && !isFreeTrial && (
           <Tooltip 
             title={!autoResponseEnabled 
               ? "Resume AI responses to your input" 
@@ -265,30 +267,32 @@ When you believe the candidate has a good understanding of the problem and has o
           </Tooltip>
         )}
         
-        {/* Review Code Button */}
-        <Tooltip
-          title="Use afer done coding to submit your code for review by the interviewer"
-          arrow
-          placement="top"
-          disableHoverListener={!isConnected}
-        >
-          <span className="flex-1"> {/* Wrap disabled button in span for tooltip to work */}
-            <button
-              onClick={handleReviewCode}
-              disabled={!isConnected}
-              className={`
-                w-full py-2 px-4 rounded flex items-center justify-center
-                ${isConnected 
-                  ? 'bg-blue-600 hover:bg-blue-700 text-white' 
-                  : 'bg-gray-600 text-gray-300 cursor-not-allowed'}
-                transition-colors duration-200
-              `}
-            >
-              <FaCode className="mr-2" />
-              Review Code
-            </button>
-          </span>
-        </Tooltip>
+        {/* Review Code Button - Only show when not hidden */}
+        {!isFreeTrial && (
+          <Tooltip
+            title="Use afer done coding to submit your code for review by the interviewer"
+            arrow
+            placement="top"
+            disableHoverListener={!isConnected}
+          >
+            <span className="flex-1"> {/* Wrap disabled button in span for tooltip to work */}
+              <button
+                onClick={handleReviewCode}
+                disabled={!isConnected}
+                className={`
+                  w-full py-2 px-4 rounded flex items-center justify-center
+                  ${isConnected 
+                    ? 'bg-blue-600 hover:bg-blue-700 text-white' 
+                    : 'bg-gray-600 text-gray-300 cursor-not-allowed'}
+                  transition-colors duration-200
+                `}
+              >
+                <FaCode className="mr-2" />
+                Review Code
+              </button>
+            </span>
+          </Tooltip>
+        )}
       </Box>
     </Box>
   );

@@ -1,101 +1,195 @@
-'use client'
+"use client"
 
-import { Button } from "../ui/button"
-import Link from "next/link"
-import { ArrowLeft, ChevronRight } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { useState, useCallback, useEffect, useRef } from "react";
+import Box from "@mui/material/Box";
+import { Timer } from "../components/Timer";
+import { useRouter } from "next/navigation";
+import { questionBank, Question } from "../data/questionBank";
+import CombinedProtection from "../components/CombinedProtection";
+import Header from "../components/Header";
+import { useInterviewSession } from "../services/useInterviewSession";
+import { InterviewChat } from "../components/InterviewChat";
+import { getNewQuestionForUser, addQuestionToUserHistory } from "../services/firebase";
+
+export interface Message {
+  role: "user" | "ai";
+  text: string;
+  timestamp?: number;
+}
 
 export default function FreeTrialPage() {
-  const router = useRouter()
+  const router = useRouter();
+  const audioContainerRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [autoConnectCountdown, setAutoConnectCountdown] = useState<number | null>(10);
+  const [question, setQuestion] = useState<Question | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
-      <div className="flex-1 container mx-auto px-4 py-8 md:py-12 lg:py-16">
-        <Link 
-          href="/" 
-          className="inline-flex items-center text-sm text-gray-400 hover:text-blue-400 mb-8"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Home
-        </Link>
-        
-        <div className="max-w-4xl mx-auto">
-          <div className="text-center space-y-4 mb-12">
-            <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-600">
-              Experience Your Free AI Interview
-            </h1>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Try a complete mock interview with our AI interviewer and receive instant feedback - no commitment required.
-            </p>
-          </div>
+  const {
+    isConnecting,
+    isConnected,
+    error,
+    messages,
+    transcriptions,
+    connect,
+    disconnect,
+    sendMessage,
+    audioElement,
+    isMuted,
+    toggleMute,
+    autoResponseEnabled,
+    toggleAutoResponse
+  } = useInterviewSession();
 
-          <div className="grid md:grid-cols-2 gap-8 mb-12">
-            <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 md:p-8">
-              <h2 className="text-xl font-semibold mb-4 text-blue-400">What You'll Get</h2>
-              <ul className="space-y-3">
-                <li className="flex items-start">
-                  <div className="text-green-400 mr-3 mt-1">✅</div>
-                  <div>
-                    <span className="font-medium text-white">Complete mock interview</span>
-                    <p className="text-gray-300 text-sm mt-1">Experience a real interview scenario with algorithm challenges</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <div className="text-green-400 mr-3 mt-1">✅</div>
-                  <div>
-                    <span className="font-medium text-white">AI-powered feedback</span>
-                    <p className="text-gray-300 text-sm mt-1">Get detailed feedback on your code, communication, and problem-solving approach</p>
-                  </div>
-                </li>
-                <li className="flex items-start">
-                  <div className="text-green-400 mr-3 mt-1">✅</div>
-                  <div>
-                    <span className="font-medium text-white">Interview recording</span>
-                    <p className="text-gray-300 text-sm mt-1">Review your performance and track improvement areas</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
+  // Fetch a new question when the component mounts
+  useEffect(() => {
+    const fetchQuestion = async () => {
+      try {
+        // For free trial, just use a random question from the bank
+        setQuestion(questionBank[Math.floor(Math.random() * questionBank.length)]);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching question:", error);
+        setQuestion(questionBank[Math.floor(Math.random() * questionBank.length)]);
+        setLoading(false);
+      }
+    };
 
-            <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 md:p-8">
-              <h2 className="text-xl font-semibold mb-4 text-purple-400">How It Works</h2>
-              <ol className="space-y-4">
-                <li className="flex">
-                  <span className="bg-purple-500/20 text-purple-300 w-6 h-6 rounded-full flex items-center justify-center font-medium mr-3 flex-shrink-0">1</span>
-                  <p className="text-gray-300">Create a free account (no credit card required)</p>
-                </li>
-                <li className="flex">
-                  <span className="bg-purple-500/20 text-purple-300 w-6 h-6 rounded-full flex items-center justify-center font-medium mr-3 flex-shrink-0">2</span>
-                  <p className="text-gray-300">Select your interview difficulty and topic</p>
-                </li>
-                <li className="flex">
-                  <span className="bg-purple-500/20 text-purple-300 w-6 h-6 rounded-full flex items-center justify-center font-medium mr-3 flex-shrink-0">3</span>
-                  <p className="text-gray-300">Complete your interview with our AI interviewer</p>
-                </li>
-                <li className="flex">
-                  <span className="bg-purple-500/20 text-purple-300 w-6 h-6 rounded-full flex items-center justify-center font-medium mr-3 flex-shrink-0">4</span>
-                  <p className="text-gray-300">Receive instant feedback and performance analysis</p>
-                </li>
-              </ol>
-            </div>
-          </div>
+    fetchQuestion();
+  }, []);
 
-          <div className="bg-gradient-to-r from-blue-600/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-6 md:p-8 text-center mb-8">
-            <h2 className="text-2xl font-semibold mb-3 text-white">Ready to try AlgoMentor?</h2>
-            <p className="text-gray-300 mb-6">Join 500+ engineers preparing smarter for interviews</p>
-            <Button className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white py-3 px-8 rounded-lg text-lg font-medium" asChild>
-              <Link href="/signup" className="flex items-center">
-                Start Your Free Interview
-                <ChevronRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-          </div>
-          
-          <div className="text-center text-sm text-gray-400">
-            <p>No credit card required. AlgoMentor includes 1 free interview with full features.</p>
+  // Auto-connect countdown
+  useEffect(() => {
+    if (autoConnectCountdown === null || isConnected || isConnecting) return;
+
+    const timer = setTimeout(() => {
+      if (autoConnectCountdown > 1) {
+        setAutoConnectCountdown(autoConnectCountdown - 1);
+      } else {
+        setAutoConnectCountdown(null);
+        handleConnect();
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [autoConnectCountdown, isConnected, isConnecting]);
+
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, transcriptions]);
+
+  // Append audio element to the DOM
+  useEffect(() => {
+    if (audioElement && audioContainerRef.current) {
+      // Clear previous audio elements
+      audioContainerRef.current.innerHTML = '';
+      // Append the new audio element
+      audioContainerRef.current.appendChild(audioElement);
+    }
+  }, [audioElement]);
+
+  // Handle connection
+  const handleConnect = () => {
+    if (!isConnected && !isConnecting && question) {
+      connect(question.title, question.description);
+    }
+  };
+
+  // Add cleanup effect
+  useEffect(() => {
+    return () => {
+      if (isConnected) {
+        disconnect();
+      }
+    };
+  }, [disconnect]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
+        <Header />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="flex flex-col items-center space-y-4">
+            <div className="animate-spin h-12 w-12 border-b-2 border-blue-400 rounded-full"></div>
+            <p className="text-gray-300">Loading your interview question...</p>
           </div>
         </div>
       </div>
-    </div>
-  )
+    );
+  }
+
+  return (
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        background: "linear-gradient(to bottom, rgb(17, 24, 39), rgb(31, 41, 55))",
+        color: "rgb(243, 244, 246)",
+      }}
+    >
+      {/* Hidden audio container */}
+      <div ref={audioContainerRef} className="hidden"></div>
+      
+      <Header />
+      
+      <Box sx={{ flex: 1, position: "relative" }}>
+        {/* Only show timer when connected */}
+        {isConnected && <Timer onTimeUp={() => router.push('/')} />}
+        
+        <Box sx={{ 
+          height: "calc(100vh - 80px)", 
+          display: "flex", 
+          justifyContent: "center",
+          padding: "0 16px"
+        }}>
+          {/* Centered chat window */}
+          <Box sx={{ 
+            width: "100%", 
+            maxWidth: "800px",
+            borderRadius: "8px",
+            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)",
+            margin: "24px 0",
+          }}>
+            <InterviewChat
+              isConnecting={isConnecting}
+              isConnected={isConnected}
+              error={error}
+              transcriptions={transcriptions}
+              handleConnect={handleConnect}
+              messagesEndRef={messagesEndRef as React.RefObject<HTMLDivElement>}
+              currentCode=""
+              sendMessage={sendMessage}
+              isMuted={isMuted}
+              toggleMute={toggleMute}
+              autoConnectCountdown={autoConnectCountdown}
+              autoResponseEnabled={autoResponseEnabled}
+              toggleAutoResponse={toggleAutoResponse}
+              isFreeTrial={true}
+            />
+          </Box>
+        </Box>
+        
+        <Box sx={{ 
+          padding: "24px 16px", 
+          textAlign: "center"
+        }}>
+          <Box sx={{ 
+            display: "inline-block",
+            background: "rgba(37, 99, 235, 0.1)",
+            border: "1px solid rgba(37, 99, 235, 0.3)",
+            borderRadius: "8px",
+            padding: "12px 16px",
+          }}>
+            <p className="text-sm text-blue-300">
+              This is a free trial of AlgoMentor AI. <a href="/signup" className="font-medium underline hover:text-blue-200 transition-colors">Sign up</a> to get access to the full coding interview experience.
+            </p>
+          </Box>
+        </Box>
+      </Box>
+    </Box>
+  );
 } 

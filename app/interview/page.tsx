@@ -19,12 +19,6 @@ export interface Message {
   timestamp?: number;
 }
 
-export type MessageCategory =
-  | "Clarification question"
-  | "Outlining approach"
-  | "Intent to start coding"
-  | "Intent to finish coding"
-  | "Other";
 
 export default function InterviewPage() {
   const router = useRouter();
