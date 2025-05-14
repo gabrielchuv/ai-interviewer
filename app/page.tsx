@@ -40,7 +40,14 @@ export default function LandingPage() {
                       className="w-full sm:w-auto max-w-[200px] sm:max-w-none mx-auto lg:mx-0 bg-green-600 hover:bg-green-700 text-white text-base sm:text-lg"
                       asChild
                     >
-                      <Link href="/signup">Start Practicing</Link>
+                      <Link href="/signup">Sign Up</Link>
+                    </Button>
+                    <Button
+                      size="lg"
+                      className="w-full sm:w-auto max-w-[200px] sm:max-w-none mx-auto lg:mx-0 bg-blue-600 hover:bg-blue-700 text-white text-base sm:text-lg"
+                      asChild
+                    >
+                      <Link href="/freeTrial">Free Trial</Link>
                     </Button>
                     <Button
                       size="lg"
@@ -211,6 +218,12 @@ AlgoMentor gives you real interview practice, powered by AI.
                 <Button size="lg" className="bg-green-600 hover:bg-green-700 text-white" asChild>
                   <Link href="/signup" className="text-base lg:text-lg flex items-center">
                     Start Interview Prep
+                    <ArrowRight className="ml-2 h-4 w-4 lg:h-5 lg:w-5" />
+                  </Link>
+                </Button>
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
+                  <Link href="/freeTrial" className="text-base lg:text-lg flex items-center">
+                    Try Free Interview
                     <ArrowRight className="ml-2 h-4 w-4 lg:h-5 lg:w-5" />
                   </Link>
                 </Button>
