@@ -148,13 +148,23 @@ When you believe the candidate has a good understanding of the problem and has o
   return (
     <Box
       sx={{
-        width: "30%",
-        borderRight: "1px solid rgba(75, 85, 99, 0.3)",
+        width: isFreeTrial ? "100%" : "30%",
+        borderRight: isFreeTrial ? "none" : "1px solid rgba(75, 85, 99, 0.3)",
         padding: 2,
-        height: "calc(100vh - 80px)",
+        height: isFreeTrial ? "100%" : "calc(100vh - 80px)",
+        minHeight: isFreeTrial ? "500px" : "auto",
         display: "flex",
         flexDirection: "column",
         bgcolor: "rgb(17, 24, 39)",
+        borderRadius: isFreeTrial ? "8px" : "0",
+        overflow: "hidden",
+        // Media queries for responsive design
+        '@media (max-width: 767px)': {
+          width: "100%",
+          height: isFreeTrial ? "100%" : "calc(100vh - 80px)",
+          minHeight: "400px",
+        },
+        flex: isFreeTrial ? 1 : "none",
       }}
     >
       <ChatWindow

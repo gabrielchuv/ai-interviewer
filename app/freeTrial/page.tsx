@@ -5,11 +5,10 @@ import Box from "@mui/material/Box";
 import { Timer } from "../components/Timer";
 import { useRouter } from "next/navigation";
 import { questionBank, Question } from "../data/questionBank";
-import CombinedProtection from "../components/CombinedProtection";
 import Header from "../components/Header";
 import { useInterviewSession } from "../services/useInterviewSession";
 import { InterviewChat } from "../components/InterviewChat";
-import { getNewQuestionForUser, addQuestionToUserHistory } from "../services/firebase";
+import Typography from "@mui/material/Typography";
 
 export interface Message {
   role: "user" | "ai";
@@ -110,7 +109,7 @@ export default function FreeTrialPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col bg-gradient-to-b from-gray-900 to-gray-800 text-gray-100">
-        <Header />
+        <Header isFreeTrial={true} />
         <div className="flex-1 flex items-center justify-center">
           <div className="flex flex-col items-center space-y-4">
             <div className="animate-spin h-12 w-12 border-b-2 border-blue-400 rounded-full"></div>
@@ -134,14 +133,32 @@ export default function FreeTrialPage() {
       {/* Hidden audio container */}
       <div ref={audioContainerRef} className="hidden"></div>
       
-      <Header />
+      <Header isFreeTrial={true} />
       
-      <Box sx={{ flex: 1, position: "relative" }}>
+      <Box sx={{ flex: 1, position: "relative", display: "flex", flexDirection: "column" }}>
         {/* Only show timer when connected */}
         {isConnected && <Timer onTimeUp={() => router.push('/')} />}
         
+        {/* Page Title */}
+        <Typography 
+          variant="h4" 
+          component="h1" 
+          sx={{ 
+            textAlign: "center", 
+            margin: "20px 0",
+            color: "rgb(219, 234, 254)",
+            fontWeight: "600",
+            '@media (max-width: 600px)': {
+              fontSize: "1.5rem",
+              margin: "16px 0",
+            }
+          }}
+        >
+        AlgoMentor - Free Trial
+        </Typography>
+        
         <Box sx={{ 
-          height: "calc(100vh - 80px)", 
+          flex: 1,
           display: "flex", 
           justifyContent: "center",
           padding: "0 16px"
@@ -152,7 +169,10 @@ export default function FreeTrialPage() {
             maxWidth: "800px",
             borderRadius: "8px",
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)",
-            margin: "24px 0",
+            marginBottom: "24px",
+            display: "flex",
+            flexDirection: "column",
+            flex: 1,
           }}>
             <InterviewChat
               isConnecting={isConnecting}
@@ -174,7 +194,7 @@ export default function FreeTrialPage() {
         </Box>
         
         <Box sx={{ 
-          padding: "24px 16px", 
+          padding: "16px", 
           textAlign: "center"
         }}>
           <Box sx={{ 

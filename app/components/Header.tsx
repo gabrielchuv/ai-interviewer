@@ -7,7 +7,11 @@ import { auth } from "../../firebaseConfig";
 import { Code2 } from "lucide-react";
 import { Button } from "../uiLibrary";
 
-export default function Header() {
+interface HeaderProps {
+  isFreeTrial?: boolean;
+}
+
+export default function Header({ isFreeTrial = false }: HeaderProps) {
   const router = useRouter();
   const pathname = usePathname();
   const showHomeLink = pathname !== "/interview";
@@ -48,7 +52,7 @@ export default function Header() {
           }}
         >
           <Link
-            href={showHomeLink ? "/home" : "#"}
+            href={isFreeTrial ? "/" : (showHomeLink ? "/home" : "#")}
             style={{
               display: "flex",
               alignItems: "center",
@@ -75,14 +79,16 @@ export default function Header() {
           </Link>
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
-          <Button
-            onClick={handleLogout}
-            className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium transition-colors duration-200"
-          >
-            Log out
-          </Button>
-        </div>
+        {!isFreeTrial && (
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+            <Button
+              onClick={handleLogout}
+              className="px-4 py-2 text-white bg-blue-600 hover:bg-blue-700 rounded-md font-medium transition-colors duration-200"
+            >
+              Log out
+            </Button>
+          </div>
+        )}
       </div>
     </header>
   );
