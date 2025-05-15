@@ -9,7 +9,7 @@ interface UseInterviewSessionResult {
   error: Error | null;
   messages: Message[];
   transcriptions: Array<{ text: string; timestamp: number; source: 'user' | 'ai' }>;
-  connect: (questionTitle: string, questionDescription: string) => Promise<void>;
+  connect: (questionTitle: string, questionDescription: string, isFreeTrial?: boolean) => Promise<void>;
   disconnect: () => void;
   sendMessage: (message: string, role?: 'user' | 'system') => void;
   clearTranscriptions: () => void;
@@ -21,14 +21,18 @@ interface UseInterviewSessionResult {
 }
 
 // Updated to use a custom function to get the ephemeral session with question details
-async function getEphemeralSessionWithQuestion(questionTitle: string, questionDescription: string): Promise<EphemeralSession> {
+async function getEphemeralSessionWithQuestion(questionTitle: string, questionDescription: string, isFreeTrial?: boolean): Promise<EphemeralSession> {
   try {
     const response = await fetch('/api/session', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ questionTitle, questionDescription }),
+      body: JSON.stringify({ 
+        questionTitle, 
+        questionDescription,
+        isFreeTrial: isFreeTrial || false
+      }),
     });
 
     if (!response.ok) {
@@ -86,7 +90,7 @@ export function useInterviewSession(): UseInterviewSessionResult {
     };
   }, []);
 
-  const connect = useCallback(async (questionTitle: string, questionDescription: string) => {
+  const connect = useCallback(async (questionTitle: string, questionDescription: string, isFreeTrial?: boolean) => {
     if (isConnected || isConnecting) {
       return;
     }
@@ -96,7 +100,7 @@ export function useInterviewSession(): UseInterviewSessionResult {
 
     try {
       // Get the ephemeral session with question details
-      const ephemeralSession = await getEphemeralSessionWithQuestion(questionTitle, questionDescription);
+      const ephemeralSession = await getEphemeralSessionWithQuestion(questionTitle, questionDescription, isFreeTrial);
 
       // Create a new realtime session
       const realtimeSession = new RealtimeSession({

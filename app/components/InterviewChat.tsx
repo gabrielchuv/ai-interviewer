@@ -58,7 +58,21 @@ export function InterviewChat({
     if (isConnected) {
       // Use a small delay to ensure the connection is fully established
       const timer = setTimeout(() => {
-        sendMessage(`Introduce yourself as an interviewer. Let the candidate know the following:
+        if (isFreeTrial) {
+          // System message for free trial sessions
+          sendMessage(`Welcome the user to the free trial experience. Let them know:
+- This is a simplified version of the full interview experience
+- You expect them to ask clarifying questions about the problem and explain their approach
+- This is meant to give them a taste of how the full product works
+- Be encouraging and friendly throughout this trial session
+
+Take into consideration there will be no coding in this trial session.
+
+IMPORTANT: Introduce the question to the user.
+`, 'system');
+        } else {
+          // Original system message for regular sessions
+          sendMessage(`Introduce yourself as an interviewer. Let the candidate know the following:
 - They can ask questions to understand the requirements
 - They should outline their approach before coding
 - When done coding, click on Review Code to proceed with the interview
@@ -68,11 +82,12 @@ export function InterviewChat({
 IMPORTANT FOR THE INTERVIEW FLOW:
 When you believe the candidate has a good understanding of the problem and has outlined their approach, please explicitly say "You can start coding now." This will signal to them that it's time to begin implementing their solution.
 `, 'system');
+        }
       }, 500);
       
       return () => clearTimeout(timer);
     }
-  }, [isConnected, sendMessage]);
+  }, [isConnected, sendMessage, isFreeTrial]);
   
   // Track changes to autoResponseEnabled to show notifications for manual toggling
   useEffect(() => {

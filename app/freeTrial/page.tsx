@@ -16,11 +16,26 @@ export interface Message {
   timestamp?: number;
 }
 
+// Define the custom question for free trial
+// This will be used instead of randomly selecting from the question bank
+const FIXED_FREE_TRIAL_QUESTION: Question = {
+  id: 999,
+  title: "Check if all characters have equal number of occurrences",
+  description: `Given a string s, return true if s is a good string, or false otherwise. A string s is good if all the characters that appear in s have the same number of occurrences (i.e., the same frequency).`,
+  examples: `
+  Input: s = "abacbc"
+  Output: true
+
+  Input: s = "aaabb"
+  Output: false
+  `
+};
+
 export default function FreeTrialPage() {
   const router = useRouter();
   const audioContainerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const [autoConnectCountdown, setAutoConnectCountdown] = useState<number | null>(10);
+  const [autoConnectCountdown, setAutoConnectCountdown] = useState<number | null>(5);
   const [question, setQuestion] = useState<Question | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -40,21 +55,11 @@ export default function FreeTrialPage() {
     toggleAutoResponse
   } = useInterviewSession();
 
-  // Fetch a new question when the component mounts
+  // Set the fixed question when the component mounts
   useEffect(() => {
-    const fetchQuestion = async () => {
-      try {
-        // For free trial, just use a random question from the bank
-        setQuestion(questionBank[Math.floor(Math.random() * questionBank.length)]);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching question:", error);
-        setQuestion(questionBank[Math.floor(Math.random() * questionBank.length)]);
-        setLoading(false);
-      }
-    };
-
-    fetchQuestion();
+    // Use the fixed question instead of random selection
+    setQuestion(FIXED_FREE_TRIAL_QUESTION);
+    setLoading(false);
   }, []);
 
   // Auto-connect countdown
@@ -93,7 +98,7 @@ export default function FreeTrialPage() {
   // Handle connection
   const handleConnect = () => {
     if (!isConnected && !isConnecting && question) {
-      connect(question.title, question.description);
+      connect(question.title, question.description, true);
     }
   };
 
