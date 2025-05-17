@@ -31,7 +31,7 @@ export default function SignUpPage() {
         createdAt: new Date().toISOString(),
         trialStartDate: new Date().toISOString(),
         uid: userCredential.user.uid,
-        interviewsRemaining: 1 // Give one free interview to every new user
+        interviewsRemaining: 0 
       })
 
       router.push('/home')
@@ -60,7 +60,7 @@ export default function SignUpPage() {
           </Link>
           
           <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">Master your next coding interview</h1>
-          <p className="text-lg text-gray-300">1 free mock interview with instant AI feedback — no prep, just practice.</p>
+          <p className="text-lg text-gray-300">Practice mock interviews with instant AI feedback — no prep, just practice.</p>
           
           <ul className="space-y-3">
             <li className="flex items-center">
@@ -108,7 +108,7 @@ export default function SignUpPage() {
             </div>
             
             <Button type="submit" className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white py-3 rounded-lg transition-all duration-300 transform hover:scale-[1.02] font-medium">
-              Sign Up for Free →
+              Create Account →
             </Button>
             
             <div className="text-center text-gray-300 text-sm mt-4 flex items-center justify-center space-x-1">
