@@ -38,6 +38,9 @@ TailwindCSS and DaisyUI Rules:
 - Use Tailwind's responsive variants for adaptive designs
 - Define and use design tokens in tailwind.config.js
 
+General Principles
+- Make sure each change works and looks right for desktop and mobile.
+- Only focus on the task at hand and nothing else. DO NOT introduce additional changes.
 
 
 

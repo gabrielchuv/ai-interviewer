@@ -64,7 +64,6 @@ export function InterviewChat({
 - This is a simplified version of the full interview experience
 - You expect them to ask clarifying questions about the problem and explain their approach
 - This is meant to give them a taste of how the full product works
-- Be encouraging and friendly throughout this trial session
 
 Take into consideration there will be no coding in this trial session.
 
