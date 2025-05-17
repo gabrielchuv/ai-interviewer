@@ -17,11 +17,11 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
 // New pricing structure - £5 per interview for smaller packages, £4 for larger packages
 const interviewPackages = [
+  { count: 1, price: 5, pricePerInterview: 5, singleOption: true },
   { count: 2, price: 10, pricePerInterview: 5 },
-  { count: 4, price: 20, pricePerInterview: 5 },
-  { count: 6, price: 24, pricePerInterview: 4, recommended: true, discount: true },
+  { count: 4, price: 16, pricePerInterview: 4, recommended: true, discount: true },
   { count: 8, price: 32, pricePerInterview: 4, discount: true },
-  { count: 10, price: 40, pricePerInterview: 4, discount: true },
+  { count: 10, price: 30, pricePerInterview: 3, discount: true },
 ];
 
 const features = [
@@ -127,8 +127,8 @@ export default function PricingPage() {
                 Interview Credits
               </h1>
               <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                Choose your package - <span className="font-bold text-blue-400">£5</span> per interview for small packages, 
-                <span className="font-bold text-green-400"> £4</span> for 6+ interviews
+                Choose your package - from a <span className="font-bold text-purple-400">single interview</span> at <span className="font-bold text-purple-400">£5</span> to 
+                <span className="font-bold text-green-400"> discounts</span> at <span className="font-bold text-green-400">£3</span> per interview
               </p>
             </div>
 
@@ -185,7 +185,12 @@ export default function PricingPage() {
                 {interviewPackages.map((pkg) => (
                   <div 
                     key={pkg.count}
-                    className={`relative flex flex-col rounded-lg ${pkg.recommended ? 'bg-blue-900/30 border-blue-500/50' : pkg.discount ? 'bg-green-900/20 border-green-500/30' : 'bg-gray-800/50 border-gray-700'} border p-4 transition-all duration-200 hover:transform hover:scale-105`}
+                    className={`relative flex flex-col rounded-lg ${
+                      pkg.recommended ? 'bg-blue-900/30 border-blue-500/50' : 
+                      pkg.discount ? 'bg-green-900/20 border-green-500/30' : 
+                      pkg.singleOption ? 'bg-purple-900/20 border-purple-500/30' :
+                      'bg-gray-800/50 border-gray-700'
+                    } border p-4 transition-all duration-200 hover:transform hover:scale-105`}
                   >
                     {pkg.recommended && (
                       <div className="absolute -top-3 left-0 right-0 mx-auto w-fit px-3 py-0.5 bg-blue-600 text-white text-xs font-medium rounded-full">
@@ -197,9 +202,14 @@ export default function PricingPage() {
                         Discounted
                       </div>
                     )}
+                    {pkg.singleOption && (
+                      <div className="absolute -top-3 left-0 right-0 mx-auto w-fit px-3 py-0.5 bg-purple-600 text-white text-xs font-medium rounded-full">
+                        Quick Start
+                      </div>
+                    )}
                     <div className="text-center mb-4">
                       <span className="text-4xl font-bold text-white">{pkg.count}</span>
-                      <span className="block text-sm text-gray-300 mt-1">interviews</span>
+                      <span className="block text-sm text-gray-300 mt-1">{pkg.count === 1 ? 'interview' : 'interviews'}</span>
                     </div>
                     <div className="text-center mb-4">
                       <span className="text-2xl font-bold">{pkg.discount ? <span className="text-green-400">£{pkg.price}</span> : `£${pkg.price}`}</span>
@@ -220,6 +230,7 @@ export default function PricingPage() {
                       className={`mt-auto w-full px-3 py-2 text-white ${
                         pkg.recommended ? 'bg-blue-600 hover:bg-blue-700' : 
                         pkg.discount ? 'bg-green-600 hover:bg-green-700' : 
+                        pkg.singleOption ? 'bg-purple-600 hover:bg-purple-700' :
                         'bg-gray-700 hover:bg-gray-600'
                       } rounded-md font-medium transition-colors duration-200 flex items-center justify-center text-sm`}
                     >
@@ -257,7 +268,7 @@ export default function PricingPage() {
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <h4 className="font-semibold text-blue-400">How does the pricing work?</h4>
-                    <p className="text-gray-300 text-sm">Smaller packages (2-4 interviews) cost £5 per interview. Larger packages (6+ interviews) are discounted to £4 per interview, saving you money as you practice more.</p>
+                    <p className="text-gray-300 text-sm">Smaller packages cost £5 per interview. Larger packages are discounted saving you money as you practice more.</p>
                   </div>
                   <div className="space-y-2">
                     <h4 className="font-semibold text-blue-400">How long do my credits last?</h4>
