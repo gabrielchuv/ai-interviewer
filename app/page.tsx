@@ -11,6 +11,12 @@ export default function LandingPage() {
             <Brain className="h-6 w-6 mr-2 lg:h-8 lg:w-8 lg:mr-3 text-blue-400" />
             <span className="font-bold text-lg lg:text-xl text-blue-400">AlgoMentor AI</span>
           </Link>
+          <Button
+            className="bg-purple-600 hover:bg-purple-700 text-white"
+            asChild
+          >
+            <Link href="/signin">Sign In</Link>
+          </Button>
         </div>
       </header>
       <main className="flex-1">
@@ -48,13 +54,6 @@ export default function LandingPage() {
                       asChild
                     >
                       <Link href="/freeTrial">Free Trial</Link>
-                    </Button>
-                    <Button
-                      size="lg"
-                      className="w-full sm:w-auto max-w-[200px] sm:max-w-none mx-auto lg:mx-0 bg-purple-600 hover:bg-purple-700 text-white text-base sm:text-lg"
-                      asChild
-                    >
-                      <Link href="/signin">Sign In</Link>
                     </Button>
                   </div>
                   <div>

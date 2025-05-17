@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
 import { useRouter } from "next/navigation";
-import { questionBank, Question } from "../data/questionBank";
+import { Question } from "../data/questionBank";
 import Header from "../components/Header";
 import { useInterviewSession } from "../services/useInterviewSession";
 import { InterviewChat } from "../components/InterviewChat";
