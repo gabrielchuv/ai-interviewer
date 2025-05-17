@@ -30,7 +30,7 @@ export default function LandingPage() {
                   <div className="bg-gradient-to-r from-green-600/20 to-blue-600/20 border border-green-500/30 rounded-lg px-4 py-3 flex items-center my-4">
                     <Gift className="h-6 w-6 mr-3 text-green-400 flex-shrink-0" />
                     <p className="text-green-300 text-sm md:text-base">
-                      Try a full AI mock interview — completely free. No credit card needed.
+                      Try a 5-minute free trial.
                     </p>
                   </div>
                   
@@ -209,9 +209,6 @@ Don&apos;t let nerves or poor delivery cost you the offer.<br></br>
 AlgoMentor gives you real interview practice, powered by AI.
 
 
-                </p>
-                <p className="mx-auto max-w-[600px] text-green-300 md:text-lg mt-2">
-✅ Includes 1 Free AI-Powered Interview — no strings attached
                 </p>
               </div>
               <div className="pt-4 lg:pt-8 flex gap-4 justify-center">
