@@ -2,7 +2,6 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import Box from "@mui/material/Box";
-import { Timer } from "../components/Timer";
 import { useRouter } from "next/navigation";
 import { questionBank, Question } from "../data/questionBank";
 import Header from "../components/Header";
@@ -31,6 +30,34 @@ const FIXED_FREE_TRIAL_QUESTION: Question = {
   `
 };
 
+// Free trial duration in seconds (3 minutes)
+const FREE_TRIAL_DURATION = 3 * 60;
+
+// Simple timer component for free trial
+function FreeTrialTimer({ onTimeUp }: { onTimeUp: () => void }) {
+  const [timeLeft, setTimeLeft] = useState(FREE_TRIAL_DURATION);
+  
+  useEffect(() => {
+    if (timeLeft === 0) {
+      onTimeUp();
+      return;
+    }
+    
+    const timer = setInterval(() => {
+      setTimeLeft(prev => Math.max(0, prev - 1));
+    }, 1000);
+    
+    return () => clearInterval(timer);
+  }, [timeLeft, onTimeUp]);
+  
+  // Format time as MM:SS
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+  const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  
+  return formattedTime;
+}
+
 export default function FreeTrialPage() {
   const router = useRouter();
   const audioContainerRef = useRef<HTMLDivElement>(null);
@@ -54,6 +81,17 @@ export default function FreeTrialPage() {
     autoResponseEnabled,
     toggleAutoResponse
   } = useInterviewSession();
+
+  // Create a custom handler for when time is up
+  const handleTimeUp = useCallback(() => {
+    // Add a final message indicating the trial is over
+    if (isConnected) {
+        disconnect();
+        router.push('/signup');
+    } else {
+      router.push('/signup');
+    }
+  }, [router, disconnect, isConnected]);
 
   // Set the fixed question when the component mounts
   useEffect(() => {
@@ -142,25 +180,82 @@ export default function FreeTrialPage() {
       
       <Box sx={{ flex: 1, position: "relative", display: "flex", flexDirection: "column" }}>
         {/* Only show timer when connected */}
-        {isConnected && <Timer onTimeUp={() => router.push('/')} />}
+        {isConnected && (
+          <Box 
+            sx={{
+              position: "absolute", 
+              top: 0, 
+              right: 16, 
+              zIndex: 1000,
+              // Hide this timer on small screens
+              display: { xs: 'none', sm: 'block' }
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                fontFamily: "monospace",
+                fontWeight: "bold",
+                background: "linear-gradient(to right, #60A5FA, #A78BFA)", // blue-400 to purple-400
+                backgroundClip: "text",
+                WebkitBackgroundClip: "text",
+                color: "transparent",
+                fontSize: "1.5rem",
+                lineHeight: "2rem",
+              }}
+            >
+              <FreeTrialTimer onTimeUp={handleTimeUp} />
+            </Typography>
+          </Box>
+        )}
         
-        {/* Page Title */}
-        <Typography 
-          variant="h4" 
-          component="h1" 
-          sx={{ 
-            textAlign: "center", 
-            margin: "20px 0",
-            color: "rgb(219, 234, 254)",
-            fontWeight: "600",
-            '@media (max-width: 600px)': {
-              fontSize: "1.5rem",
-              margin: "16px 0",
-            }
-          }}
-        >
-        AlgoMentor - Free Trial
-        </Typography>
+        {/* Page Title with mobile timer */}
+        <Box sx={{ 
+          textAlign: "center", 
+          margin: "20px 0",
+          position: "relative"
+        }}>
+          <Typography 
+            variant="h4" 
+            component="h1" 
+            sx={{ 
+              color: "rgb(219, 234, 254)",
+              fontWeight: "600",
+              '@media (max-width: 600px)': {
+                fontSize: "1.5rem",
+                margin: "16px 0",
+              }
+            }}
+          >
+            AlgoMentor - Free Trial
+          </Typography>
+          
+          {/* Mobile timer - only shown on small screens */}
+          {isConnected && (
+            <Box 
+              sx={{
+                display: { xs: 'flex', sm: 'none' },
+                justifyContent: 'center',
+                marginTop: '8px'
+              }}
+            >
+              <Typography
+                variant="h5"
+                sx={{
+                  fontFamily: "monospace",
+                  fontWeight: "bold",
+                  background: "linear-gradient(to right, #60A5FA, #A78BFA)",
+                  backgroundClip: "text",
+                  WebkitBackgroundClip: "text",
+                  color: "transparent",
+                  fontSize: "1.25rem",
+                }}
+              >
+                Time remaining: <FreeTrialTimer onTimeUp={handleTimeUp} />
+              </Typography>
+            </Box>
+          )}
+        </Box>
         
         <Box sx={{ 
           flex: 1,
@@ -210,7 +305,7 @@ export default function FreeTrialPage() {
             padding: "12px 16px",
           }}>
             <p className="text-sm text-blue-300">
-              This is a free trial of AlgoMentor AI. <a href="/signup" className="font-medium underline hover:text-blue-200 transition-colors">Sign up</a> to get access to the full coding interview experience.
+              This is a <span className="font-bold">3-minute</span> free trial of AlgoMentor AI. <a href="/signup" className="font-medium underline hover:text-blue-200 transition-colors">Sign up</a> to get access to the full coding interview experience.
             </p>
           </Box>
         </Box>
