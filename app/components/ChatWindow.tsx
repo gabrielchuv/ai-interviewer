@@ -91,7 +91,8 @@ export function ChatWindow({
           border: '1px solid rgba(75, 85, 99, 0.5)',
           display: 'flex',
           flexDirection: 'column',
-          overflowY: 'auto',
+          overflow: 'hidden',
+          height: '100%',
           '&::-webkit-scrollbar': {
             width: '8px',
           },
@@ -111,7 +112,8 @@ export function ChatWindow({
             display: 'flex', 
             justifyContent: 'space-between',
             alignItems: 'center',
-            color: 'rgb(243, 244, 246)'
+            color: 'rgb(243, 244, 246)',
+            flexShrink: 0,
           }}
         >
           <span>Chat</span>
@@ -123,6 +125,9 @@ export function ChatWindow({
           sx={{ 
             flex: 1,
             overflowY: 'auto',
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
             '&::-webkit-scrollbar': {
               width: '8px',
             },

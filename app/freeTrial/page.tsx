@@ -167,6 +167,7 @@ export default function FreeTrialPage() {
     <Box
       sx={{
         minHeight: "100vh",
+        height: "100vh", // Set to full viewport height
         display: "flex",
         flexDirection: "column",
         background: "linear-gradient(to bottom, rgb(17, 24, 39), rgb(31, 41, 55))",
@@ -178,7 +179,14 @@ export default function FreeTrialPage() {
       
       <Header isFreeTrial={true} />
       
-      <Box sx={{ flex: 1, position: "relative", display: "flex", flexDirection: "column" }}>
+      <Box sx={{ 
+        flex: 1, 
+        position: "relative", 
+        display: "flex", 
+        flexDirection: "column",
+        height: "calc(100% - 64px)", // Subtract header height
+        overflow: "hidden" // Ensure no overflow
+      }}>
         {/* Only show timer when connected */}
         {isConnected && (
           <Box 
@@ -213,7 +221,8 @@ export default function FreeTrialPage() {
         <Box sx={{ 
           textAlign: "center", 
           margin: "20px 0",
-          position: "relative"
+          position: "relative",
+          flexShrink: 0 // Prevent title from shrinking
         }}>
           <Typography 
             variant="h4" 
@@ -261,7 +270,10 @@ export default function FreeTrialPage() {
           flex: 1,
           display: "flex", 
           justifyContent: "center",
-          padding: "0 16px"
+          padding: "0 16px",
+          overflow: "hidden", // Ensure no overflow
+          '@media (max-width: 767px)': {
+          },
         }}>
           {/* Centered chat window */}
           <Box sx={{ 
@@ -269,10 +281,11 @@ export default function FreeTrialPage() {
             maxWidth: "800px",
             borderRadius: "8px",
             boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08)",
-            marginBottom: "24px",
             display: "flex",
             flexDirection: "column",
             flex: 1,
+            height: "100%",
+            overflow: "hidden"
           }}>
             <InterviewChat
               isConnecting={isConnecting}
@@ -295,7 +308,9 @@ export default function FreeTrialPage() {
         
         <Box sx={{ 
           padding: "16px", 
-          textAlign: "center"
+          textAlign: "center",
+          flexShrink: 0, // Prevent footer from shrinking
+          marginTop: "auto" // Push to bottom if there's extra space
         }}>
           <Box sx={{ 
             display: "inline-block",

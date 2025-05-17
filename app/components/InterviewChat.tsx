@@ -166,7 +166,8 @@ When you believe the candidate has a good understanding of the problem and has o
         borderRight: isFreeTrial ? "none" : "1px solid rgba(75, 85, 99, 0.3)",
         padding: 2,
         height: isFreeTrial ? "100%" : "calc(100vh - 80px)",
-        minHeight: isFreeTrial ? "500px" : "auto",
+        minHeight: "auto",
+        maxHeight: "none",
         display: "flex",
         flexDirection: "column",
         bgcolor: "rgb(17, 24, 39)",
@@ -176,7 +177,7 @@ When you believe the candidate has a good understanding of the problem and has o
         '@media (max-width: 767px)': {
           width: "100%",
           height: isFreeTrial ? "100%" : "calc(100vh - 80px)",
-          minHeight: "400px",
+          minHeight: isFreeTrial ? "auto" : "400px",
         },
         flex: isFreeTrial ? 1 : "none",
       }}
