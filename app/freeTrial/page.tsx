@@ -30,8 +30,8 @@ const FIXED_FREE_TRIAL_QUESTION: Question = {
   `
 };
 
-// Free trial duration in seconds (3 minutes)
-const FREE_TRIAL_DURATION = 3 * 60;
+// Free trial duration in seconds (5 minutes)
+const FREE_TRIAL_DURATION = 5 * 60;
 
 // Simple timer component for free trial
 function FreeTrialTimer({ onTimeUp }: { onTimeUp: () => void }) {
@@ -192,24 +192,36 @@ export default function FreeTrialPage() {
           <Box 
             sx={{
               position: "absolute", 
-              top: 0, 
+              top: 10, 
               right: 16, 
               zIndex: 1000,
               // Hide this timer on small screens
-              display: { xs: 'none', sm: 'block' }
+              display: { xs: 'none', sm: 'flex' },
+              alignItems: 'center',
+              gap: 1,
+              backgroundColor: "rgba(30, 41, 59, 0.5)",
+              borderRadius: "8px",
+              padding: "6px 12px",
+              border: "1px solid rgba(96, 165, 250, 0.3)",
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)"
             }}
           >
+            <Box component="span" sx={{ 
+              fontSize: "0.875rem", 
+              opacity: 0.9,
+              color: "#a5b4fc",
+              fontWeight: "500" 
+            }}>
+              Time:
+            </Box>
             <Typography
-              variant="h4"
+              variant="h5"
               sx={{
                 fontFamily: "monospace",
-                fontWeight: "bold",
-                background: "linear-gradient(to right, #60A5FA, #A78BFA)", // blue-400 to purple-400
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
-                color: "transparent",
-                fontSize: "1.5rem",
-                lineHeight: "2rem",
+                fontWeight: "700",
+                color: "#60A5FA",
+                fontSize: "1rem",
+                lineHeight: "1.5rem",
               }}
             >
               <FreeTrialTimer onTimeUp={handleTimeUp} />
@@ -220,7 +232,7 @@ export default function FreeTrialPage() {
         {/* Page Title with mobile timer */}
         <Box sx={{ 
           textAlign: "center", 
-          margin: "20px 0",
+          margin: { xs: "15px 0 20px", sm: "30px 0 40px" }, // Reduced margins on mobile
           position: "relative",
           flexShrink: 0 // Prevent title from shrinking
         }}>
@@ -228,11 +240,17 @@ export default function FreeTrialPage() {
             variant="h4" 
             component="h1" 
             sx={{ 
-              color: "rgb(219, 234, 254)",
-              fontWeight: "600",
+              fontWeight: "700", // Bolder font
+              background: "linear-gradient(45deg, #60A5FA, #A78BFA)", // Angled gradient from blue to purple
+              backgroundClip: "text",
+              WebkitBackgroundClip: "text",
+              color: "transparent",
+              fontSize: { xs: "1.5rem", sm: "2.25rem" }, // Smaller font on mobile
+              letterSpacing: "0.5px", // Slight letter spacing for elegance
+              textShadow: "0 2px 10px rgba(96, 165, 250, 0.3)", // Subtle glow effect
+              padding: { xs: "4px 0", sm: "8px 0" }, // Less padding on mobile
               '@media (max-width: 600px)': {
-                fontSize: "1.5rem",
-                margin: "16px 0",
+                margin: "8px 0", // Reduced margin on mobile
               }
             }}
           >
@@ -245,23 +263,42 @@ export default function FreeTrialPage() {
               sx={{
                 display: { xs: 'flex', sm: 'none' },
                 justifyContent: 'center',
-                marginTop: '8px'
+                marginTop: '8px', // Reduced margin
+                alignItems: 'center'
               }}
             >
-              <Typography
-                variant="h5"
+              <Box
                 sx={{
-                  fontFamily: "monospace",
-                  fontWeight: "bold",
-                  background: "linear-gradient(to right, #60A5FA, #A78BFA)",
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  color: "transparent",
-                  fontSize: "1.25rem",
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  backgroundColor: "rgba(30, 41, 59, 0.5)",
+                  borderRadius: "8px",
+                  padding: "4px 10px",
+                  border: "1px solid rgba(96, 165, 250, 0.3)",
                 }}
               >
-                Time remaining: <FreeTrialTimer onTimeUp={handleTimeUp} />
-              </Typography>
+                <Box component="span" sx={{ 
+                  fontSize: "0.75rem", 
+                  opacity: 0.9,
+                  color: "#a5b4fc",
+                  fontWeight: "500" 
+                }}>
+                  Time:
+                </Box>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    fontFamily: "monospace",
+                    fontWeight: "700",
+                    color: "#60A5FA",
+                    fontSize: "1rem",
+                    lineHeight: "1.2",
+                  }}
+                >
+                  <FreeTrialTimer onTimeUp={handleTimeUp} />
+                </Typography>
+              </Box>
             </Box>
           )}
         </Box>
@@ -270,9 +307,10 @@ export default function FreeTrialPage() {
           flex: 1,
           display: "flex", 
           justifyContent: "center",
-          padding: "0 16px",
+          padding: { xs: "0 8px", sm: "0 16px" }, // Less padding on mobile
           overflow: "hidden", // Ensure no overflow
           '@media (max-width: 767px)': {
+            marginTop: "5px", // Add small margin on top for mobile
           },
         }}>
           {/* Centered chat window */}
@@ -307,20 +345,29 @@ export default function FreeTrialPage() {
         </Box>
         
         <Box sx={{ 
-          padding: "16px", 
+          padding: { xs: "10px", sm: "16px" }, 
           textAlign: "center",
           flexShrink: 0, // Prevent footer from shrinking
           marginTop: "auto" // Push to bottom if there's extra space
         }}>
           <Box sx={{ 
             display: "inline-block",
-            background: "rgba(37, 99, 235, 0.1)",
-            border: "1px solid rgba(37, 99, 235, 0.3)",
-            borderRadius: "8px",
-            padding: "12px 16px",
+            background: "rgba(30, 41, 59, 0.5)",
+            border: "1px solid rgba(96, 165, 250, 0.3)",
+            borderRadius: "10px",
+            padding: { xs: "10px 16px", sm: "14px 20px" }, // Less padding on mobile
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+            maxWidth: "600px",
+            width: "100%"
           }}>
-            <p className="text-sm text-blue-300">
-              This is a <span className="font-bold">3-minute</span> free trial of AlgoMentor AI. <a href="/signup" className="font-medium underline hover:text-blue-200 transition-colors">Sign up</a> to get access to the full coding interview experience.
+            <p className="text-xs sm:text-sm text-blue-300 flex flex-row items-center justify-center gap-2">
+              <span>This is a <span className="font-bold text-indigo-300">5-minute</span> free trial.</span>
+              <a href="/signup" className="font-medium px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-colors inline-flex items-center gap-1">
+                <span>Sign up</span>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                </svg>
+              </a>
             </p>
           </Box>
         </Box>
